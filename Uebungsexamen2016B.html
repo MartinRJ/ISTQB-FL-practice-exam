@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISTQB FL Übungsfragen</title>
+
+    <style>
+        body {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    scroll-behavior: smooth;
+}
+
+form {
+    border:2px solid gainsboro;
+    margin-top:.5vh;
+    width:75vw;
+}
+
+textarea{
+    padding-left: 2rem;
+    width:67vw;
+    height:450px;
+}
+
+form img{
+    padding-left: 5rem;
+}
+
+label {
+    
+    position: relative;
+    width:100%;
+    font: 14px Verdana, Arial, sans-serif
+}
+
+form fieldset div {
+    transform-origin: center;
+    margin-left:7rem;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+#submit{
+    margin-left:5rem;
+}
+
+input[type='checkbox'],label {
+    margin-top:2rem;
+    border-width: 1rem;
+    position: relative;
+}
+
+input[type='checkbox'] {
+    display:none;
+}
+
+input[type='checkbox'] + label::before,
+input[type='checkbox'] + label::after {
+
+content: "";
+position: absolute;
+left:-2rem;
+top:0;
+aspect-ratio: 1/1;
+border-radius: 50%;
+}
+
+input[type='checkbox'] + label::after {
+    background-color: white;
+    border:2px solid white;
+    height:24px;
+    transform: translate(-6px,-6px);
+}
+
+input[type='checkbox'] + label::before {
+    background-color: midnightblue;
+    border-width:20px;
+    height:32px;
+    transform: translate(-8px,-8px);
+    
+}
+
+div:hover  label::before {
+    background-color: gold;
+}
+
+div:hover  label::after {
+    background-color: gold;
+}
+
+input[type='checkbox']:checked + label::after {
+    background-color: midnightblue;
+}
+
+fieldset {
+    border: none;
+    width:68vw;
+}
+
+#question {
+    align-items: center;
+    color: white;
+    background-color: midnightblue;
+    
+    padding: 1em;
+    font-size:1rem;
+}
+
+input[type='button'] {
+    border:none;
+    color: white;
+    background-color: midnightblue;
+    padding: 1rem 2rem;
+    border-radius: 25% / 50%;
+}
+
+input[type='button']:active {
+    transform: translatey(.2rem);
+}
+
+input[type='button']:hover
+
+{
+    transform: scale(1.02);
+}
+
+input[type='checkbox'] + .correct::after {
+    background-color: orange;
+}
+
+input[type='checkbox'] + .correct::before {
+    background-color: orange;
+    height:36px;
+    transform: translate(-10px,-10px);
+}
+
+input[type='checkbox']:checked + .correct::after {
+    background-color: green;
+}
+
+input[type='checkbox']:checked + .correct::before {
+    background-color: green;
+    height:36px;
+    transform: translate(-10px,-10px);
+}
+
+input[type='checkbox']+ .correct {
+    font-weight:700;
+
+}
+    </style>
+    <script>
+        var msgAlertOnlyOne = "Bitte wählen Sie genau eine Antwort aus.";
+        var msgCorrectAnswers = "Fertig. Richtige Antworten: ";
+        var msgCorrectAnswersOf = " von ";
+        var q = 0;
+        var correctAnswers = 0;
+        let qanda = [
+        ['Welche der folgenden Aussagen beschreibt AM BESTEN einen der sieben Grundsätze des Software-Testens?',
+'Mit automatisiertem Testen ist es möglich alles zu testen.',
+'Vollständiges Testen ist - mit genügend Anstrengung und Werkzeugunterstützung - für alle Arten von Software praktikabel.',
+'Es ist normalerweise unmöglich, alle Ein-Ausgabe-Kombinationen für ein Software-System zu testen.',
+'Der Zweck des Testens ist es, die Abwesenheit von Fehlern nachzuweisen.',
+3,
+'Begründung:\n\na) FALSCH – Erschöpfendes Testen ist unmöglich. Egal, ob manuell oder automatisiert. (Abschn. 1.3, Grundsatz 2). \n\nb) FALSCH – Erschöpfendes Testen ist unmöglich, egal wieviel Aufwand wir in den Test investieren. (Abschn. 1.3, Grundsatz 2). \n\nc) KORREKT – Grundsatz 2 (Abschn. 1.3) besagt: “Ein vollständiger Test, bei dem alle möglichen Eingabewerte und deren Kombinationen ... ausgeführt werden, ist nicht möglich, mit Ausnahme von sehr trivialen Testobjekten.” \n\nd) FALSCH – Diese Aussage widerspricht dem Grundsatz 1 (Abschn. 1.3): “Mit Testen wird das Vorhandensein von Fehlerzuständen nachgewiesen. Mit Testen lässt sich nicht beweisen, dass keine Fehlerzustände im Testobjekt vorhanden sind."',
+''],
+['Welche der folgenden Aussagen beschreibt ZUTREFFEND ein gültiges Ziel für ein Testteam?',
+'Es soll ermittelt werden, ob genügend Komponententests im Systemtest ausgeführt wurden.',
+'Es sollen so viele Fehlerwirkungen wie möglich aufgedeckt werden, so dass die Fehlerursachen lokalisiert und korrigiert werden können.',
+'Es soll aufgezeigt werden, dass alle möglichen Fehlerzustände identifiziert wurden.',
+'Es soll aufgezeigt werden, dass alle verbleibenden Fehlerzustände keine Fehlerwirkungen verursachen werden.',
+2,
+'Begründung:\n\na) FALSCH – Komponententest ist nicht Teil des Systemtest. (Abschn. 2.2.1 und 2.2.3).\n\nb) KORREKT – Diese ist die Hauptaufgabe eines Testteams. (Abschn. 1.2, Ziele, 1. dot).\n\nc) FALSCH – Grundsatz 1 besagt, dass vollständiges Testen unmöglich ist, und es kann nicht bewiesen werden, dass alle Fehlerzustände identifiziert wurden. \n\nd) FALSCH – Um eine Einschätzung treffen zu können, ob ein Defekt einen Fehler verursacht oder nicht, muss man den Fehlerzustand zunächsterkennen. Zu sagen, dass verbleibende Fehlerzustände keine Fehlerwirkungen verursachen, bedeutet implizit, dass alle Fehlerzustände gefunden wurden. Dies widerspricht erneut Grundsatz 1.',
+''],
+['Welche der folgenden Aktivitäten ist Teil der Hauptaktivität „Testanalyse und Testentwurf“ im Fundamentalen Testprozess?',
+'Definition der Testziele',
+'Review der Testbasis',
+'Erstellen von Testsuiten basierend auf dem Testablauf',
+'Analyse der „Lessons learned“ zur Prozessverbesserung',
+2,
+'Begründung:\n\na) FALSCH – diese Aktivität wird in der Hauptaktivität “Testplanung” \n\ndurchgeführt (Abschnitt 1.4.1, Satz 1).) \n\nb) KORREKT – diese Aktivität wird in der Hauptaktivität “Testanalyse und Design” durchgeführt. (Abschnitt 1.4.2; 1. dot)\n\nc) FALSCH – diese Aktivität wird in der Hauptaktivität “Testrealisierung und Testdurchführung“ durchgeführt (Abschnitt 1.4.3; 3. dot) \n\nd) FALSCH – diese Aktivität wird in der Hauptaktivität “Abschluss der Testaktivitäten” durchgeführt (Abschnitt 1.4.5); 6. dot)',
+''],
+['Nachfolgend finden Sie eine Liste von Problemen, die während des Testens oder im Betrieb beobachtet werden können. Welches Problem ist eine Fehlerwirkung?',
+'Das Produkt stürzte ab, als der Benutzer eine Option in einer Dialogbox auswählte.',
+'Eine kompilierte Quellcodedatei wurde in der falschen Version zum Build hinzugefügt.',
+'Der Berechnungsalgorithmus verwendet die falschen Eingangsvariablen.',
+'Der Entwickler hat die Anforderungen an den Algorithmus falsch interpretiert.',
+1,
+'Begründung:\n\na) KORREKT – Ein Absturz ist vom Anwender deutlich spürbar. Ein Ausfall ist eine äußere Manifestation eines Fehlerzustands, d.h. eine Fehlerwirkung.\n\nb) FALSCH – Diese Art von Fehlern (Fehlhandlungen) wird nicht unbedingtzu einer sichtbaren oder spürbaren Fehlerwirkung führen; zum Beispiel wenn die Änderungen in der neuen Version der Quelldatei nur in den Kommentaren vorgenommen wurden.\n\nc) FALSCH – Verwendung von falschen Eingabevariablen wird nicht unbedingt zu einer sichtbaren oder spürbaren Fehlerwirkung führen; zum Beispiel, wenn niemand diesen speziellen Algorithmus verwendet; oderwenn die falsche Eingabevariable einen ähnlichen Wert wie die richtige Eingabevariable hat; oder wenn das FALSCHE Resultat des Algorithmus nicht verwendet wird. "Fehler in Software, Systemen oder Dokumenten können, müssen aber nicht zu einer Fehlerwirkung führen." (Abschnitt 1.1.2, 1. Absatz, letzter Satz).\n\nd) FALSCH – Diese Art von Fehlern wird nicht notwendigerweise zu einer Fehlerwirkung führen; zum Beispiel, wenn niemand diesen speziellen Algorithmus verwendet.',
+''],
+['Welche der folgenden Einstellungen, Qualifikationen oder Handlungen führen zu Problemen (oder Konflikten) innerhalb von gemischten Tester-Entwickler-Teams, wenn sie in Reviews und Tests beobachtet werden?',
+'Tester und Entwickler sind neugierig und fokussiert genug, um Fehler zu finden.',
+'Tester und Entwickler sind genügend qualifiziert, um Fehlerwirkungen und Fehlerzustände zu finden',
+'Tester und Entwickler kommunizieren Fehler als Kritik an Personen und nicht als Kritik an dem Software-Produkt.',
+'Tester erwarten, dass Fehlerzustände im Software-Produkt existieren, welche von Entwicklern nicht gefunden und behoben wurden.',
+3,
+'Begründung:\n\na) FALSCH. Das ist keine Situation, die zu Konflikten führt. Tester und Entwickler sollten fokussiert sein, Fehler zu finden.\n\nb) FALSCH. Das stimmt, es gibt deswegen keine Probleme.\n\nc) KORREKT. Laut Lehrplan sollten Entwickler und Tester neutral und sachbezogen kommunizieren und Kritik an verantwortlichen Personen vermeiden (Abschn. 1.5, 9. Absatz, 2. dot), weil das zu Konflikten innerhalb des Teams führt.\n\nd) FALSCH. Die Rolle des Testers im Team ist es, Fehler im Softwareprodukt zu finden, die nicht von den Entwicklern gefunden und behoben wurden. Das ist bei sachbezogener Kommunikation kein Problem.',
+''],
+['Welche der folgenden Aussagen sind WAHR?',
+'A, B und C sind wahr; D ist falsch.',
+'A ist wahr; B, C und D sind falsch.',
+'A und C sind wahr, B und D sind falsch.',
+'C und D sind wahr, A und B sind falsch.',
+1,
+'Begründung:\n\nA. WAHR. Softwaretests sind erforderlich, um die vertraglichen und gesetzlichen Anforderungen zu erfüllen. (Abschn. 2.2.4, regulatorischer und vertraglicher Abnahmetest).\n\nB. WAHR. Softwaretests spielen bei der Beurteilung der Qualität eines Produktes eine wesentliche Rolle. (Lernziel LO-1.1.4; Abschn. 1.1.3, 1. Absatz; Abschn. 1.1.4, 2. Absatz; Abschn. 1.5, letzte Aufzählung, 1. dot)..\n\nC. WAHR. Eines der Hauptziele ist es das Risiko von Fehlerzuständen (in der Betriebsumgebung) zu reduzieren. (Abschn. 1.2, Ziele 1 und 4).\n\nD. FALSCH. Es ist nicht möglich zu beweisen, dass keine Fehler vorhanden sind. (Abschn. 1.3, Grundsatz 1), insbesondere nicht für nicht triviale Testobjekte, bei denen kein „vollständiger Test“ möglich ist (Abschn. 1.3, Grundsatz 2).\n\nDeshalb gilt: \n\na.) ist korrekt. weil genau A, B und C wahr sind.\n\nb) ist falsch, weil B und C nicht falsch (sondern wahr) sind.\n\nc) ist falsch, weil B nicht falsch (sondern wahr) ist.\n\nd) ist falsch, weil D nicht wahr (sondern falsch) ist und weil A und B wahr (und nicht falsch) sind.',
+'https://i.imgur.com/KaP4FeF.png'],
+['Welche der folgenden Aussagen beschreibt den Unterschied zwischen Testen und Debuggen richtig?',
+'Testen identifiziert die Ursache von Fehlerwirkungen. Debuggen analysiert die Fehlerzustände und schlägt Präventionsmaßnahmen vor.',
+'Dynamische Tests zeigen Fehlerwirkungen auf, die durch Fehlerzustände verursacht wurden. Debuggen findet, analysiert und beseitigt die Ursachen von Fehlerwirkungen.',
+'Testen entfernt Fehlerzustände. Debugging identifiziert die Ursachen von Fehlerwirkungen.',
+'Dynamische Tests verhindern die Ursache von Fehlerwirkungen. Debugging entfernt die Fehlerwirkungen.',
+2,
+'Begründung:\n\na) FALSCH. Durch Testen können nicht die Ursachen von Fehlerwirkungen identifiziert werden, sondern nur durch Debugging (Abschn. 1.2, 2.letzter Absatz, 3. Satz).\n\nb) KORREKT. Dynamisches Testen zeigt Fehlerwirkungen auf, die durch Fehlerzustände verursacht wurden. Durch Debuggen können die Ursachen von Fehlerwirkungen analysiert und beseitigt werden. (Abschn. 1.2, 2.letzter Absatz).\n\nc) FALSCH. Durch Testen werden keine Fehlerzustände entfernt, sondern nur durch Debugging (Abschn. 1.2, 2.letzter Absatz, 3. Satz).\n\nd) FALSCH. Durch dynamische Tests können die Ursachen von Fehlerwirkungen (d.h. Fehlerzustände) nicht verhindert werden, sondern nur das Vorhandensein von Fehlerzuständen nachgewiesen werden (Abschn. 1.3, Grundsatz 1).',
+''],
+['Welche der folgenden Aussagen beschreibt AM BESTEN nicht-funktionales Testen?',
+'Nichtfunktionales Testen ist der Testprozess eines integrierten Systems, welcher prüft, ob das System die spezifizierten Anforderungen erfüllt.',
+'Nichtfunktionales Testen ist der Testprozess zur Überprüfung der Konformität eines Systems mit den Programmierkonventionen.',
+'Nichtfunktionales Testen ist das Testen ohne Kenntnis der internen Struktur eines Systems.',
+'Nichtfunktionales Testen ist das Testen von Systemmerkmalen wie Benutzbarkeit, Zuverlässigkeit oder Änderbarkeit.',
+4,
+'Begründung:\n\na) FALSCH, dies ist die Definition für einen Systemtest. (Abschn. 2.2.3, Testbasis, 1. dot).\n\nb) FALSCH, dies ist die Aufgabe der werkzeuggestützten statischen Analyse (Abschn. 3.3, Typische Fehlerzustände, 2. dot, und Abschn. 6.1.4, statische Analysewerkzeuge, 1. Satz).\n\nc) FALSCH, dies ist die Definition für einen Black-Box Test (Abschn. 4.2, Hintergrund, 3. Absatz („Black-Box-Verfahren ...“)\n\nd) KORREKT, nicht-funktionales Testen beinhaltet u.a. das Testen gegen die Qualitätsmerkmale Benutzbarkeit, Zuverlässigkeit und Änderbarkeit. (Abschn. 2.3.2, 1. Satz).',
+''],
+['Was ist eine wichtige Tätigkeit bei der Arbeit mit Softwareentwicklungsmodellen?',
+'Falls nötig, sollten die Modelle auf Projekt- und Produkteigenschaften angepasst werden.',
+'Das Wasserfall-Modell auswählen, weil es das bewährteste Modell ist.',
+'Mit dem V-Modell beginnen und dann entweder auf iterative oder inkrementelle Modelle wechseln.',
+'Die Organisation auf das gewählte Modell anpassen und nicht umgekehrt.',
+1,
+'Begründung:\n\na) KORREKT – Modelle stellen generelle Richtlinien bereit – nicht einen Schritt-für-Schritt Prozess, der zu befolgen ist. (Abschn. 2.1, letzter Absatz).\n\nb) FALSCH – Das Wasserfallmodell ist nur eines der mögliche Modelle, die von einem Team ausgewählt werden können. Es kommt im Lehrplan nicht vor, wird also erst recht nicht „als bewährtes Modell“ empfohlen.\n\nc) FALSCH – Das V-Modell (Abschn. 2.1.1) als sequentielles Modell ist nicht kompatibel mit den iterativ-inkrementellen Modellen (Abschn. 2.1.2).. Deshalb macht die beschriebene Reihenfolge keinen Sinn.\n\nd) FALSCH – Modelle werden passend zu einer Situation und einem Projekt ausgewählt und nicht umgekehrt (Abschn. 2.1, letzter Absatz).',
+''],
+['Welches der folgenden Merkmale ist ein „Merkmal des guten Testens“ und gilt für alle Softwareentwicklungsmodelle?',
+'Der Abnahmetest ist immer die letzte angewendete Teststufe.',
+'Alle Teststufen sind für jedes einzelne entwickelte Feature geplant und abgeschlossen.',
+'Sobald die erste Komponente ausgeführt werden kann, werden die Tester beteiligt.',
+'Für jede Entwicklungstätigkeit gibt es eine korrespondierende Testaktivität.',
+4,
+'Begründung:\n\na) FALSCH – Dies ist richtig für Projekte mit Entwicklungsmodellen, die einen Akzeptanztest haben. Manche Projekte/Modelle haben diese Teststufe aber nicht (siehe Abschnitt 2.1 des Lehrplans); durch die Ergänzung „immer“ ist klar das die Aussage FALSCH ist.\n\nb) FALSCH – In einigen Fällen werden Teststufen in Entwicklungsmodellen nicht benötigt; weil es im konkreten Projekt eine Konstellation geben kann in der die Anwendung einer Teststufe keinen Sinn macht. Zum Beispiel: Wenn Komponenten von Lieferanten zugekauft wurden oder als Bibliothek zugekauft wurden, ist für diese Komponenten kein Komponententest durchzuführen.\n\nc) FALSCH – Tester sollten bereits früher involviert werden bevor die Implementierung abgeschlossen wurde. Zum Beispiel: Tester sollten in das Review der Anforderungsspezifikationen involviert werden. (vgl. Abschn. 1.4.2, 1. dot).\n\nd) KORREKT – “In jedem Entwicklungslebenszyklus findet man einige Charakteristika für gutes Testen: Zu jeder Entwicklungsaktivität gibt es eine zugehörige Aktivität im Testen.” (Abschnitt 2.1.3), 1. dot)',
+''],
+['Wozu werden beispielsweise Wartungstests verwendet?',
+'Zur Fehlerkorrektur während der Entwicklungs- und Debugging-Phase eines neuen Systems.',
+'Für Tests bei Erweiterungen eines produktiv eingesetzten Systems.',
+'Für die Verfolgung von Beschwerden über die Systemqualität während des Anwender-Abnahmetests.',
+'Zur Integration von Funktionen während der Entwicklung eines neuen Systems.',
+2,
+'Begründung:\n\na) FALSCH – Testen eines neuen Systems ist kein „Wartungstest” (Abschn. 2.4, Absätze 1 bis 3).\n\nb) KORREKT –Test eines Systems nach einer Änderung (z.B. der Umgebung) wird als „Wartungstest“ bezeichnet (Abschn. 2.4, 1. Absatz, letzter Satz, und 2. Absatz, 1. Satz).\n\nc) FALSCH – Der Umgang mit Beschwerden während eines Abnahmetest ist kein „Wartungstest“. Der setzt erst nach der Abnahme und Inbetriebnahme des Systems ein (vgl. Abschn. 2.4, 1. Absatz).\n\nd) FALSCH – Integration von neuen Funktionen während der Entwicklung ist kein „Wartungstest“. sondern erfordert Integrationstests (vgl. Abschn. 2.2.2).',
+''],
+['Welche der folgenden Aussagen sind WAHR?',
+'I und II sind wahr;',
+'I, III und V sind wahr;',
+'III und IV sind wahr;',
+'II, IV und V sind wahr;',
+3,
+'Begründung:\n\nAussage I ist FALSCH – Ein Regressionstest ist der wiederholte Test eines bereits getesteten Programms nach einer Änderung. Ziel ist es nachzuweisen, dass durch die Änderungen keine Fehlerzustände eingebaut wurden (Abschn. 2.3.4, Absatz 1).\n\nAussage II ist FALSCH: Sie beschreibt einen „Fehlernachtest”(Abschn. 2.3.4, 1. Absatz).\n\nAussage III ist WAHR: Regressionstestsuiten werden oft wiederholt und ändern sich eher selten. Daher sind Regressionstests bevorzugte Kandidaten für die Automatisierung (Abschn. 2.3.4, letzter Absatz).\n\nAussage IV ist WAHR: Dies ist die Definition von Regressionstests (Abschn. 2.3.4, 2. Absatz, Satz 2).\n\nAussage V ist FALSCH: “Regressionstests können in allen Teststufen durchgeführt werden ...“ (Abschn. 2.3.4, letzter Absatz)\n\nAlso gilt:\n\na) FALSCH, da I und II falsch sind\n\nb) FALSCH, da I und V falsch sind\n\nc) KORREKT, da III und IV wahr sind\n\nd) FALSCH, da II und V falsch sind',
+'https://i.imgur.com/DiPtdU1.png'],
+['Welche der folgenden Aussagen zum Vergleich zwischen Komponententest und Systemtest ist WAHR?',
+'Komponententests überprüfen die Funktion von Komponenten, Programmobjekten und Klassen, die separat prüfbar sind, während Systemtests die Schnittstellen zwischen den Komponenten und Wechselwirkungen mit anderen Teilen des Systems überprüfen.',
+'Testfälle für den Komponententest werden z. B. von den Komponentenspezifikationen abgeleitet, während Testfälle für den Systemtest z. B. von Anforderungsspezifikationen, funktionalen Spezifikationen und Anwendungsfällen abgeleitet werden.',
+'Komponententests konzentrieren sich nur auf die funktionalen Eigenschaften, während Systemtests sich auf die funktionalen und nicht-funktionalen Eigenschaften konzentrieren.',
+'Komponententests sind in der Verantwortung der Tester, während die Systemtests in der Regel in der Verantwortung der Benutzer des Systems liegen.',
+2,
+'Begründung:\n\na) FALSCH: Systemtests testen nicht die Schnittstellen und Wechselwirkungen zwischen den Komponenten und anderen Teilen des Systems; das ist Ziel von Integrationstests (vgl. Abschn. 2.2.2).\n\nb) KORREKT: Abschn. 2.2.1 (Komponententest), Testbasis, 1. dot; Abschn. 2.2.3 (Systemtest), Testbasis, 1. bis 3. dot.\n\nc) FALSCH: Komponententests konzentrieren sich nicht nur auf funktionale, sondern auch auf nicht-funktionale Aspekte (vgl. Abschn. 2.2.1, 2. Absatz nach „Typische Testobjekte“).\n\nd) FALSCH: Komponententests werden auch von Entwicklern durchgeführt (Abschn. 2.2.1, 3. Absatz nach „Typische Testobjekte“, Satz 2), wohingegen sich Tester mit Systemtests befassen (vgl. Abschn. 2.2.3, 4. Absatz nach „Typische Testobjekte“, Satz 2)',
+''],
+['Welches sind die Hauptaktivitäten eines formalen Reviews?',
+'Initialisierung, Nachverfolgung, Individuelle Vorbereitung, Reviewsitzung, Überarbeitung, Nachbereitung.',
+'Planung, individuelle Vorbereitung, Reviewsitzung, Überarbeitung, Abschluss, Nachbereitung.',
+'Planung, Kick-off, Individuelle Vorbereitung, Reviewsitzung, Überarbeitung, Nachbereitung.',
+'Individuelle Vorbereitung, Reviewsitzung, Überarbeitung, Abschluss, Nachbereitung, Grundursachenanalyse.',
+3,
+'Begründung:\n\na) FALSCH: Planung und Kick-off fehlen (vgl. Abschn. 3.2.1), Initialisierung und Nachverfolgung (vgl. Abschn. . 3.2.1) gehören nicht dazu;\n\nb) FALSCH: Kick-off fehlt (vgl. Abschn. 3.2.1);\n\nc) KORREKT (vgl. Abschn. 3.2.1);\n\nd) FALSCH: Planung fehlt (vgl. Abschn. 3.2.1); Grundursachenanalyse (vgl. Advanced Level Syllabus Testmanager, Abschn. 2.3.1.4 „Risikomanagement im Softwarelebenszyklus“, Absatz 2, Satz 4) gehört z.B. nicht dazu.',
+''],
+['Welche der unten aufgeführten Reviewarten ist die GEEIGNETSTE zur Überprüfung sicherheitsrelevanter Komponenten in einem Software-Projekt, wenn zusätzlich auch das Review als formaler Prozess basierend auf Regeln und Checklisten nachgewiesen werden muss?',
+'Informelles Review',
+'Technisches Review',
+'Inspektion',
+'Walkthrough',
+3,
+'Begründung:\n\nFür die Überprüfung der sicherheitsrelevanten Komponenten in einem Software-Projekt ist ein stärker geregeltes und dokumentiertes Review als formaler Prozess basierend auf Regeln und Checklisten erforderlich, also eine Inspektion.\n\nDamit gilt:\n\na) FALSCH\n\nb) FALSCH\n\nc) KORREKT\n\nd) FALSCH',
+''],
+['Welche der folgenden Aussagen über die werkzeuggestützte statische Analyse ist FALSCH?',
+'Die werkzeuggestützte statische Analyse kann als vorbeugende Maßnahme genutzt werden, wenn sie durch einen entsprechend angemessenen Prozess unterstützt wird.',
+'Mit der werkzeuggestützten statischen Analyse können Fehlerzustände bzw. Anomalien aufgedeckt werden, die nicht so leicht durch dynamische Tests gefunden werden.',
+'Die werkzeuggestützte statische Analyse kann durch frühe Fehlererkennung helfen, Kosten einzusparen.',
+'Die werkzeuggestützte statische Analyse ist gut dazu geeignet, um Fehlerwirkungen in der Software zu erzwingen.',
+4,
+'Begründung:\n\na) FALSCH: Diese Aussage ist wahr, denn die werkzeuggestützte statische Analyse kann als vorbeugende Maßnahme verwendet werden (Abschn. 3.3, Vorteile, 2. und 6. dot).\n\nb) FALSCH: Diese Aussage ist wahr, denn werkzeuggestützte statische Analyse kann Fehlerzustände finden, die durch dynamische Tests schwer zu finden sind (Abschn. 3.3, Hintergrund, 1. Absatz, Satz 3).\n\nc) FALSCH: Diese Aussage ist wahr, denn werkzeuggestützte statische Analyse ist eine Methode, um Fehler(zustände) früh zu finden (Abschn. 3.3, Vorteile, 1. dot), was Kosten einspart.\n\nd) KORREKT: Dieser Satz ist falsch, denn während der statische Analyse können keine Fehlerwirkungen entstehen, da der Code nicht ausgeführt wird (Abschn. 3.3, Hintergrund, Satz 2).',
+''],
+['Welche der Aussagen ist in Bezug auf das Testziel Entscheidungsüberdeckung WAHR?',
+'Die Entscheidung D wurde nicht vollständig getestet.',
+'100% Entscheidungsüberdeckung ist erreicht worden.',
+'Die Entscheidung E wurde nicht vollständig getestet.',
+'Die Entscheidung F wurde nicht vollständig getestet.',
+1,
+'Begründung:\n\nIn dem Diagramm gibt es die folgenden vier Bedingungen/Entscheidungen: A, D, E, F.\n\nDer Test_1 deckt A-> B, D-> E und E-> G ab.\n\nDer Test_2 deckt A-> B, D-> E, E-> F und F-> G ab.\n\nDer Test_3 deckt A-> C, F-> C und F-> G ab.\n\nDaher wird Entscheidung A überdeckt (A-> B durch Test t_1 und A-> C durch Test_3),\n\nEntscheidung E ist überdeckt (E-> G durch Test_1 und E- > F durch Test_2),\n\nEntscheidung F ist überdeckt (F-> C durch Test_3 und F-> G durch Test_2 und Test_3).\n\nEntscheidung D ist nicht überdeckt: zwar D-> E durch Test_1 und Test_2, aber D-> F ist nicht überdeckt.\n\nDaher gilt:\n\na) KORREKT: D wurde nicht überdeckt (siehe oben);\n\nb) FALSCH: 1 von 4 Entscheidungen (D) wurde nicht überdeckt (s. oben), also gibt es nur 75% Entscheidungsüberdeckung;\n\nc) FALSCH: E wurde vollständig getestet/überdeckt (s. oben);\n\nd) FALSCH: F wurde vollständig getestet/überdeckt (s. oben)',
+'https://i.imgur.com/CqJhL3L.png'],
+['Welche Arten von Tests sind erwähnt?',
+'A und B sind erwähnt – C und D nicht.',
+'A und C sind erwähnt – B und D nicht.',
+'A, B und C sind erwähnt – D nicht.',
+'B, C und D sind erwähnt – A nicht.',
+3,
+'Begründung:\n\nA) WAHR: Empfangen von Kundendaten (Satz 2) ist ein typischer funktionaler Test.\n\nB) WAHR: In der Problembeschreibung (Satz 4) heißt es: "Die bestehenden Testfälle decken 100% aller Anweisungen des entsprechenden Moduls ab"; Anweisungstest ist struktureller Test (vgl. Abschn. 4.4.1).\n\nC) WAHR: In der Problembeschreibung (Satz 5) heißt es: "Um die Korrektur zu überprüfen und eine höhere Testabdeckung zu erreichen, wurden einige neue Tests entwickelt und V ausgeführt"; das ist ein Fehlernachtest (vgl. Abschn. 2.3.4, 1. Absatz).\n\nD) FALSCH: In der Beschreibung des Problems gibt es keine Informationen über eine Leistungsüberprüfung.\n\nDaher gilt:\n\na) FALSCH, da C fehlt;\n\nb) FALSCH, da B fehlt; \n\nc) KORREKT, da A, B und C erwähnt sind;\n\nd) FALSCH, da A fehlt und D fälschlich erwähnt ist',
+'https://i.imgur.com/iCC29Rt.png'],
+['Welche der folgenden Aussagen zum Zustandsübergangsdiagramm und der dargestellten Tabelle von Testfällen ist WAHR?',
+'Die Testfälle decken sowohl gültige und ungültige Übergänge des Zustandsübergangsdiagramms ab.',
+'Die Testfälle decken alle gültigen Übergänge des Zustandsübergangsdiagramms ab.',
+'Die Testfälle decken nur einige der möglichen Übergänge im Zustandsübergangsdiagramm ab.',
+'Die Testfälle decken Paare von Übergängen im Zustandsübergangsdiagramm ab.',
+2,
+'Begründung:\n\nDie vorgeschlagenen Testfälle überdecken genau alle fünf möglichen gültigen Übergänge im gegebenen Zustandsdiagramm (S1-> S2, S2-> S1, S2-> S3, S3-> S2, S3-> S1).\n\nDaher gilt:\n\na) FALSCH, da keine ungültigen Übergänge abgedeckt werden.\n\nb) KORREKT, da alle gültigen Übergänge abgedeckt werden.\n\nc) FALSCH, da alle gültigen Übergänge abgedeckt werden.\n\nd) FALSCH, da die Testfälle keine Paare von Übergängen enthalten.',
+'https://i.imgur.com/2rndVdV.png'],
+['Welche der folgenden Aussagen zur Äquivalenzklassenbildung sind WAHR?',
+'I, II und IV sind wahr; III ist falsch.',
+'I ist wahr; II, III und IV sind falsch.',
+'II und III sind wahr; I und IV sind falsch.',
+'I und II sind wahr; III und IV sind falsch.',
+4,
+'Begründung:\n\nI ist wahr, denn Äquivalenzklassenbildung teilt mögliche Eingaben in Gruppen ein, bei denen erwartet wird, dass alle Elemente das gleiche Verhalten bewirken (Abschn. 4.3.1, 1. Satz).\n\nII ist wahr, denn Äquivalenzklassenbildung verwendet/bildet Klassen mit gültigen als auch mit ungültigen Daten (Abschn. 4.3.1, 2. Satz).\n\nIII ist falsch, denn Äquivalenzklassen müssen nur abgedeckt werden (Abschn. 4.3.1, 1. Absatz, 2.letzter Satz); dafür ist es genug, einen Wert aus jeder Klasse zu verwenden.\n\nIV ist falsch: Eingaben über eine GUI sind möglich, aber das ist nicht nötig.\n\nDaher gilt:\n\na) FALSCH, da IV nicht wahr ist;\n\nb) FALSCH, da II nicht falsch ist;\n\nc) FALSCH, da III nicht wahr und I nicht falsch ist;\n\nd) KORREKT, da I und II wahr und III und IV falsch sind.',
+'https://i.imgur.com/IsqQgrQ.png'],
+['Welche der folgenden Antworten enthält nur Verfahren, die als Black-Box-Entwurfsverfahren kategorisiert werden können?',
+'Äquivalenzklassenbildung, Entscheidungstabellentest, Zustandsbasierter Test und Grenzwertanalyse.',
+'Äquivalenzklassenbildung, Entscheidungstabellentest, Anweisungsüberdeckungstest, Anwendungsfallbasierter Test.',
+'Äquivalenzklassenbildung, Entscheidungsüberdeckungstest, Anwendungsfallbasierter Test.',
+'Äquivalenzklassenbildung, Entscheidungsüberdeckungstest, Grenzwertanalyse.',
+1,
+'Begründung:\n\na) KORREKT, denn alle vier Verfahren sind Black-Box-Verfahren (vgl. Abschnitt 4.3).\n\nb) FALSCH, denn Anweisungsüberdeckung ist ein White-Box-Verfahren (Abschn. 4.4.1).\n\nc) FALSCH, denn Entscheidungsüberdeckung ist ein White-Box-Verfahren (Abschn. 4.4.2).\n\nd) FALSCH, denn Entscheidungsüberdeckung ist ein White-Box-Verfahren (Abschn. 4.4.2).',
+''],
+['Wie viele Testfälle sind notwendig?',
+'3',
+'5',
+'2',
+'4',
+4,
+'Begründung:\n\na) FALSCH, eine zu wenig (siehe die 4 KORREKTEN Äquivalenzklassen in d)\n\nb) FALSCH, eine zu viel (siehe die 4 KORREKTEN Äquivalenzklassen in d)\n\nc) FALSCH, zwei zu wenig (siehe die 4 KORREKTEN Äquivalenzklassen in d)\n\nd) KORREKT. Die 4 Äquivalenzklassen entsprechen der Beschreibung in der Frage; d. h. für jede Äquivalenzklasse ist mind. ein Testfall zu erstellen.\n\n1. Äquivalenzklasse: 0 ≤ Beschäftigungszeit ≤ 2,\n\n2. Äquivalenzklasse: 2 < Beschäftigungszeit < 5,\n\n3. Äquivalenzklasse: 5 ≤ Beschäftigungszeit ≤ 10\n\n4. Äquivalenzklasse: 10 < Beschäftigungszeit',
+'https://i.imgur.com/YBlfdSA.png'],
+['Welche der folgenden Aussagen über die Vorteile der Ableitung von Testfällen aus Anwendungsfällen sind wahr und welche sind falsch?',
+'A und D sind wahr; B und C sind falsch.',
+'A ist wahr; B, C und D sind falsch.',
+'B und D sind wahr; A und C sind falsch.',
+'A, C und D sind wahr; B ist falsch.',
+1,
+'Begründung:\n\nSatz A ist WAHR: Anwendungsfälle beschreiben, wie Benutzer mit dem fertigen System interagieren, passen daher am besten für die Definition von Tests auf der Systemebene (Abschn. 4.3.5, 1. Absatz). Darüber hinaus gilt: „Anwendungsfälle sind für den Entwurf von Abnahmetests mit Kunden-/Anwenderbeteiligung sehr hilfreich“ (Abschn. 4.3.5, 2. Absatz, Satz 3).\n\nSatz B ist FALSCH: Anwendungsfälle können manuell ausgeführt werden, nicht nur automatisch. (Jedenfalls wird das im Lehrplan, Abschn. 4.3.5, nicht behauptet.)\n\nSatz C ist FALSCH: Auf der Komponenten-Ebene werden Testfälle „von Entwicklungsdokumenten wie einer Komponententestspezifikation, dem Softwareentwurf oder dem Datenmodell abgeleitet.“ (Abschn. 2.2.1, 2. Absatz nach „Typische Testobjekte“, Satz 2).\n\nSatz D ist WAHR, denn die Anwendungsfälle „können V auch Fehlerzustände im Umfeld der Integration aufdecken, die durch den Test der einzelnen Komponenten nicht gefunden werden könnten“ (Abschn. 4.3.5, 2. Absatz, Satz 4).\n\nDaher gilt:\n\na) KORREKT, da genau A UND D wahr sind;\n\nb) FALSCH, da D wahr (und NICHT falsch) ist;\n\nc) FALSCH, da B falsch (und NICHT wahr) ist und A wahr (und nicht falsch) ist;\n\nd) FALSCH, da C falsch (und NICHT wahr) ist.',
+'https://i.imgur.com/uOwnSYO.png'],
+['Was ist die empfohlene Grundlage für das Testen mit Fehlerangriffen?',
+'Erfahrung, gesammelte Daten und Wissen über Fehlerwirkungen und -zustände',
+'Eine zu Beginn des Projekts durchgeführte Risikoidentifikation',
+'Von Fachexperten abgeleitete, anwendungsfallbasierte Tests',
+'Erwartete Ergebnisse aus dem Vergleich mit einem bestehenden System',
+1,
+'Begründung:\n\na) KORREKT: "Die Liste der Fehlerzustände und Fehlerwirkungen kann erstellt werden auf der Basis von Erfahrungen, verfügbaren Daten über Fehlerzustände und Fehlerwirkungen ...“ (Abschn. 4.5, 2. Absatz, letzter Satz).\n\nb) FALSCH : Risikoidentifikation wählt die betreffenden Bereiche des Projekts aus - nicht, wie sie zu testen sind.\n\nc) FALSCH: Das Testen auf der Basis von Geschäftsprozessen zielt nicht auf mögliche Schwächen in der Software, die aus Erfahrung und Allgemeinwissen bekannt sind, was beim Test mit Fehlerangriffen der Ansatz ist (Abschn. 4.5, 2. Absatz, letzter Satz). Es versucht nur zu überprüfen, ob bestimmte Anwendungsfälle ausgeführt werden können.\n\nd) FALSCH: Der Satz beschreibt eine der Möglichkeiten, Testfälle zu ermitteln. Der Ansatz hat aber nichts spezifisches mit dem Ansatz „Fehlerangriffe“ zu tun, bei dem eine Liste der möglichen Fehlerzustände und Fehlerwirkungen auf der Basis von Erfahrungen erstellt wird (Abschn. 4.5, 2. Absatz, letzter Satz).',
+''],
+['Welches der folgenden Testverfahren ist AM BESTEN geeignet, wenn unzureichende Spezifikationen und Zeitdruck gegeben sind?',
+'Anwendungsfallbasierter Test',
+'Anweisungstest',
+'Exploratives Testen',
+'Entscheidungstest',
+3,
+'Begründung:\n\na) FALSCH, das Projekt hat eine schlechte Spezifikationen, daher gibt es nur eine geringe Möglichkeit, dass irgendwelche Anwendungsfälle bestehen.\n\nb) FALSCH: Anweisungstest ist zeitaufwendig, und es gibt Zeitdruck im Projekt.\n\nc) KORREKT: Das explorative Testen ist angebracht, wenn es schlechte Dokumentation und Zeitdruck gibt (Abschn. 4.5, Hintergrund, 3. Absatz, Satz 3).\n\nd) FALSCH: Entscheidungstest ist zeitaufwendig, und es gibt Zeitdruck im Projekt.',
+''],
+['Welches der folgenden Testverfahren ist ein White-Box-Testverfahren?',
+'Entscheidungstests',
+'Grenzwertanalyse',
+'Äquivalenzklassenbildung',
+'Zustandsbasierter Test',
+1,
+'Begründung:\n\na) KORREKT: Entscheidungstests sind ein White-Box-Verfahren (siehe Abschn. 4.4.2).\n\nb) FALSCH: Grenzwertanalyse ist ein Black-Box-Verfahren (siehe Abschn. 4.3.2).\n\nc) FALSCH: Äquivalenzklassenbildung ist ein Black-Box-Verfahren (siehe Abschn. 4.3.1).\n\nd) FALSCH: Zustandsbasierter Test ist ein Black-Box-Verfahren (siehe Abschn. 4.3.4).',
+''],
+['Welches Testverfahren wurde angewandt?',
+'Grenzwertanalyse',
+'Zustandsbasierter Test',
+'Anwendungsfallbasierter Test',
+'Entscheidungstabellentest',
+1,
+'Begründung:\n\na) KORREKT: Die angegebenen Werte sind Grenzwerte an der unteren Grenze (1) und an der oberen Grenze (INT_MAX) des gültigen Bereichs 1 bis INT_MAX bzw. Grenzwerte der ungültigen Bereiche „<1“ (0) bzw. „>INT_MAX“ (INT_MAX-1) (s. Abschn. 4.3.2, 1. Absatz).\n\nb) FALSCH: Die angegebenen Werte sind keine Zustandswerte, es gibt keine Zustandsübergänge (Abschn. 4.3.4, 1. Absatz).\n\nc) FALSCH: Die angegebenen Werte sind keine Anwendungsfälle mit Vor- und Nachbedingungen. (Abschn. 4.3.5, 1. Absatz).\n\nd) FALSCH: Die angegebenen Werte sind keine logischen Bedingungen. (Abschn. 4.3.3, 1. Satz).',
+'https://i.imgur.com/IkAl3bq.png'],
+['Welche Testfälle können in der aufgeführten Entscheidungstabelle entfernt werden?',
+'T1 und T2',
+'T3 und T4',
+'T7 und T8',
+'T5 und T6',
+4,
+'Begründung:\n\na) FALSCH: Es ist mit T1 und T2 zu prüfen, ob die Prämie nicht gezahlt wird, wenn keine Ziele vereinbart/abgestimmt sind (und natürlich nicht erreicht wurden).\n\nb) FALSCH: Es ist mit T3 und T4 zu prüfen, ob die Prämie nicht gezahlt wird, wenn vereinbarte/abgestimmte Ziele nicht erreicht wurden.\n\nc) FALSCH: Es ist mit T7 und T8 zu prüfen, ob die Prämie gezahlt oder nicht gezahlt wird, wenn Ziele vereinbart und erreicht wurden und die Beschäftigungszeit länger als 1 Jahr (T7) (oder nicht, T8) ist.\n\nd) KORREKT: Die Testfälle T5 und T6 beschrieben die Situation, wobei das Ziel erreicht ist - allerdings nicht vereinbart/abgestimmt wurde. Diese Situation kann nicht auftreten, deshalb können wir die entsprechenden Tests T5 und T6 weglassen.',
+'https://i.imgur.com/iYduOnj.png'],
+['Welche der folgenden Aussagen beschreibt AM BESTEN die Aufgabenteilung zwischen Testmanager und Tester?',
+'Der Testmanager plant Testaktivitäten und wählt die Normen aus, die befolgt werden müssen, während der Tester die Werkzeuge und Steuerelemente auswählt, die verwendet werden.',
+'Der Testmanager plant, organisiert und steuert die Testaktivitäten, während der Tester Testfälle spezifiziert und ausführt',
+'Der Testmanager plant, überwacht und steuert die Testaktivitäten, während der Tester die Tests entwirft und über die Freigabe des Testobjekts entscheidet.',
+'Der Testmanager plant und organisiert die Testdurchführung und spezifiziert die Testfälle, während die Tester die Tests priorisieren und durchführen.',
+2,
+'Begründung:\n\na) FALSCH: Auswahl der Werkzeuge ist eine Testmanager-Aufgabe (Abschn. 5.1.2, 10./ drittletzter dot).\n\nb) KORREKT - siehe Abschnitt 5.1.2 (Testmanager, 4. dot, Tester, 3.+5. dot).\n\nc) FALSCH: Die Entscheidung über die Freigabe des Testobjekts ist ein Aufgabe des Testmanagers (Abschn. 5.1.2, 5. dot).\n\nd) FALSCH: Der Tester muss die Testfälle spezifizieren (Abschn. 5.1.2, 3. dot).',
+''],
+['Welche der folgenden Risiken können als Produktrisiken kategorisiert werden?',
+'Geringe Qualität der Anforderungen, des Designs, des Codes und der Testfälle.',
+'Politische Probleme und Verzögerungen bei besonders komplexen Teilen des Produkts.',
+'Fehleranfällige Komponenten, möglicher Schaden für den Menschen, schlechte Softwareeigenschaften.',
+'Probleme bei der Definition korrekter Anforderungen, fehleranfällige Bereiche der Software oder des Systems.',
+3,
+'Begründung:\n\na) FALSCH: Geringe Qualitätsanforderungen sind ein Projektrisiko (Abschnitt 5.5.1, technische Aspekte, 5. dot)\n\nb) FALSCH: Alle Angaben in dieser Option sind Projektrisiken (Abschnitt 5.5.1, organisatorische Faktoren, 3. dot; technische Aspekte, 3.+4. dot)\n\nc) KORREKT: Alle Angaben sind Produktrisiken (Abschnitt 5.5.2, 1. bis 3. dot)\n\nd) FALSCH: Anforderungs-, Software- und System-Probleme sind Projektrisiken (Abschnitt 5.5.1, technische Aspekte, 1.+5. dot)',
+''],
+['Welche der folgenden Listen enthält nur typische Endekriterien?',
+'Kennzahlen zu Zuverlässigkeit und Testüberdeckung, Testkosten, Zeitplan, Status über Fehlerbehebung und Restrisiken',
+'Kennzahlen zu Zuverlässigkeit und Testüberdeckung, Grad der Unabhängigkeit der Tester und Grad der Produktvollständigkeit',
+'Kennzahlen zu Zuverlässigkeit und Testüberdeckung, Testkosten, Verfügbarkeit von testbarem Code, Zeit bis Markteinführung, Grad der Produktvollständigkeit',
+'Zeit bis Markteinführung, Restfehler, Qualifikation der Tester, Grad der Unabhängigkeit der Tester, Testüberdeckung und Testkosten',
+1,
+'Begründung:\n\na) KORREKT: siehe Abschnitt 5.2.4 (alle 5 Punkte).\n\nb) FALSCH: Der Grad der Unabhängigkeit der Tester spielt keine Rolle bei den Endekriterien (vgl. Abschn. 5.2.4).\n\nc) FALSCH: Die "Verfügbarkeit von testbarem Code" ist ein Testeingangskriterium (Abschn. 5.2.3, 3. dot).\n\nd) FALSCH: Der Grad der Unabhängigkeit der Tester sowie die Qualifikation der Tester spielt keine Rolle bei den Endekriterien (vgl. Abschn. 5.2.4).',
+''],
+['Wie würden Sie den Testausführungsplan, entsprechend der Abhängigkeiten der Anforderungen, aufbauen?',
+'R3 -> R2 -> R1 -> R7 -> R5 -> R6 -> R4',
+'R2 -> R5 -> R6 -> R4 -> R7 -> R1 -> R3',
+'R1 -> R3 -> R2 -> R5 -> R6 -> R4 -> R7',
+'R1 -> R2 -> R5 -> R6 -> R3 -> R4 -> R7',
+3,
+'Begründung:\n\na) FALSCH: Alles hängt von R1 ab, also ist jeder Testlauf, der nicht mit R1 beginnt, falsch.\n\nb) FALSCH: Begründung wie bei a).\n\nc) KORREKT: Die Tests sind in einer Reihenfolge festgelegt, welche alle Abhängigkeiten berücksichtigt.\n\nd) FALSCH: R2 ist abhängig von R3, also sollte R3 vor R2 getestet werden.',
+'https://i.imgur.com/SovKcPG.png'],
+['Identifizieren Sie einen möglichen Vorteil des unabhängigen Testens.',
+'Die Arbeit ist effizienter, da die Tester die Entwickler nicht ständig stören.',
+'Unabhängige Tester sind tendenziell unvoreingenommen und finden andere Fehler als die Entwickler.',
+'Unabhängige Tester brauchen keine zusätzliche Ausbildung oder Schulung.',
+'Unabhängige Tester reduzieren den Ressourcen-Engpass im Fehler- und Abweichungsmanagementprozess.',
+2,
+'Begründung:\n\na) FALSCH: Unabhängigkeit bedeutet nicht „keine Zusammenarbeit“.\n\nb) KORREKT: Dies ist ein Grund für die Unabhängigkeit (Abschn. 5.1.1, erster Vorteil).\n\nc) FALSCH: Natürlich benötigen Tester Ausbildung und Schulung.\n\nd) FALSCH: Es gibt keine Verbindung zwischen der Unabhängigkeit der Tester und dem Engpass im Fehlermanagement- und Abweichungsmanagement-Prozess.',
+''],
+['Welches der folgenden Elemente wird als ein Projektrisiko eingestuft?',
+'Mangel an sachkundigem Personal',
+'Schlechte Softwareeigenschaften (z. B. Benutzbarkeit)',
+'Fehleranfällige Software wurde geliefert.',
+'Mangelhafte Zuverlässigkeit',
+1,
+'Begründung:\n\na) KORREKT: Knappheit von Sachkunde und Personal ist ein typisches Projektrisiko (Abschn. 5.5.1, Organisatorische Faktoren, 1. dot).\n\nb) FALSCH: Schlechte SW-Eigenschaften sind ein Produktrisiko (Abschn. 5.5.2, 3. dot).\n\nc) FALSCH: Lieferung fehleranfälliger SW ist ein Produktrisiko (Abschn. 5.5.2, 1. dot).\n\nd) FALSCH: Mangelhafte Zuverlässigkeit ist ein Produktrisiko (Abschn. 5.5.2, 3. dot).',
+''],
+['Als Testmanager sind Sie aufgefordert, einen Testabschlussbericht abzuliefern. Was sollten Sie gemäß IEEE-829 bezüglich Testaktivitäten in Ihrem Bericht als besonders relevant berücksichtigen?',
+'Die Anzahl der ausgeführten Testfälle und Ihre Ergebnisse.',
+'Eine Zusammenfassung der wichtigsten Testaktivitäten, Ereignisse und deren Status in Bezug auf die vereinbarten Ziele',
+'Eine Gesamtbewertung aller Entwicklungsartefakte',
+'Das empfohlene Training der Mitglieder des Testteams, um die Effektivität des Testens zu erhöhen.',
+2,
+'Begründung:\n\na) FALSCH: Die Anzahl der durchgeführten Testfälle und ihre Ergebnisse können in einem Testabschlussbericht nach IEEE 829 enthalten sein, aber sind kein wichtiger Teil.\n\nb) KORREKT: Der Testabschlussbericht muss Informationen zu den wichtigsten Testaktivitäten, Ereignissen und ihren Status in Bezug auf die vereinbarten Ziele enthalten (vgl. auch Lehrplan, Abschn. 5.3.2, 1. dot und dort zu Metriken, 3. dot).\n\nc) FALSCH: Die Bewertung der einzelnen Entwicklungsarbeiten ist NICHT Teil des Testabschlussberichts nach IEEE 829.',
+''],
+['Sie sind Tester in einem sicherheitskritischen Software-Entwicklungs-Projekt. Bei der Ausführung eines Tests trifft eines der erwarteten Ergebnisse nicht zu. Sie erstellen dazu einen Fehlerbericht. Welche Informationen sind am wichtigsten im Kontext einer sicherheitskritischen Entwicklung?',
+'Beschreibung der Auswirkung, Problembeschreibung, Datum, Ihr Name',
+'Eindeutige ID des Abweichungsberichtes, speziell benötigte Ausgangslage, Fehlerverursacher',
+'Übertragene Gegenstände, Ihren Namen und Ihre Vermutung der möglichen Fehlerursachen',
+'Problembeschreibung, Entwicklungsumgebung, erwartete Testergebnisse',
+1,
+'Begründung:\n\na) KORREKT: Die wichtigste Information, die in den Fehler- und Abweichungsbericht für kritische Software aufgenommen werden sollte, ist die Auswirkung (auf das System und die Stakeholder-Interessen, Abschn. 5.6, Informationen, dot 6 und 7). Des weiteren werden im Lehrplan genannt: meldende Organisation und Autor“ (Abschnitt 5.6) und „Beschreibung der Abweichung“ (Abschnitt 5.6).\n\nb) FALSCH: Diese Informationen können im Fehler- und Abweichungsbericht stehen, aber sie sind nicht so wichtig wie die Auswirkungen (und daher auch nicht in Abschn. 5.6 enthalten). „Fehlerverursacher“ wird lt. Lehrplan nicht erfasst. Korrekt wäre "Fehlerursache", kann bei der Fehlererfassung nicht dokumentiert werden.\n\nc) FALSCH: Der Fehler- und Abweichungsbericht sollte Sachinformationen enthalten, nicht des Testers Vermutungen über die möglichen Fehlerursachen (was daher auch nicht in Abschn. 5.6 enthalten ist). „Vermutung der möglichen Fehlerursachen“ ist nicht Bestandteil eines Fehlerberichts nach Lehrplan (Abschnitt 5.6).\n\nd) FALSCH: Diese Informationen können im Fehler- und Abweichungsbericht stehen (Abschn. 5.6, Informationen, dot 2 (erwartete Testergebnisse), dot 5 (Beschreibung der Abweichung)), aber sie sind nicht so wichtig wie die Auswirkungen. Entwicklungsumgebung“ wird gem. Lehrplan nicht bei der Fehlererfassung dokumentiert.',
+''],
+['Wählen Sie aus der Liste die empfohlenen Vorgehensweisen aus, um ein ausgewähltes Testwerkzeug in eine Organisation einzuführen.',
+'1,3,4,5',
+'2,5,6',
+'2,3,4,7',
+'1,6,7',
+3,
+'Begründung:\n\nSatz 1 ist inkorrekt: Es wird empfohlen, zunächst ein Pilotprojekt durchzuführen, bevor das Testwerkzeug schrittweise in der gesamten Organisation in Betrieb genommen wird (Abschnitt 6.3, Erfolgsfaktoren, 1. dot).\n\nSatz 2 ist KORREKT: Siehe Abschn. 6.3, 2. Absatz, Satz 1: „ Die Einführung des ausgewählten Werkzeugs in einer Organisation beginnt mit einem Pilotprojekt“. Satz 3 ist KORREKT: "Bewertung, wie das Werkzeug mit den existierenden Werkzeugen und Prozessen zusammenpasst" (Abschn. 6.3, Pilotprojekt-Ziele, 2. dot).\n\nSatz 6 ist inkorrekt: Die Kosten für den Einsatz eines Werkzeuges sind mehr als nur die Anschaffungskosten für das Werkzeug. Dies nicht zu realisieren ist eines der Risiken, die der Werkzeugbereitstellung zugeordnet sind (Abschnitt 6.2.1, Risiken, 2. dot). Satz 7 ist KORREKT: "Es wird ein Erfahrungskatalog erstellt, basierend auf den Erfahrungen aller Teeams." ist einer der Erfolgsfaktoren für den Einsatz (Abschnitt 6.3, 8. Erfolgsfaktor).\n\nDaher gilt: \n\na) (1,3,4,5): FALSCH wg. 1 und 5,\n\nb) (2,5,6): FALSCH wg. 5 und 6,\n\nd) (1,6,7): FALSCH wg. 1 und 6.',
+'https://i.imgur.com/CfERLVS.png'],
+['Welche der folgenden Eigenschaften beschreiben AM BESTEN ein schlüsselwortgetriebenes Testausführungswerkzeug?',
+'Eine Tabelle mit Testeingangsdaten, Schlüsselwörtern und den erwarteten Ergebnissen steuert die Ausführung des zu testenden Systems.',
+'Aktionen von Testern, die in einem Skript aufgezeichnet wurden und mehrfach ausgeführt werden.',
+'Aktionen von Testern, die in einem Skript aufgezeichnet wurden, das danach mit mehreren Sets von Test-Eingabedaten ausgeführt wird.',
+'Die Möglichkeit, Testergebnisse aufzuzeichnen und sie danach mit den erwarteten Ergebnissen zu vergleichen, welche in einer Textdatei gespeichert sind.',
+1,
+'Begründung:\n\na) KORREKT - "In einem schlüsselwortgetriebenen Testansatz ... enthält ein Tabellenblatt zusätzlich zu den Testdaten Schlüsselwörter (auch Aktionswörter genannt), welche die auszuführenden Aktionen beschreiben" (Abschnitt 6.2.2, 5. Absatz).\n\nb) FALSCH: Das ist eine Beschreibung der Skript-Testautomatisierung (Abschn. 6.2.2, 2. Absatz).\n\nc) FALSCH: Das ist eine Beschreibung der datengetriebenen Testautomatisierung (Abschn. 6.2.2, 3. Absatz).\n\nd) FALSCH: Dies beschreibt einen Teil dessen, was ein Testautomatisierungsrahmen oder ein Vergleichswerkzeug/Komparator tut (Abschn. 6.1.6).',
+''],
+['Welche der folgenden Aussagen ist KEIN Ziel eines Pilotprojekts zur Werkzeug-Evaluierung?',
+'Beurteilen, wie das Werkzeug mit den bestehenden Prozessen und Praktiken zusammenpasst.',
+'Feststellen wie das Werkzeug und die damit verwalteten Testmittel verwendet, verwaltet, gespeichert und archiviert sowie gewartet werden.',
+'Beurteilen, ob der Nutzen bei vertretbaren Kosten erreicht wird.',
+'Reduzieren der Fehlerrate im Pilotprojekt.',
+4,
+'Begründung:\n\na) FALSCH: Der Satz ist WAHR (Abschnitt 6.3, Ziele, 2. dot)\n\nb) FALSCH: Der Satz ist WAHR (Abschnitt 6.3, Ziele, 3. dot)\n\nc) FALSCH: Der Satz ist WAHR (Abschnitt 6.3, Ziele, 4. dot)\n\nd) KORREKT: Verringerung der Zahl der Mängel ist NICHT das Ziel eines Pilotprojekts (vgl. Abschn. 6.3, Ziele).',
+''],
+['Unten finden Sie eine Liste möglicher Ziele zur Effizienzsteigerung einer Software-Entwicklungs- und Testorganisation. Welches dieser Ziele wird AM BESTEN durch ein Testmanagementwerkzeug unterstützt?',
+'Die Rückverfolgbarkeit zwischen Anforderungen, Testfällen und Fehlerzuständen herstellen.',
+'Die Fähigkeit der Tests optimieren, Fehlerwirkungen zu identifizieren.',
+'Die Fehlerzustände schneller beheben.',
+'Die Auswahl von Testfällen für die Testausführung automatisieren.',
+1,
+'Begründung:\n\na) KORREKT - denn die Rückverfolgbarkeit zwischen Anforderungen und Tests ist i.d. R. eine Funktionalität eines Testmanagementwerkzeugs (Abschn. 6.1.3, Testmanagementwerkzeuge, Satz 1).\n\nb) FALSCH - weil das nicht mit Testmanagement-Werkzeugen möglich ist, eher durch Vergleichswerkzeuge/Komparatoren (Abschn. 6.1.6).\n\nc) FALSCH - weil das nicht in erster Linie durch Testmanagement-Werkzeuge gelöst wird, sondern nur ein wenig durch Rückverfolgbarkeit unterstützt wird (Abschn. 6.1.3, Testmanagementwerkzeuge, Satz 2).\n\nd) FALSCH - weil die Auswahl der Testfälle nicht durch Testmanagementwerkzeuge unterstützt wird, sondern durch Testentwurfs- und Testausführungswerkzeuge Abschn. 6.1.5 und 6.1.6).',
+'']
+        ];
+        function validate()
+        { //Validate answer, show explanation
+            var a1 = document.getElementById("check1").checked;
+            var a2 = document.getElementById("check2").checked;
+            var a3 = document.getElementById("check3").checked;
+            var a4 = document.getElementById("check4").checked;
+            if (a1 + a2 + a3 + a4 != 1)
+            { //Error, there is not only exactly one answer selected.
+                alert(msgAlertOnlyOne);
+                return;
+            }
+            var correctAnswer = qanda[q-1][5];
+            if (a1 && correctAnswer == 1 || a2 && correctAnswer == 2 || a2 && correctAnswer == 3 || correctAnswer == 4)
+            { //Correct
+                if (a1) document.getElementById("answer1").classList.add("correct");
+                if (a2) document.getElementById("answer2").classList.add("correct");
+                if (a3) document.getElementById("answer3").classList.add("correct");
+                if (a4) document.getElementById("answer4").classList.add("correct");
+                correctAnswers++;
+            }
+            else
+            { //Wrong
+                if (correctAnswer == 1) document.getElementById("answer1").classList.add("correct");
+                if (correctAnswer == 2) document.getElementById("answer2").classList.add("correct");
+                if (correctAnswer == 3) document.getElementById("answer3").classList.add("correct");
+                if (correctAnswer == 4) document.getElementById("answer4").classList.add("correct");
+            }
+            document.getElementById("submit").style.visibility = "hidden";
+            document.getElementById("next").style.visibility = "visible";
+            document.getElementById("explanation").style.visibility = "visible";
+            document.getElementById("explanation").value = qanda[q-1][6];
+        }
+        function moveon()
+        { //Move to the next question
+            q++;
+            if (q > qanda.length)
+            {
+                alert(msgCorrectAnswers + correctAnswers + msgCorrectAnswersOf + qanda.length)
+                q = 1;
+                correctAnswers  = 0;
+            }
+            document.getElementById("next").style.visibility = "hidden";
+            document.getElementById("submit").style.visibility = "visible";
+            document.getElementById("explanation").style.visibility = "hidden";
+            document.getElementById("check1").checked = false;
+            document.getElementById("check2").checked = false;
+            document.getElementById("check3").checked = false;
+            document.getElementById("check4").checked = false;
+            document.getElementById("answer1").innerHTML = qanda[q-1][1];
+            document.getElementById("answer2").innerHTML = qanda[q-1][2];
+            document.getElementById("answer3").innerHTML = qanda[q-1][3];
+            document.getElementById("answer4").innerHTML = qanda[q-1][4];
+            document.getElementById("explanation").value = "";
+            document.getElementById("question").innerHTML = qanda[q-1][0];
+            document.getElementById("answer1").classList.remove("correct");
+            document.getElementById("answer2").classList.remove("correct");
+            document.getElementById("answer3").classList.remove("correct");
+            document.getElementById("answer4").classList.remove("correct");
+            document.getElementById("check1").style="outline-style:none";
+            document.getElementById("check2").style="outline-style:none";
+            document.getElementById("check3").style="outline-style:none";
+            document.getElementById("check4").style="outline-style:none";
+            if (qanda[q-1][7] == "")
+            {
+                document.getElementById("image").style.display = "none";
+            }
+            else
+            {
+                document.getElementById("image").style.display = "inline";
+                document.getElementById("image").src = qanda[q-1][7];
+            }
+        }
+    </script>
+    </head>
+    <body style="font: normal 12px Verdana, Arial, sans-serif">
+    <form action="#">
+        <div id="question" ></div>
+        <br/>
+        <img id="image" src="" style="display:none;" width="500">
+        <fieldset>
+        <div >
+        <input type="checkbox" id="check1">&nbsp;<label for="check1" id="answer1" ></label>
+        </div>
+        <br/>
+        <div >
+        <input type="checkbox" id="check2">&nbsp;<label for="check2" id="answer2" ></label>
+        </div>
+        <br/>
+        <div >
+        <input type="checkbox" id="check3">&nbsp;<label for="check3" id="answer3"></label>
+        </div>
+        <br/>
+        <div >
+        <input type="checkbox" id="check4" >&nbsp;<label for="check4" id="answer4"></label>
+        </div>
+        </fieldset>
+        <br/>
+        <br/>
+        <input id="submit" type="button" value="Absenden" onclick="validate()">
+        <input id="next" type="button" value="Nächste Frage" onclick="moveon()" style="visibility:hidden;">
+        <br/>
+        <br/>
+        <textarea id="explanation" style="visibility:hidden;border:none;resize:none;"></textarea>
+        </form>
+        <script>
+        moveon(); //Start
+        </script>
+    </body>
+</html>

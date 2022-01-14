@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISTQB FL Übungsfragen</title>
+
+    <style>
+        body {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    scroll-behavior: smooth;
+}
+
+form {
+    border:2px solid gainsboro;
+    margin-top:.5vh;
+    width:75vw;
+}
+
+textarea{
+    padding-left: 2rem;
+    width:67vw;
+    height:450px;
+}
+
+form img{
+    padding-left: 5rem;
+}
+
+label {
+    
+    position: relative;
+    width:100%;
+    font: 14px Verdana, Arial, sans-serif
+}
+
+form fieldset div {
+    transform-origin: center;
+    margin-left:7rem;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+#submit{
+    margin-left:5rem;
+}
+
+input[type='checkbox'],label {
+    margin-top:2rem;
+    border-width: 1rem;
+    position: relative;
+}
+
+input[type='checkbox'] {
+    display:none;
+}
+
+input[type='checkbox'] + label::before,
+input[type='checkbox'] + label::after {
+
+content: "";
+position: absolute;
+left:-2rem;
+top:0;
+aspect-ratio: 1/1;
+border-radius: 50%;
+}
+
+input[type='checkbox'] + label::after {
+    background-color: white;
+    border:2px solid white;
+    height:24px;
+    transform: translate(-6px,-6px);
+}
+
+input[type='checkbox'] + label::before {
+    background-color: midnightblue;
+    border-width:20px;
+    height:32px;
+    transform: translate(-8px,-8px);
+    
+}
+
+div:hover  label::before {
+    background-color: gold;
+}
+
+div:hover  label::after {
+    background-color: gold;
+}
+
+input[type='checkbox']:checked + label::after {
+    background-color: midnightblue;
+}
+
+fieldset {
+    border: none;
+    width:68vw;
+}
+
+#question {
+    align-items: center;
+    color: white;
+    background-color: midnightblue;
+    
+    padding: 1em;
+    font-size:1rem;
+}
+
+input[type='button'] {
+    border:none;
+    color: white;
+    background-color: midnightblue;
+    padding: 1rem 2rem;
+    border-radius: 25% / 50%;
+}
+
+input[type='button']:active {
+    transform: translatey(.2rem);
+}
+
+input[type='button']:hover
+
+{
+    transform: scale(1.02);
+}
+
+input[type='checkbox'] + .correct::after {
+    background-color: orange;
+}
+
+input[type='checkbox'] + .correct::before {
+    background-color: orange;
+    height:36px;
+    transform: translate(-10px,-10px);
+}
+
+input[type='checkbox']:checked + .correct::after {
+    background-color: green;
+}
+
+input[type='checkbox']:checked + .correct::before {
+    background-color: green;
+    height:36px;
+    transform: translate(-10px,-10px);
+}
+
+input[type='checkbox']+ .correct {
+    font-weight:700;
+
+}
+    </style>
+    <script>
+        var msgAlertOnlyOne = "Bitte wählen Sie genau eine Antwort aus.";
+        var msgCorrectAnswers = "Fertig. Richtige Antworten: ";
+        var msgCorrectAnswersOf = " von ";
+        var q = 0;
+        var correctAnswers = 0;
+        let qanda = [
+        ['Welche der folgenden Aussagen ist die korrekte Definition des Begriffes „Testfall“?',
+'Teilmenge des Wertebereichs innerhalb einer Komponente oder eines Systems, für die aufgrund der Spezifikation erwartet wird, dass alle Werte gleichartig behandelt werden.',
+'Menge von Vorbedingungen, Eingaben, Aktionen, erwarteten Ergebnissen und Nachbedingungen, welche auf Basis von Testbedingungen entwickelt wurden.',
+'Arbeitsergebnis, welches während des Testprozesses erstellt wird und dazu gebraucht wird, um die Tests zu planen, zu entwerfen, auszuführen, auszuwerten und darüber zu berichten.',
+'Informationsquelle zur Ermittlung des erwarteten Ergebnisses, um es mit dem tatsächlichen Ergebnis eines Systems unter Test zu vergleichen.',
+2,
+'Schlüsselwort: Testfall\n\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Basierend auf der Definition Äquivalenzklasse aus dem Glossar 3.3.\n\nb) KORREKT – Basierend auf einer Definition Testfall aus dem Glossar 3.3.\n\nc) FALSCH – Basierend auf der Glossardefinition Testmittel (Glossar 3.3).\n\nd) FALSCH – Basierend auf der Definition des Begriffs Testorakel (Glossar 3.3).',
+''],
+['Welche der folgenden Aussagen ist ein typisches Ziel des Testens von Software?',
+'Fehlerwirkungen und Fehlerzustände aufdecken',
+'Validierung von Projektplänen',
+'Sicherstellen von vollständigen Tests',
+'Vergleich der Istergebnisse mit den erwarteten Ergebnissen',
+1,
+'FL-1.1.1 (K1) Typische Ziele des Testens identifizieren können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) KORREKT – Eines der typischen Hauptziele des Testens aus dem Lehrplan (1.1.1).\n\nb) FALSCH – Die Validierung des Projektplans ist eine Projektmanagementaktivität.\n\nc) FALSCH – Widerspruch zum Grundsatz 2; Vollständiges Test ist nicht möglich. (CTFL CORE Syllabus 2018, V.3.1; Abschnitt 1.3).\n\nd) FALSCH – „Vergleich der Istergebnisse mit den erwarteten Ergebnissen“ ist eine Aktivität der Testdurchführung, aber kein Testziel. (CTFL CORE Syllabus 2018, V.3.1; Abschnitt 1.4.2, Testdurchführung).',
+''],
+['Welches der folgenden Beispiele ist eine Fehlerwirkung in einem Tempomat eines Autos?',
+'Der Entwickler des Systems hat vergessen, Variablen nach einem Ausschneiden und Einfügen umzubenennen.',
+'Nicht benötigter Code, der beim Rückwärtsfahren einen Alarm auslöst, wurde in das System aufgenommen.',
+'Das System hält die eingestellte Geschwindigkeit nicht mehr ein, wenn die Radiolautstärke erhöht oder verringert wird.',
+'Die System-Entwurfsspezifikation gibt die Geschwindigkeit falsch an.',
+3,
+'FL-1.2.3 (K2) Zwischen Fehlhandlung, Fehlerzustand und Fehlerwirkung unterscheiden können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Dies ist ein Beispiel für einen vom Entwickler begangenen Fehler (Fehlhandlung).\n\nb) FALSCH – Dies ist ein Beispiel für einen Fehlerzustand (etwas, das im Code falsch ist und einen Fehler verursachen kann).\n\nc) KORREKT – Dies ist eine Abweichung von der erwarteten Funktionalität - ein Tempomat sollte nicht von der Laufstärkeeinstellung des Radios betroffen sein.\n\nd) FALSCH – Dies ist ein Beispiel für einen Defekt (Fehlerzustand in einer Spezifikation, die eine Fehlerwirkung verursachen kann, wenn gegen die Spezifikation anschließend implementiert wird).',
+''],
+['Welche der folgenden Aussagen ist eher ein Fehlerzustand als eine Grundursache für einen Fehlerzustand in einem Fitness-Tracker?',
+'Der Anforderungsmanager war mit der Domäne des Fitnesstrainings nicht vertraut und ging zu Unrecht davon aus, dass die Benutzer die Herzschlag-Frequenz in Schlägen pro Stunde ablesen wollen.',
+'Der Tester des Smartphone-Interfaces war nicht im zustandsbasierten Testen geschult und hat daher einen signifikanten Fehler übersehen.',
+'Eine vom Entwickler für die GPS-Funktion fehlerhaft implementierte Konfigurationsvariable kann während der Sommerzeit zu Standortproblemen führen.',
+'Die Designerin der Benutzeroberfläche hat noch nie an tragbaren Geräten gearbeitet und missverstand deshalb die Auswirkungen von reflektiertem Sonnenlicht.',
+3,
+'FL-1.2.4 (K2) Zwischen der Grundursache eines Fehlerzustands und seinen Auswirkungen unterscheiden können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Die mangelnde Vertrautheit des Autors der Anforderungen mit der Fitnessdomäne ist eine wesentliche Grundursache für einen Fehlerzustand.\n\nb) FALSCH – Die fehlende Schulung des Testers im zustandsbasierten Testen war eine der wesentlichen Grundursachen für den Fehler.\n\nc) KORREKT – Die fehlerhaften Konfigurationsdaten stellen einen Fehlerzustand in der Software des Fitness-Trackers dar, der zu Fehlerwirkungen führen kann. Die Grundursache ist „Eine vom Entwickler für die GPS-Funktion fehlerhaft implementierte Konfigurationsvariable. (V.3.0)\n\nd) FALSCH – Die mangelnde Erfahrung bei der Gestaltung von Benutzeroberflächen für tragbare Geräte ist ein typisches Beispiel für eine Grundursache für einen Fehlerzustand.',
+''],
+['Als Ergebnis der Risikoanalyse werden mehr Tests auf die Bereiche des Systems unter Test angewendet, in denen die ersten Tests mehr Fehler als in den anderen Bereichen aufgedeckt haben. Welcher der folgenden Grundsätze des Testens wird angewendet?',
+'Vorsicht vor dem Pestizid-Paradoxon.',
+'Das Testen ist kontextabhängig.',
+'Trugschluss: Keine Fehler bedeutet brauchbares System.',
+'Häufung von Fehlerzuständen.',
+2,
+'FL-1.3.1 (K2) Die sieben Grundsätze des Softwaretestens erklären können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – „Vorsicht vor dem Pestizid-Paradoxon“ befasst sich mit dem erneuten Ausführen der gleichen Tests und der Verringerung ihrer Wirksamkeit bei der Fehlersuche.\n\nb) FALSCH – Dieses Prinzip des Testens befasst sich mit der Durchführung von Tests, die je nach Kontext unterschiedlich sind (z. B. Spiele vs. sicherheitskritisch).\n\nc) FALSCH – Dieses Prinzip des Testens betrifft den Unterschied zwischen einemgetesteten und einem festen System und einem validierten System. Keine "Fehler" bedeutet nicht, dass das System einsatzbereit ist.\n\nd) KORREKT – Wenn eine Häufung von Fehlerzuständen identifiziert werden (Bereiche des Systems, die mehr Fehler enthalten als der Durchschnitt), sollte der Testaufwand auf diese Bereiche ausgerichtet sein.',
+''],
+['Welches ist die korrekte Paarung von Testaktivitäten und Testaufgaben?',
+'A-2, B-3, C-4, D-1',
+'A-2, B-1, C-3, D-4',
+'A-3, B-2, C-4, D-1',
+'A-3, B-2, C-1, D-4',
+2,
+'FL-1.4.2 (K2) Die Testaktivitäten und zugehörigen Aufgaben innerhalb des Testprozesses beschreiben können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nOption a) ist korrekt. Die korrekte Paarung von Testaktivitäten und -aufgaben laut Lehrplan (1.4.2) ist:\nA. Testentwurf – (2) Identifizierung von notwendigen Testdaten zur Unterstützung der Testbedingungen und Testfälle.\n\nB. Testrealisierung – (3) Priorisierung von Testabläufen und Vorbereitung der Testdaten.\n\nC. Testdurchführung – (4) Analyse von Abweichungen, um deren Ursache zu ermitteln.\n\nD. Testabschluss – (1) Erfassung von Änderungsanforderungen für offene Fehlerberichte.',
+'https://i.imgur.com/blPgs39.png'],
+['Welche der folgenden Aussagen beschreibt AM BESTEN, wie ein Mehrwert durch Aufrechterhaltung und Wartung der Verfolgbarkeit zwischen Testbasis und Testartefakten erzielt wird?',
+'Wartungstests können basierend auf Änderungen der ursprünglichen Anforderungen vollständig automatisiert werden.',
+'Es kann festgestellt werden, ob ein neuer Testfall eine höhere Abdeckung der Anforderungen erreicht.',
+'Testmanager können feststellen, welche Tester die Fehler mit dem höchsten Schweregrad gefunden haben.',
+'Bereiche, die möglicherweise durch Seiteneffekte einer Änderung beeinflusst werden, können durch Regressionstests gezielt überprüft werden.',
+2,
+'FL-1.4.4 (K2) Die Bedeutung der Pflege der Verfolgbarkeit zwischen Testbasis und Testarbeitsergebnissen erklären können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Die Verfolgbarkeit ermöglicht die Verknüpfung vorhandener Testfälle mit aktualisierten und gelöschten Anforderungen (obwohl keine neuen Anforderungen unterstützt werden), sie hilft jedoch nicht bei der Automatisierung von Wartungstests.\n\nb) KORREKT – Wenn alle Testfälle mit Anforderungen verknüpft sind, kann bei jeder Hinzufügung eines neuen Testfalls (mit Verfolgbarkeit) festgestellt werden, ob zuvor nicht abgedeckte Anforderungen durch den neuen Testfall abgedeckt werden.\n\nc) FALSCH – Die Verfolgbarkeit zwischen Testbasis und Testartefakten liefert keine Informationen darüber, welche Tester Fehler mit hohem Schweregrad festgestellt haben, und selbst wenn diese Informationen ermittelt werden könnten, wäre dies von begrenztem Wert.\n\nd) FALSCH – Bereiche die durch eine Änderung DIREKT betroffen sind, können durch die Verfolgbarkeit identifiziert werden. Seiteneffekte betreffen jedoch die Bereiche welche NICHT DIREKT betroffen und damit NICHT VERFOLGBAR sind.',
+''],
+['Welche der folgenden Eigenschaften findet man EHER in der Denkweise eines Testers als in der Denkweise eines Entwicklers?',
+'Die Leistung eines Testers wächst und reift mit steigender Erfahrung.',
+'Die Fähigkeit zu erkennen, was an Lösungen falsch sein könnte.',
+'Gute Kommunikation mit Teammitgliedern.',
+'Aufmerksamkeit für Details.',
+2,
+'FL-1.5.2 (K2) Den Unterschied zwischen der für Testaktivitäten erforderlichen Denkweise und der für Entwicklungsaktivitäten erforderlichen Denkweise erklären können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Sowohl Entwickler als auch Tester profitieren von Erfahrung.\n\nb) KORREKT – Entwickler sind häufig stärker am Entwurf und an der Erstellung von Lösungen interessiert als daran, darüber nachzudenken, was an diesen Lösungen falsch sein könnte (Siehe CTFL CORE Lehrplan 2018, Abschnitt 1.5.2).\n\nc) FALSCH – Sowohl Entwickler als auch Tester sollten gute Kommunikationsfähigkeiten haben.\n\nd) FALSCH – Sowohl Entwickler als auch Tester müssen auf Details achten.',
+''],
+['Welche der folgenden Optionen zeigt KORREKT, welche dieser Aussagen wahr und welche falsch sind?',
+'Wahr – 1, 2; Falsch – 3, 4',
+'Wahr – 2, 3; Falsch – 1, 4',
+'Wahr – 1, 2, 4; Falsch – 3',
+'Wahr – 1, 4; Falsch – 2, 3',
+1,
+'FL-2.1.1 (K2) Die Beziehungen zwischen Softwareentwicklungsaktivitäten und Testaktivitäten im Softwareentwicklungslebenszyklus erklären können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\n1. WAHR: „Für jede Entwicklungsaktivität sollte es eine zugehörige Testaktivität geben.“(siehe CTFL CORE Lehrplan 2018, Abschnitt 2.1.1).\n\n2. FALSCH: „Reviewaktivitäten sollten starten, sobald die finale Version der Dokumente verfügbar ist.“ Sie sollten starten, sobald erste Entwürfe dafür vorliegen, (siehe CTFL Lehrplan 2018, Abschnitt 2.1.1.).\n\n3. FALSCH: „Testentwurf und Implementierung der Tests sollten während der entsprechenden Entwicklungsaktivitäten starten.“\n– Testanalyse und Testentwurf sollten während der entsprechenden Entwicklungsaktivitäten beginnen, nicht die Testimplementierung, (siehe CTFL Lehrplan 2018, Abschnitt 2.1.1.\n\n4. WAHR: „Testaktivitäten sollten schon in frühen Phasen des Softwareentwicklungslebenszyklus beginnen.“ (siehe CTFL Lehrplan 2018, Abschnitt 2.1.1.)\nFolglich ist d) korrekt',
+'https://i.imgur.com/nKE7Tvo.png'],
+['Auf welcher der angegebenen Teststufen wird der dargestellte Test AM WAHRSCHEINLICHSTEN durchgeführt?',
+'Integrationstest.',
+'Abnahmetest.',
+'Systemtest.',
+'Komponententest.',
+2,
+'FL-2.2.1 (K2) Die unterschiedlichen Teststufen unter den Aspekten der Testziele, Testbasis, Testobjekte, typischen Fehlerzustände und Fehlerwirkungen sowie der Testvorgehensweise und Verantwortlichkeiten vergleichen können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nAufgrund der obigen Beschreibung und des CTFL Lehrplans 2018, Abschnitt 2.2 erkennt man:\n\n• „Er basiert auf Schnittstellenspezifikationen” – Die Testbasis für Integrationstests enthält die Spezifikationen von Schnittstellen (zusammen mit Kommunikationsprotokollen). Hingegen enthält keine der anderen angegebenen Teststufen diese Arbeitsergebnisse als Testbasis.\n\n• „Der Schwerpunkt liegt auf dem Finden von Fehlerwirkungen in der Kommunikation” –Fehlerwirkungen in der Kommunikation der getesteten Komponenten sind eine der typischen Fehlerarten, welche man beim Integrationstest findet, während diese Fehlerart bei keiner anderen der angegebenen Teststufen im Schwerpunkt liegt.\n\n• „Die Testvorgehensweise wendet sowohl funktionale als auch strukturelle Testarten an” –Funktionale und strukturelle Testarten sind beim Integrationstest beide als Vorgehensweise möglich, wie sie auch für jede andere Teststufe geeignet wären. Im Lehrplan werden sie allerdings nur noch beim Systemtest explizit erwähnt.\n\nFolglich ist Option a) richtig',
+'https://i.imgur.com/yYh7V5I.png'],
+['Welche der folgenden Aussagen über Testarten und Teststufen ist ZUTREFFEND?',
+'Funktionaler und nicht-funktionaler Test können auf den Teststufen System- und Abnahmetest durchgeführt werden, während der White-Box-Test auf Komponenten- und Integrationstests beschränkt ist.',
+'Funktionaler Test kann auf jeder Teststufe durchgeführt werden, während der White-Box-Test auf Komponententest beschränkt ist.',
+'Es ist möglich, funktionale, nicht-funktionale und White-Box-Tests in jeder Teststufe durchzuführen.',
+'Funktionaler und nicht-funktionaler Test können auf jeder Teststufe durchgeführt werden, während der White-Box-Test auf Komponenten- und Integrationstests beschränkt ist.',
+3,
+'FL-2.3.2 (K1) Erkennen können, dass funktionale, nicht-funktionale und White-Box-Tests auf jeder Teststufe eingesetzt werden können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Es ist möglich, jede der Testarten (funktional, nicht-funktional, White-Box) in jeder Teststufe durchzuführen. Obwohl die Aussage richtig ist, dass funktionaler und nicht-funktionaler Test auf den Teststufen System- und Abnahmetest durchgeführt werden können, ist die Aussage falsch, dass White-Box-Test auf Komponenten- und Integrationstests beschränkt ist. (Siehe CTFL CORE Lehrplan 2018, Abschnitt 2.3.5)\n\nb) FALSCH – Es ist möglich, jede der Testarten (funktional, nicht-funktional, White-Box) in jeder Teststufe durchzuführen. Deswegen ist die Aussage falsch, dass White-Box-Test auf Komponententests beschränkt ist. (Siehe CTFL CORE Lehrplan 2018, Abschnitt 2.3.5)\n\nc) KORREKT – Es ist möglich, jede der Testarten (funktional, nicht-funktional, White-BoxTest) in jeder Teststufe durchzuführen. (Siehe CTFL CORE Lehrplan 2018, Abschnitt 2.3.5)\n\nd) FALSCH – Es ist möglich, jede der Testarten (funktional, nicht-funktional, White-Box) in jeder Teststufe durchzuführen. Deswegen ist die Aussage falsch, dass White-Box-Test auf Komponenten- und Integrationstests beschränkt ist. (Siehe CTFL CORE Lehrplan 2018, Abschnitt 2.3.5)',
+''],
+['Welche der folgenden Aussagen vergleicht die Zwecke der Fehlernachtests und Regressionstests AM BESTEN miteinander?',
+'Der Regressionstest stellt sicher, dass alle früher durchgeführten Tests immer noch korrekt laufen, während der Fehlernachtest sicherstellt, dass Korrekturen an einem Teil des Systems die anderen Teile nicht negativ beeinflussen.',
+'Der Fehlernachtest prüft, dass ein vorher gefundener Fehlerzustand korrigiert wurde, während der Regressionstest sicherstellt, dass die Korrektur keine anderen Teile des Systems negativ beeinflusst hat.',
+'Der Regressionstest stellt sicher, dass Korrekturen an einem Teil des Systems die anderen Teile nicht negativ beeinflussen, während der Fehlernachtest prüft, dass alle früher durchgeführten Tests immer noch die gleichen Ergebnisse produzieren.',
+'Der Fehlernachtest bestätigt, dass die Änderungen am System erfolgreich durchgeführt wurden, während der Regressionstest Tests durchführt, die vorher fehlgeschlagen sind, um sicherzustellen, dass sie jetzt korrekt funktionieren.',
+2,
+'FL-2.3.3 (K2) Den Zweck von Fehlernachtests und Regressionstests vergleichen können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Obwohl die Beschreibung des Regressionstests weitgehend richtig ist, ist die Beschreibung des Fehlernachtests (welcher bestätigen sollte, dass ein Fehlerzustand behoben wurde) falsch.\n\nb) KORREKT – Die Beschreibungen von Fehlernachtest und Regressionstest entsprechen sinngemäß dem CTFL Lehrplan 2018, Abschnitt 2.3.\n\nc) FALSCH – Obwohl die Beschreibung des Regressionstests weitgehend richtig ist, ist die Beschreibung des Fehlernachtests (erneute Durchführung aller früher durchgeführten Tests) falsch. Der Zweck des Fehlernachtests ist zu prüfen, ob Tests, die früher fehlgeschlagen sind, jetzt korrekt funktionieren.\n\nd) FALSCH – Obwohl die Beschreibung des Fehlernachtests weitgehend richtig ist, ist die Beschreibung des Regressionstests (Tests durchzuführen, die vorher fehlgeschlagen sind) falsch. Das würde eher einer detaillierteren Beschreibung des Fehlernachtests entsprechen.',
+''],
+['Welche der folgenden Aussagen beschreibt eine Aufgabe der Auswirkungsanalyse im Wartungstest KORREKT?',
+'Die Auswirkungsanalyse unterstützt bei der Entscheidung, ob sich eine Fehlerkorrektur beim zu wartenden System lohnt.',
+'Die Auswirkungsanalyse identifiziert, wie Daten in das gewartete System zu migrieren sind.',
+'Die Auswirkungsanalyse unterstützt bei der Entscheidung, welche Hot Fixes den meisten Nutzen für den Benutzer haben.',
+'Die Auswirkungsanalyse unterstützt die Ermittlung der Effektivität neuer Wartungstestfälle.',
+2,
+'FL-2.4.2 (K2) Den Einsatz der Auswirkungsanalyse im Wartungstest beschreiben können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) KORREKT – Die Auswirkungsanalyse kann verwendet werden, um die Bereiche des Systems zu identifizieren, die von einer Fehlerbehebung betroffen sind. Daher kann das Ausmaß der Auswirkungen (z. B. nötige Regressionstests) verwendet werden, um bei der Entscheidung zu helfen, ob die Veränderung vorgenommen werden sollte (Siehe CTFL CORE Lehrplan 2018, Abschnitt 2.4.2).\n\nb) FALSCH – Obwohl der Test der migrierten Daten Teil des Wartungstests ist (siehe Konvertierungstest), ermittelt die Auswirkungsanalyse nicht, wie dieser Test auszusehen hat.\n\nc) FALSCH – Die Auswirkungsanalyse ermittelt, welche Teile eines Systems von einer Änderung betroffen sind. Somit kann sie den Unterschied zwischen verschiedenen Hot Fixes in Hinsicht auf die Auswirkungen auf das System aufzeigen. Sie gibt aber keine Hinweise darauf, welchen Nutzen die Änderungen für den Benutzer haben.\n\nd) FALSCH – Die Auswirkungsanalyse ermittelt, welche Teile eines Systems von einer Änderung betroffen sind. Sie kann aber keine Anhaltspunkte zur Effektivität von Testfällen liefern.',
+''],
+['Welche der folgenden Aussagen gibt den Nutzen des statischen Tests KORREKT wieder?',
+'Nach der Einführung von Reviews stellten wir fest, dass sich sowohl die Qualität der Spezifikationen als auch die für Entwicklung und Test benötigte Zeit erhöht haben.',
+'Durch die Anwendung von statischem Test können wir den Test besser steuern und haben ein günstigeres Fehlermanagement, weil sich Fehlerzustände später im Lebenszyklus leichter finden lassen.',
+'Da wir jetzt statische Analyse nutzen, haben fehlende Anforderungen abgenommen und die Kommunikation zwischen Testern und Entwicklern hat sich verbessert.',
+'Seitdem wir statische Analysen eingeführt haben, finden wir Programmierfehler, die wir allein durch dynamischen Test möglicherweise nicht gefunden hätten.',
+4,
+'Begründung:\n\na) FALSCH – Reviews sollten die Qualität der Spezifikationen erhöhen, aber die für Entwicklung und Test benötigte Zeit verringern (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.1.2).\n\nb) FALSCH – Die Behebung von Fehlerzuständen ist im Allgemeinen früher im Lebenszyklus leichter (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.1.2).\n\nc) FALSCH – Reviews führen zu weniger fehlenden Anforderungen und besserer Kommunikation zwischen Testern und Entwicklern, aber Letzteres gilt nicht für statische Analysen (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.1.2).\n\nd) KORREKT – Dies ist ein Nutzen der statischen Analyse (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.1.2).',
+''],
+['Welche der folgenden Aussagen zur Anwendung von Checklisten bei einem formalen Review ist KORREKT?',
+'Im Rahmen der Planung des Reviews erstellen die Reviewer die für das Review benötigten Checklisten.',
+'Im Rahmen der Befundkommunikation füllen die Reviewer die für das Review bereitgestellten Checklisten aus.',
+'Im Rahmen der Reviewsitzung erstellen die Reviewer auf Basis der für das Review bereitgestellten Checklisten Fehlerberichte.',
+'Im Rahmen des Reviewbeginns (Kick-Off) erhalten die Reviewer die für das Review benötigten Checklisten.',
+4,
+'FL-3.1.2 (K2) Beispiele nennen können, um den Wert des statischen Tests zu beschreiben\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – In der Planung wird entschieden, ob Checklisten eingesetzt werden (vgl. Lehrplan, Abschnitt 3.2.1). Die Erstellung der Checklisten ist nicht Teil der Planung. Außerdem sind die Reviewer weder in die Planung involviert, noch für die Erstellung der Checklisten verantwortlich (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.2.2).\n\nb) FALSCH – In der Befundkommunikation werden im individuellen Review identifizierte potenzielle Fehlerzustände kommuniziert. Das Ausfüllen von Checklisten durch die Reviewer erfolgt, wenn überhaupt, bereits im individuellen Review (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.2.1).\n\nc) FALSCH – In der Reviewsitzung kommunizieren die Reviewer die im Rahmen des individuellen Reviews identifizierten potenziellen Fehlerzustände des Arbeitsergebnisses (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.2.1). Fehlerberichte werden erst in der Aktivität Fehlerbehebung und Bericht erstellt.\n\nd) KORREKT – Der Reviewbeginn (Kick-Off) umfasst das Verteilen des Arbeitsergebnisses und anderer Materialien, wie Checklisten (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.2.1).',
+''],
+['Welche der folgenden Optionen gibt die Rollen und Verantwortlichkeiten in einem formalen Review KORREKT wieder?',
+'Management – Entscheidet über die Durchführung von Reviews',
+'Reviewleiter – Stellt den erfolgreichen Ablauf von Reviewsitzungen sicher',
+'Protokollant – Behebt Fehlerzustände im Arbeitsergebnis, das einem Review unterzogen wurde',
+'Moderator – Überwacht die stetige Kosteneffizienz',
+1,
+'FL-3.2.2 (K1) Die unterschiedlichen Rollen und Verantwortlichkeiten in einem formalen Review erkennen können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) KORREKT – Das Management entscheidet über die Durchführung von Reviews (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.2.2).\n\nb) FALSCH – Der Moderator stellt den erfolgreichen Ablauf von Reviewsitzungen sicher (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.2.2).\n\nc) FALSCH – Der Autor behebt Fehlerzustände im Arbeitsergebnis, das einem Review unterzogen wurde (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.2.2).\n\nd) FALSCH – Das Management überwacht die stetige Kosten-Wirksamkeits-Analyse (Siehe CTFL CORE Lehrplan 2018, Abschnitt 3.2.2).',
+''],
+['Welche der Reviewarten wird hier AM WAHRSCHEINLICHSTEN verwendet?',
+'Informelles Review',
+'Walkthrough',
+'Technisches Review',
+'Inspektion',
+2,
+'FL-3.2.3 (K2) Die Unterschiede zwischen den unterschiedlichen Reviewarten erklären können: informelles Review, Walkthrough, technisches Review und Inspektion\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nGemäß CTFL Lehrplan 2018, Abschnitt 3.2.3, lassen sich die genannten Eigenschaften wie folgt bewerten:\n• Es gibt die Rolle des Protokollanten – kommt bei Walkthrough, technischem Review und Inspektion vor, nicht aber bei informellem Review.\n• Der Zweck ist es, potenzielle Fehlerzustände zu entdecken – dieser Zweck kommt bei allen Reviewarten vor.\n• Die Reviewsitzung wird vom Autor geleitet – dies ist bei Inspektion ausgeschlossen, bei technischem Review untypisch, die Regel bei Walkthrough und erlaubt bei informellem Review.\n• Die Reviewer finden potenzielle Fehlerzustände durch individuelles Review – alle Reviewarten einschließlich informellem Review können individuelles Review einschließen.\n• Es wird ein Reviewbericht erstellt – bei allen Reviewarten kann ein Reviewbericht entstehen, obwohl das bei informellem Review weniger wahrscheinlich ist.\n\nDaraus ergibt sich, dass Option b) am wahrscheinlichsten und damit korrekt ist.',
+'https://i.imgur.com/gJmgWgs.png'],
+['Welche folgenden Kombinationen weisen Inkonsistenzen zwischen Anforderungspaaren RICHTIG auf?',
+'6-10, 6-15, 7-12',
+'6-15, 9-11',
+'6-10, 6-15, 9-11',
+'6-15, 7-12',
+2,
+'FL-3.2.4 (K3) Ein Reviewverfahren auf ein Arbeitsergebnis anwenden können, um Fehlerzustände zu finden\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nZu betrachten werden die potenziellen Inkonsistenzen:\n\n• 6-10 – Wenn Bibliothekare eine Systemrückmeldung innerhalb von 5 Sekunden erhalten sollen, dann ist das konsistent dazu, dass Nutzer eine Systemrückmeldung innerhalb von 3 Sekunden erhalten sollen.\n\n• 6-15 – Wenn Bibliothekare eine Systemrückmeldung innerhalb von 5 Sekunden erhalten sollen, dann ist das inkonsistent dazu, dass alle Benutzer eine Systemrückmeldung innerhalb von 3 Sekunden erhalten sollen.\n\n• 7-12 – Wenn sich Nutzer maximal 3 Bücher gleichzeitig ausleihen können, dann ist das konsistent dazu, dass sie sich Bücher reservieren können (falls sie ausgeliehen sind).\n\n• 9-11 – Wenn ein Nutzer wegen Nichtrückgabe eines Buches innerhalb von 3 Wochen mit einer Mahngebühr belegt wird, dann ist das inkonsistent dazu, dass Bücher kostenlos für maximal 4 Wochen ausgeliehen werden dürfen. Die zwei Fristen sind unterschiedlich.\n\nFolglich ist Antwort b) korrekt',
+'https://i.imgur.com/QHGCdAN.png'],
+['Welche der folgenden Aussagen beschreibt AM BESTEN exploratives Testen?',
+'Eine Testvorgehensweise/ein Testansatz, bei der eine intensive Untersuchung des Hintergrunds des Testobjekts dazu genutzt wird, mögliche Schwachstellen zu identifizieren, die durch Testfälle untersucht werden.',
+'Eine Testvorgehensweise/ein Testansatz, bei dem die Tester, basierend auf ihrem Wissen, der Erkundung des Testelements und dem Ergebnis früherer Tests, dynamisch Tests entwerfen und durchführen.',
+'Eine Testvorgehensweise/ein Testansatz, bei dem die Testaktivitäten - insbesondere Testanalyse und Testentwurf - als unterbrechungsfreie Sitzungen geplant werden, oft in Verbindung mit checklisten-basiertem Testen.',
+'Eine Testvorgehensweise/ein Testansatz, das auf der Erfahrung, dem Wissen und der Intuition des Testers basiert.',
+2,
+'Schlüsselbegriff: exploratives Testen\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Exploratives Testen wird meistens bei kurzfristigen Zeitvorgaben durchgeführt, daher sind intensive Untersuchungen des Hintergrunds des Testobjekts eher ungewöhnlich.\n\nb) KORREKT – Ein Testansatz, bei dem die Tests dynamisch entworfen und ausgeführt werden, basierend auf Wissen, der Erkundung des Testelements und den Ergebnissen früherer Tests. (Definition Glossar V.3.3\n\nc) FALSCH – Basiert auf der Definition des Glossars für sitzungsbasiertes Testen, jedoch wurde Testdurchführung durch Testanalyse ersetzt.\n\nd) FALSCH – Basiert auf der Definition des Glossars für erfahrungsbasiertes Testen.',
+''],
+['Welche der Zuordnungen von Beschreibungen zu verschiedenen Kategorien von Testverfahren trifft AM BESTEN zu?',
+'Black – 4, 5; White – 1, 2; Erfahrung – 3',
+'Black – 3; White – 1, 2; Erfahrung – 4, 5',
+'Black – 4; White – 1, 2; Erfahrung – 3, 5',
+'Black – 1, 3, 5; White – 2; Erfahrung – 4',
+2,
+'FL-4.1.1 (K2) Die Eigenschaften, Gemeinsamkeiten und Unterschiede zwischen Black-Box-Testverfahren, White-Box-Testverfahren und erfahrungsbasierten Testverfahren erklären können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nDie korrekte Verknüpfung der Beschreibungen zu den verschiedenen Kategorien von Testverfahren entsprechend des Syllabus (4.1.1) ist:\n- Black-Box-Testverfahren:\nAbweichungen von Anforderungen werden überprüft (4)\nUser-Stories werden als Testbasis herangezogen (5)\n\n- White-Box-Testverfahren:\nÜberdeckung wird auf Basis einer ausgewählten Struktur des Testobjektes gemessen (1)Verarbeitung innerhalb des Testobjekts wird überprüft (2)\n\n- erfahrungsbasiertes Testverfahren:\nTests basieren auf der Wahrscheinlichkeit von Fehlerzuständen und deren Verteilung (3)\n\nFolglich ist Antwort a) korrekt',
+'https://i.imgur.com/9VuW2xl.png'],
+['Welche der Gruppen von Testeingabewerten würde für die BESTE Überdeckung von Äquivalenzklassen sorgen?',
+'0, 1000, 2000, 3000, 4000',
+'1000, 2001, 4000, 4001, 6000',
+'123, 2345, 3456, 4567, 5678',
+'666, 999, 2222, 5555, 6666',
+4,
+'FL-4.2.1 (K3) Die Äquivalenzklassenbildung anwenden können, um Testfälle aus vorgegebenen Anforderungen abzuleiten\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nDie folgenden gültigen Äquivalenzklassen können gebildet werden:\n1) ≤ 1000 - Couch Potato!\n2) 1001 - 2000 - Faulpelz!\n3) 2001 - 4000 - Die Richtung stimmt!\n4) 4001 - 6000 - Nicht schlecht!\n5) > 6000 - Super!\n\nDie Gruppen von Testeingabewerten decken daher folgende Klassen ab:\na) 0 (1), 1000 (1), 2000 (2), 3000 (3), 4000 (3) – 3 Klassen (von 5).\n\nb) 1000 (1), 2001 (3), 4000 (3), 4001 (4), 6000 (4) – 3 Klassen (von 5).\n\nc) 123 (1), 2345 (3), 3456 (3), 4567 (4), 5678 (4) – 3 Klassen (von 5).\n\nd) 666 (1), 999 (1), 2222 (3), 5555 (4), 6666 (5) – 4 Klassen (von 5)\n\nFolglich ist Option d) richtig',
+'https://i.imgur.com/LnooTFt.png'],
+['Wie viele Testfälle müssen mindestens zusätzlich zu den dargestellten erzeugt werden, um eine vollständige Überdeckung ALLER GÜLTIGEN Eingabe-Äquivalenzklassen zu gewährleisten?',
+'1',
+'2',
+'3',
+'4',
+2,
+'FL-4.2.1 (K3) Die Äquivalenzklassenbildung anwenden können, um Testfälle aus vorgegebenen Anforderungen abzuleiten\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nDie folgenden Äquivalenzklassen können identifiziert werden:\n\n• Dauer\n1. Unter 3 Stunden\n2. 3 – 6 Stunden\n3. Über 6 Stunden\n\n• Intensität\n4. sehr niedrig\n5. niedrig\n6. mittel\n7. hoch\n\nDie existierenden Testfälle decken die folgenden gültigen Eingabe- Äquivalenzklassen ab:\n\nT1 1,5 (1) sehr niedrig (4)\nT2 7,0 (3) mittel (6)\nT3 0,5 (1) sehr niedrig (4)\n\nFolglich sind die fehlenden gültigen Eingabe- Äquivalenzklassen (2), (5) und (7).\n\nSie können mit zwei zusätzlichen Testfällen abgedeckt werden, da (2) sowohl mit (5) als auch mit (7) kombiniert werden kann.\n\nFolglich ist Antwort b) richtig',
+'https://i.imgur.com/Rnrl6rH.png'],
+['Welches der Testsets liefert die höchste Überdeckung von Grenzwerten, wenn die Grenzwertanalyse ausschließlich unter Verwendung der Minimal- und Maximalwerte verwendet wird?',
+'0°C, 11°C, 20°C, 22°C, 23°C',
+'9°C, 15°C, 19°C, 23°C, 100°C',
+'10°C, 16°C, 19°C, 22°C, 23°C',
+'14°C, 15°C, 18°C, 19°C, 21°C, 22°C',
+1,
+'FL-4.2.2 (K3) Die Grenzwertanalyse anwenden können, um Testfälle aus vorgegebenen Anforderungen abzuleiten\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nBei den angegebenen Eingabe-Äquivalenzklassen ergibt das Zwei-Punkt-Grenzwertverfahren folgende 8 Überdeckungselemente:\n\n10°C, 11°C, 15°C, 16°C, 19°C, 20°C, 22°C, 23°C.\n\nDie Überdeckung durch die Optionen ist folglich jeweils:\na) 4 von 8 (11, 20 ,22 und 23).\n\nb) 3 von 8 (15, 19 und 23).\n\nc) 5 von 8 (10, 16, 19, 22 und 23).\n\nd) 3 von 8 (15, 19 und 22)\n\nFolglich ist Option c) richtig',
+'https://i.imgur.com/qs7f8Rq.png'],
+['Welche zwei der zusätzlichen Testfälle würden eine 100% Überdeckung der gesamten Entscheidungstabelle erreichen (in Kombination mit den Testfällen TF1 und TF2)?',
+'TF3, TF4',
+'TF4, TF5',
+'TF4, TF6',
+'TF5, TF6',
+3,
+'FL-4.2.3 (K3) Entscheidungstabellentests anwenden können, um Testfälle aus vorgegebenen Anforderungen abzuleiten\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\nDie zusätzlichen Testfälle überdecken jeweils die folgenden Regeln:\n\nTestfall TF3 TF4 TF5 TF6\nüberdeckte Regel R1 R3 R1 R2\n\nUm 100% Überdeckung zu erreichen, sind Testfälle erforderlich, die die Regeln R2 und R3 überdecken. Daher ist Option c) korrekt:\n\na) FALSCH – Regel R2 ist nicht überdeckt.\n\nb) FALSCH – Regel R2 ist nicht überdeckt.\n\nc) KORREKT – R1, R2, R3 und R4 sind jeweils durch TF1, TF6, TF4 bzw. TF2 überdeckt.\n\nd) FALSCH – Regel R3 ist nicht überdeckt.',
+'https://i.imgur.com/Hie7xxq.png'],
+['Welche der Zustandsübergangs-Sequenzen ergibt die höchste Überdeckung der Zustandsübergänge?',
+'Aus → Warten → Aus → Warten → Erhaltungsladen → Laden → Hoch → Laden → Niedrig',
+'Warten → Erhaltungsladen → Warten → Aus → Warten → Erhaltungsladen → Laden → Niedrig → Laden',
+'Hoch → Laden → Niedrig → Laden → Erhaltungsladen → Warten → Erhaltungsladen → Warten → Erhaltungsladen',
+'Warten → Erhaltungsladen → Laden → Hoch → Laden → Erhaltungsladen → Warten → Aus → Warten',
+1,
+'FL-4.2.4 (K3) Zustandsübergangstests anwenden können, um Testfälle aus vorgegebenen Anforderungen abzuleiten\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nIm folgenden Zustandsdiagramm sind die Zustandsübergänge nummeriert:\n\nDie Sequenzen in den Antwortoptionen erreichen folgende Überdeckung der Zustandsübergänge:\n\na) FALSCH – Aus → (1) Warten → (2) Aus → (1) Warten → (3) Erhaltungsladen → (5) Laden → (9) Hoch → (10) Laden → (7) Niedrig. Das sind 7/10=70%.\n\nb) FALSCH – Warten → (3) Erhaltungsladen → (4) Warten → (2) Aus → (1) Warten → (3) Erhaltungsladen → (5) Laden → (7) Niedrig → (8) Laden. Das sind 7/10=70%.\n\nc) FALSCH – Hoch → (10) Laden → (7) Niedrig → (8) Laden → (6) Erhaltungsladen → (4) Warten → (3) Erhaltungsladen → (4) Warten → (3) Erhaltungsladen. Das sind 6/10=60%.\n\nd) KORREKT – Warten → (3) Erhaltungsladen → (5) Laden → (9) Hoch → (10) Laden → (6) Erhaltungsladen → (4) Warten → (2) Aus → (1) Warten. Das sind 8/10=80%.\n\nAntwortoption d) erreicht mit 80% die höchste Überdeckung der Zustandsübergänge.',
+'https://i.imgur.com/7qvsm1n.png'],
+['Welche der folgenden Aussagen beschreibt AM BESTEN, wie Testfälle aus Anwendungsfällen entworfen werden?',
+'Testfälle werden entworfen, um das im Anwendungsfall definierte grundlegende, Sonder- und Fehlerbehandlungs-Verhalten des Systems in Interaktion mit den Akteuren auszuführen.',
+'Testfälle werden entworfen, indem die vom Anwendungsfall betroffenen Komponenten identifiziert und Integrationstests erstellt werden, welche die Interaktionen dieser Komponenten ausführen.',
+'Testfälle werden entworfen, indem die Interaktionen der Akteure mit dem System analysiert werden, um sicherzustellen, dass die Benutzungsschnittstelle des Systems leicht bedienbar ist.',
+'Testfälle werden entworfen, mit denen alle Entscheidungspunkte im Geschäftsprozess des Anwendungsfalls ausgeführt werden, um eine 100%-ige Entscheidungsüberdeckung zu erreichen.',
+4,
+'FL-4.2.5 (K2) Erklären können, wie man Testfälle aus einem Anwendungsfall ableitet\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) KORREKT – Im Lehrplan unter 4.2.5 Anwendungsfallbasierter Test steht: Jeder Anwendungsfall definiert ein bestimmtes Verhalten, das ein Objekt in Zusammenarbeit mit einem oder mehreren Akteuren ausführen kann. Weiter unten ist zu lesen: Ein Anwendungsfall besteht aus mehreren möglichen Varianten seines grundlegenden Verhaltens, was u. a. Sonder- und Fehlerbehandlungen einschließt (Antwort- und Wiederherstellungsmechanismen des Systems nach Programmier-, Anwendungs- und Kommunikationsfehler, die z. B. zu Fehlermeldungen führen). Tests werden entworfen, um das definierte Verhalten nachzuweisen (grundlegendes, außergewöhnliches oder alternatives Verhalten und die Fehlerbehandlungsroutinen).\n\nb) FALSCH – Anwendungsfälle spezifizieren normalerweise Anforderungen und schließen daher nicht die Komponenten ein, die sie implementieren.\n\nc) FALSCH – Anwendungsfallbasierte Tests führen zwar Interaktionen des Systems mit einem oder mehreren Akteuren aus. Aber sie konzentrieren sich auf die Funktionalität und betrachten nicht die leichte Bedienbarkeit der Benutzungsschnittstelle.\n\nd) FALSCH – Tests decken zwar die Ablaufpfade des Anwendungsfalls ab, es geht jedoch nicht um eine Entscheidungsüberdeckung in diesen Pfaden, und bestimmt nicht in den Kontrollfluss im Geschäftsprozess.',
+''],
+['Welche der folgenden Beschreibungen der Anweisungsüberdeckung ist korrekt?',
+'Die Anweisungsüberdeckung ist ein Maß für die Anzahl der Quellcodezeilen (ohne Kommentare), die im Test ausgeführt wurden.',
+'Die Anweisungsüberdeckung ist ein Maß für den prozentualen Anteil der ausführbaren Anweisungen im Quellcode, die im Test ausgeführt wurden.',
+'Die Anweisungsüberdeckung ist ein Maß für den prozentualen Anteil der Quellcodezeilen (ohne Kommentare), die im Test ausgeführt wurden.',
+'Die Anweisungsüberdeckung ist ein Maß für die Anzahl der ausführbaren Anweisungen im Quellcode, die im Test ausgeführt wurden.',
+2,
+'FL-4.3.1 (K2) Anweisungsüberdeckung erklären können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nGlossareintrag Anweisungsüberdeckung: Der Anteil der Anweisungen, die durch eine Testsuite ausgeführt wurden, bezogen auf alle Anweisungen.\n\nFL Lehrplan 4.3.1: Anweisungstests untersuchen die (potenziell) ausführbaren Anweisungen im Code. Die Überdeckung wird an der Anzahl der im Test ausgeführten Anweisungen dividiert durch die Gesamtzahl aller ausführbaren Anweisungen insgesamt im Testobjekt gemessen – üblicherweise als Prozentsatz dargestellt\n\nb) KORREKT – Der prozentuale Anteil der ausführbaren Anweisungen ist der Anteil im Test ausgeführter Anweisungen bezogen auf alle Anweisungen, also (Anzahl durch die Testsuite ausgeführter Anweisungen / Anzahl alle Anweisungen) x 100%.\n\na) FALSCH – Die Anweisungsüberdeckung bezieht sich auf durch Tests ausführbare Anweisungen. In einer Zeile können mehrere solcher Anweisungen stehen, und eine Anweisung kann sich über mehrere Zeilen erstrecken.\n\nc) FALSCH – Die Anweisungsüberdeckung bezieht sich nicht auf Quellcodezeilen, sondern auf durch Tests ausführbare Anweisungen, s. Begründung zu a).\n\nd) FALSCH – Die Anweisungsüberdeckung bezieht sich nicht auf die absolute Anzahl der von der Testsuite ausgeführten Anweisungen, sondern auf deren Anteil bezogen auf alle ausführbaren Anweisungen.ale Anteil der ausführbaren Anweisungen ist der Anteil im Test ausgeführter Anweisungen bezogen auf alle Anweisungen, also (Anzahl durch die Testsuite ausgeführter Anweisungen / Anzahl alle Anweisungen) x 100%.',
+''],
+['Welche der folgenden Beschreibungen der Entscheidungsüberdeckung ist zutreffend?',
+'Die Entscheidungsüberdeckung ist ein Maß für den prozentualen Anteil möglicher Pfade durch den Quellcode, die im Test ausgeführt wurden.',
+'Die Entscheidungsüberdeckung ist ein Maß für den prozentualen Anteil der Geschäftsabläufe durch die Komponente, die im Test ausgeführt wurden.',
+'Die Entscheidungsüberdeckung ist ein Maß für die „IF-Anweisungen“ im Quellcode, die im Test sowohl mit dem Ergebnis „WAHR“ als auch mit „FALSCH“ ausgeführt wurden.',
+'Die Entscheidungsüberdeckung ist ein Maß für den Anteil der Entscheidungsergebnisse, die im Test ausgeführt wurden.',
+4,
+'FL-4.3.2 (K2) Entscheidungsüberdeckung erklären können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nLehrplan 4.3.2: Der Überdeckungsgrad wird gemessen anhand der Anzahl der Entscheidungsergebnisse, die durch die Tests ausgeführt werden, dividiert durch die Gesamtzahl an möglichen Entscheidungsergebnissen im Testobjekt – üblicherweise als Prozentsatz dargestellt.\n\na) FALSCH – Ein Pfad durch den Quellcode ist ein möglicher Ablauf durch den Quellcode vom Eintrittspunkt zum Austrittspunkt, der eine Reihe von Entscheidungsergebnissen ausführen kann. Zwei verschiedene Pfade können bis auf einen die gleichen Entscheidungsergebnisse ausführen. Wird nur ein einziges Entscheidungsergebnis geändert, so wird ein anderer Pfad durchlaufen. Testfälle, die eine vollständige Entscheidungsabdeckung erzielen, sind in der Regel eine winzige Teilmenge der Testfälle, die eine vollständige Pfadüberdeckung erzielen würden. In der Praxis haben die meisten nicht-trivialen Programme (und alle Programme mit unbeschränkten Schleifen, z. B. \'while\'-Schleifen) eine potenziell unendliche Anzahl möglicher Pfade, sodass die Messung des abgedeckten Prozentsatzes praktisch unmöglich ist.\n\nb) FALSCH – Geschäftsabläufe können im anwendungsfallbasierten Test betrachtet werden. Sie werden jedoch nicht durch die Entscheidungsüberdeckung gemessen, auch wenn sie ein oder mehrere Entscheidungsergebnisse ausführen würden.\n\nc) FALSCH – „IF-Anweisungen“ beinhalten zwar Entscheidungen, sind jedoch nicht die einzige Quelle für Entscheidungen, da z. B. auch Schleifen oder „CASE-Anweisungen“ Entscheidungen beinhalten, aufgrund deren Ergebnis sie ausgeführt oder nicht ausgeführt werden.\n\nd) KORREKT – S. Lehrplan-Auszug 4.3.2 oben',
+''],
+['Welche der folgenden Optionen beschreibt AM BESTEN das Konzept der intuitiven Testfallermittlung?',
+'Die intuitive Testfallermittlung erfordert, dass Sie sich vorstellen, der Benutzer des Testobjekts zu sein und dass Sie Fehler erraten, die der Benutzer bei der Interaktion damit machen könnte.',
+'Die intuitive Testfallermittlung bezieht Ihre persönlichen Entwicklungserfahrungen und die Fehler mit ein, die Sie als Entwickler gemacht haben.',
+'Die intuitive Testfallermittlung verwendet Ihre Kenntnisse und Erfahrungen mit Fehlerzuständen, die in der Vergangenheit gefunden wurden, sowie mit typischen Fehlhandlungen von Entwicklern.',
+'Die intuitive Testfallermittlung erfordert, dass Sie die Entwicklungsaufgabe schnell selbst wiederholen, um die Art von Fehlern zu identifizieren, die Entwickler dabei möglicherweise machen könnten.',
+3,
+'FL-4.4.1 (K2) Die intuitive Testfallermittlung erklären können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nLehrplan 4.4.1: Intuitive Testfallermittlung ist ein Verfahren, das das Auftreten von Fehlhandlungen, Fehlerzuständen und Fehlerwirkungen aufgrund des Wissens des Testers vermutet […]\n\na) FALSCH – Die intuitive Testfallermittlung ist kein Gebrauchstauglichkeitstestverfahren, um zu erraten, wie die Interaktion der Benutzer mit dem Testobjekt möglicherweise fehlschlagen könnte.\n\nb) FALSCH – Obwohl Tester, die früher Entwickler waren, ihre persönliche Erfahrung nutzen können, um Fehler zu erraten, basiert das Verfahren nicht auf Vorkenntnissen über die Entwicklung.\n\nc) KORREKT – Siehe Lehrplanexzerpt oben, Fehlhandlungen sind u. a. Fehler von Entwicklern. Das Grundkonzept der intuitiven Testfallermittlung ist, dass Tester anhand von Erfahrungswerten (und manchmal auch Checklisten) erraten, welche Fehler die Entwickler möglicherweise gemacht haben könnten und welche Fehlerzustände im Testobjekt vorliegen könnten.\n\nd) FALSCH – Das Wiederholen der Entwicklungsaufgabe ist keine intuitive Testfallermittlung. Es wäre darüber hinaus aufgrund mehrerer Probleme nicht praktikabel, z. B. der Anforderung, dass Tester über die gleichen Fähigkeiten wie Entwickler verfügen, und dem zeitlichen Aufwand für eine wiederholte Durchführung der Entwicklung.',
+''],
+['Welche der folgenden Aussagen beschreibt am BESTEN einen Vorteil von unabhängigem Testen?',
+'Die Verwendung eines unabhängigen Testteams erlaubt dem Projektmanagement die Verantwortung für die Qualität des finalen Arbeitsergebnisses auf das Testteam zu übertragen. Somit ist jedem bewusst, dass die Qualität in der Gesamtverantwortung des Testteams liegt.',
+'Wenn ein Testteam außerhalb der Organisation zur Verfügung gestellt werden kann, hat dies deutliche Vorteile, da dieses externe Team nicht so leicht von den Bedenken des Projektmanagements und der Notwendigkeit der Einhaltung strenger Lieferfristen beeinflusst wird.',
+'Ein unabhängiges Testteam kann vollkommen separat von den Entwicklern arbeiten, muss sich nicht von sich ändernden Projektanforderungen ablenken lassen und kann die Kommunikation mit den Entwicklern auf das Verfassen von Fehlerberichten über das Fehlermanagementsystem beschränken.',
+'Wenn Spezifikationen Mehrdeutigkeiten und/oder Inkonsistenzen enthalten, werden Annahmen zu deren Interpretation getroffen. Ein unabhängiger Tester kann hilfreich sein, um die vom Entwickler getroffenen Annahmen und vorgenommenen Interpretationen in Frage zu stellen.',
+4,
+'FL-5.1.1 (K2) Vor- und Nachteile unabhängigen Testens erklären können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Qualität sollte in der Verantwortung aller am Projekt Beteiligten liegen und nicht in der alleinigen Verantwortung des Testteams (siehe CTFL Lehrplan 2018, Abschnitt 5.1.1, „Mögliche Nachteile von Testunabhängigkeit …“, 2. Punkt).\n\nb) FALSCH – Zum einen ist es kein Vorteil, wenn ein externes Testteam die Lieferfristen nicht einhält, und zum anderen gibt es keinen Grund zu der Annahme, dass externe Testteams das Gefühl haben, die strengen Lieferfristen nicht einhalten zu müssen (siehe CTFL Lehrplan 2018, Abschnitt 5.1.1, „Mögliche Nachteile von Testunabhängigkeit …“, 3. Punkt).\n\nc) FALSCH – Es ist eine schlechte Praxis für das Testteam, völlig isoliert zu arbeiten, und außerdem sollte sich auch ein externes Testteam mit sich ändernden Projektanforderungen befassen und gut mit den Entwicklern kommunizieren (siehe CTFL Lehrplan 2018, Abschnitt 5.1.1, „Mögliche Nachteile von Testunabhängigkeit …“, 1. Punkt).\n\nd) KORREKT – Spezifikationen sind niemals perfekt, was bedeutet, dass Annahmen vom Entwickler getroffen werden müssen. Ein unabhängiger Tester ist nützlich, um die Annahme in Frage zu stellen und zu überprüfen (siehe CTFL Lehrplan 2018, Abschnitt5.1.1, „Mögliche Vorteile von Testunabhängigkeit…“, 2.Punkt)',
+''],
+['Welche der folgenden Aufgaben wird AM WAHRSCHEINLICHSTEN vom Testmanager ausgeführt?',
+'Erstellen von Testabschlussberichten auf der Grundlage der während des Tests gesammelten Informationen.',
+'Tests prüfen, die von anderen entwickelt wurden.',
+'Testdaten vorbereiten und beschaffen.',
+'Anforderungen, Spezifikationen und Modelle auf Testbarkeit analysieren, prüfen und beurteilen.',
+1,
+'FL-5.1.2 (K1) Die Aufgaben eines Testmanagers und eines Testers benennen können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) KORREKT – Eine der typischen Aufgaben eines Testmanagers gemäß CTFL Lehrplan 2018, Abschnitt 5.1.2.\n\nb) FALSCH – Eine der typischen Aufgaben eines Testers gemäß CTFL Lehrplan 2018, Abschnitt 5.1.2.\n\nc) FALSCH – Eine der typischen Aufgaben eines Testers gemäß CTFL Lehrplan 2018, Abschnitt 5.1.2.\n\nd) FALSCH – Eine der typischen Aufgaben eines Testers gemäß CTFL Lehrplan 2018, Abschnitt 5.1.2.',
+''],
+['Welche der Kombinationen kategorisiert sie AM BESTEN als Eingangs- und Endekriterien?',
+'Eingangskriterien – 5, 6; Endekriterien – 1, 2, 3, 4',
+'Eingangskriterien – 2, 3, 6; Endekriterien – 1, 4, 5',
+'Eingangskriterien – 1, 3; Endekriterien – 2, 4, 5, 6',
+'Eingangskriterien – 3, 5, 6; Endekriterien – 1, 2, 4',
+4,
+'FL-5.2.3 (K2) Beispiele für mögliche Eingangs- und Endekriterien geben können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nDie korrekte Zuordnung von Beispielen für Eingangs- und Endekriterien sind:\n• Eingangskriterien:\n\n- (3) Die Testumgebung für den Performanz-Test wurde entworfen, eingerichtet und verifiziert - ein Beispiel dafür, dass eine Testumgebung bereit sein muss, bevor mit dem Testen begonnen werden kann.\n\n- (5) Die Designspezifikationen für den Autopiloten wurden einem Review unterzogen und nachgebessert – ein Beispiel dafür, dass die Testbasis zur Verfügung stehen muss, bevor mit dem Testen begonnen werden kann.\n\n- (6) Die Komponente für die Berechnung des Steuersatzes hat die Unit-Tests bestanden ein Beispiel für die Notwendigkeit, dass ein Testobjekt die Endekriterien einer vorangegangenen Teststufe erfüllen muss, bevor mit dem Testen begonnen werden kann.\n\n• Endekriterien:\n\n- (1) Das ursprüngliche Testbudget von 30.000 US-Dollar plus eine Sicherheitsreserve von 7.000 US-Dollar wurde ausgegeben – ein Beispiel dafür, dass ein vollständig ausgeschöpftes Testbudget ein Signal ist, das Testen zu beenden.\n\n- (2) 96% der geplanten Tests für das Zeichenpaket wurden ausgeführt und die verbleibenden Tests sind jetzt nicht mehr Bestandteil des Testumfangs - ein Beispiel dafür, dass die Durchführung aller geplanten Tests ein Signal ist, das Testen zu beenden (normalerweise zusammen mit den Endekriterien für ungelöste Fehlerzustände verwendet).\n\n- (4) Derzeit gibt es keine kritischen Fehlerzustände und zwei Fehlerzustände mit hoher Priorität. – ein Beispiel für die Anzahl ungelöster Fehlerzustände, die eine geplante Grenze erreichen, welche die Beendigung des Testens signalisiert (normalerweise zusammen mit den Endekriterien für geplante Tests verwendet).\n\nSomit ist Option d) korrekt.',
+'https://i.imgur.com/7We3en3.png'],
+['Welcher Testausführungsplan berücksichtigt AM BESTEN die Prioritäten sowie technische und logische Abhängigkeiten?',
+'TF1 – TF3 – TF4 – TF6 – TF2 – TF5',
+'TF4 – TF3 – TF1 – TF2 – TF5 – TF6',
+'TF4 – TF1 – TF3 – TF5 – TF6 – TF2',
+'TF4 – TF2 – TF5 – TF1 – TF3 – TF6',
+2,
+'FL-5.2.4 (K3) Wissen über Priorisierung sowie technische und logische Abhängigkeiten anwenden können, um die Testdurchführung für ein gegebenes Testfallset zu planen\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nDie Testfälle sollten in der Reihenfolge der Priorität ausgeführt werden, aber der Ausführungsplan muss auch die Abhängigkeiten berücksichtigen.\n\nDie zwei Testfälle mit der höchsten Priorität (TF1 und TF3) sind beide abhängig von TF4, daher sollten die ersten drei Testfälle entweder in der Reihenfolge TF4 – TF1 – TF3 oder in der Reihenfolge TF4 – TF3 –TF1 ausgeführt werden (Wir haben keine Möglichkeit, zwischen TF1 und TF3 zu unterscheiden).\n\nAls nächstes müssen wir den verbleibenden Testfall mittlerer Priorität TF6 betrachten. TF6 ist abhängig von TF5, aber TF5 ist abhängig von TF2, daher müssen die nächsten drei Testfälle in folgender Reihenfolge ausgeführt werden: TF2 – TF5 – TF6.\nDas bedeutet, es gibt zwei optimale Ausführungspläne:\n• TF4 – TF1 – TF3 – TF2 – TF5 – TF6 oder\n• TF4 – TF3 – TF1 – TF2 – TF5 – TF6\n\nSomit ist Option b) korrekt',
+'https://i.imgur.com/wBIZH2y.png'],
+['Welche der folgenden Aussagen über Testschätzverfahren ist korrekt?',
+'Beim metrikbasierten Verfahren basiert die Schätzung auf Testmaßnahmen aus dem Projekt, so dass diese Schätzung erst nach Beginn des Tests verfügbar ist.',
+'Beim expertenbasierten Verfahren empfiehlt eine vom Kunden identifizierte Gruppe von Experten das erforderliche Testbudget.',
+'Beim expertenbasierten Verfahren schätzen die für die verschiedenen Testaktivitäten verantwortlichen Testmanager den erwarteten Testaufwand.',
+'Beim metrikbasierten Ansatz wird ein Durchschnitt der Testkosten, die aus mehreren vergangenen Projekten ermittelt wurden, als Testbudget verwendet.',
+3,
+'FL-5.2.6 (K2) Den Unterschied zwischen zwei Schätzverfahren erklären können: das metrikbasierte Verfahren und das expertenbasierte Verfahren\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Die Schätzungen werden möglicherweise aktualisiert, sobald weitere Informationen verfügbar sind. Es sind jedoch Schätzungen erforderlich, um die Planung vor Beginn der Tests zu unterstützen.\n\nb) FALSCH – Die Experten beim expertenbasierten Verfahren müssen Experten für das Testen sein und nicht für das Testobjekt.\n\nc) KORREKT – Beim expertenbasierten Ansatz werden die für die verschiedenen Testaktivitäten verantwortlichen Testmanager als Experten für ihr jeweiliges Gebiet betrachtet. Daher sind sie in der Lage, den erwarteten Testaufwand zu schätzen.\n\nd) FALSCH – Es ist zwar nützlich, die Testkosten aus früheren Projekten zu kennen, jedoch ist ein anspruchsvollerer Ansatz erforderlich, als nur den Durchschnitt vergangener Projekte zu ermitteln. (Das neue Projekt kann möglicherweise nicht mit den vergangenen Projekten vergleichbar sein, z. B. kann es viel größer oder viel kleiner sein als die vergangenen Projekte).',
+''],
+['Welche der folgenden Aussagen definiert AM BESTEN die Risikostufe (Höhe des Risikos)?',
+'Die Risikostufe wird berechnet, indem die Wahrscheinlichkeiten aller Problemsituationen und der daraus resultierende finanzielle Schaden addiert werden.',
+'Die Risikostufe wird geschätzt, indem die Wahrscheinlichkeit einer Bedrohung des Systems multipliziert wird mit der Wahrscheinlichkeit, dass die Bedrohung auftritt und finanzielle Schäden verursacht.',
+'Die Risikostufe wird bestimmt durch eine Kombination der Wahrscheinlichkeit eines unerwünschten Ereignisses und der erwarteten Auswirkung dieses Ereignisses.',
+'Die Risikostufe ist die Summe aller potenziellen Gefahren für ein System multipliziert mit der Summe aller potenziellen Verluste aus diesem System.',
+1,
+'FL-5.5.1 (K1) Risikostufe anhand der Wahrscheinlichkeit (des Eintritts) und Auswirkung (im Schadensfall) definieren können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Die Risikostufe wird bestimmt, indem eine Kombination aus der Wahrscheinlichkeit von Problemsituationen und dem daraus resultierenden Schaden betrachtet wird; die Risikostufe kann jedoch nicht durch Addition dieser Faktoren berechnet werden (die Wahrscheinlichkeit würde im Bereich von 0 bis 1 liegen und der Schaden könnte in Euro beziffert sein).\n\nb) FALSCH – Das Risiko wird bestimmt, indem eine Kombination aus Wahrscheinlichkeit und Auswirkung berücksichtigt wird. Diese Definition berücksichtigt nur Wahrscheinlichkeit und Zufall ohne Berücksichtigung der Auswirkungen (oder des Schadens).\n\nc) KORREKT – Wie beschrieben im CTFL Lehrplan 2018, Abschnitt 5.5.1\n\nd) FALSCH – Das Risiko wird bestimmt, indem eine Kombination aus Wahrscheinlichkeit und Auswirkung berücksichtigt wird. Diese Definition berücksichtigt nur Gefahren und Verluste (eine Gefahr ist ein schlechtes Ereignis wie ein Risiko, während ein Verlust eine Form der Auswirkung ist), ohne die Wahrscheinlichkeit zuberücksichtigen.',
+''],
+['Welcher der folgenden Aussagen ist AM EHESTEN ein Beispiel für ein Produktrisiko?',
+'Die erwarteten IT-Sicherheitsmerkmale werden von der Systemarchitektur möglicherweise nicht unterstützt.',
+'Die Entwickler haben möglicherweise nicht die Zeit, alle vom Testteam gefundenen Fehler zu beheben.',
+'Die Testfälle decken die spezifizierten Anforderungen möglicherweise nicht vollständig ab.',
+'Die Umgebung für den Performanztest ist möglicherweise nicht einsatzbereit, bevor das System zur Auslieferung ansteht.',
+2,
+'FL-5.5.2 (K2) Zwischen Projekt- und Produktrisiken unterscheiden können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) KORREKT – Werden die erwarteten IT-Sicherheitsmerkmale von der Systemarchitektur nicht unterstützt, kann das System schwerwiegende Fehler aufweisen. Da hier das zu produzierende System das Problem ist, handelt es sich um ein Produktrisiko.\n\nb) FALSCH – Wenn die Entwickler das Budget überschreiten oder die Zeit knapp wird, ist das ein Problem mit dem Projektablauf - es ist ein Projektrisiko.\n\nc) FALSCH – Wenn die Testfälle die Anforderungen nicht vollständig überdecken, bedeutet dies, dass die Prüfung möglicherweise nicht die Anforderungen des Testkonzepts erfüllt -es ist ein Projektrisiko.\n\nd) FALSCH – Wenn die Testumgebung nicht einsatzbereit ist, bedeutet dies, dass der Test möglicherweise nicht durchgeführt werden kann, oder dass er auf einer anderen Umgebung durchgeführt werden muss, und dass er sich auf die Durchführung des Projekts auswirkt - es ist ein Projektrisiko.',
+''],
+['Welche der folgenden Aussagen zum Zusammenhang von Produktrisiko und Testmanagement ist am wenigsten sinnvoll?',
+'Die potenziellen Auswirkungen von IT-Sicherheitsmängeln wurden als besonders hoch eingestuft, so dass IT-Sicherheitstests vor einigen anderen Testaktivitäten priorisiert wurden.',
+'Die Tests haben ergeben, dass die Qualität des Netzwerkmoduls besser ist als erwartet, so dass nun zusätzliche Tests in diesem Bereich durchgeführt werden.',
+'Die Benutzer hatten Probleme mit der Benutzeroberfläche des bisherigen Systems, so dass zusätzliche Usability-Tests für das Ersatzsystem geplant sind.',
+'Die Zeit, die zum Laden von Webseiten benötigt wird, ist entscheidend für den Erfolg der neuen Website, weshalb für dieses Projekt ein Experte für Leistungstests eingesetzt wurde.',
+2,
+'FL-5.5.3 (K2) Anhand von Beispielen beschreiben können, wie die Produktrisikoanalyse Intensität und Umfang des Testens beeinflussen kann\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\na) FALSCH – Da uns gesagt wird, dass Sicherheitsmängel eine besonders hohe Auswirkung haben, wird ihr Risiko höher sein. Deshalb wurde der Sicherheitstest vor einigen anderen Tests priorisiert. Der Einfluss der Produktrisikoanalyse auf den Test wurde somit KORREKT eingeschätzt.\n\nb) KORREKT – Da im Netzwerkmodul weniger Fehler als erwartet festgestellt wurden, sollte das wahrgenommene Risiko in diesem Bereich geringer sein, und daher sollten sich WENIGER Tests auf diesen Bereich konzentrieren und NICHT zusätzliche Tests. Daher hat die Produktrisikoanalyse den Test in dieser Situation NICHT KORREKT beeinflusst.\n\nc) FALSCH – Da die Anwender Probleme mit der Benutzeroberfläche des bisherigen Systems hatten, ist das Risiko der Benutzeroberfläche inzwischen sehr hoch, was dazu geführt hat, dass weitere Usability-Tests geplant sind. Der Einfluss der Produktrisikoanalyse auf den Test wurde somit KORREKT eingeschätzt. Daher hat die Produktrisikoanalyse den Umfang der Tests RICHTIG beeinflusst.\n\nd) FALSCH – Da die Zeit, die zum Laden von Webseiten benötigt wird, als entscheidend für den Erfolg der neuen Website eingestuft wurde, sollte die Leistung der Website als Risiko angesehen werden, und die Beschäftigung eines Experten für Leistungstests hilft, dieses Risiko zu minimieren. Somit hat die Produktrisikoanalyse den Test RICHTIG beeinflusst.',
+''],
+['Welche der dargestellten Informationen sind AM SINNVOLLSTEN in den Fehlerbericht mit aufzunehmen?',
+'1, 2, 6',
+'1, 4, 5, 6',
+'2, 3, 4, 5',
+'3, 5, 6',
+4,
+'FL-5.6.1 (K3) Einen Fehlerbericht schreiben können, der während des Testens gefundene Fehler enthält\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\n1. Grad der Auswirkung (Schwere) des Fehlerzustands - die Entwickler sind sich des Problems bereits bewusst und warten darauf, es zu beheben, daher ist dies eine weniger wichtige Information.\n\n2. Identifizierung des Testelements - da die Entwickler das Problem bereits kennen und SieSystemtests durchführen und Sie bereits die Version des zu testenden Systems zur Verfügung gestellt haben, können Sie davon ausgehen, dass die Entwickler das zu testende Element kennen, daher ist dies eine weniger wichtige Information.\n\n3. Details der Testumgebung - der Aufbau der Testumgebung kann einen spürbaren Einfluss auf die Testergebnisse haben, und es sollten detaillierte Informationen dazu bereitgestellt werden, daher ist dies eine wichtige Information.\n\n4. Dringlichkeit/Priorität für die Behebung- die Entwickler sind sich des Problems bereits bewusst und warten darauf, es zu beheben, daher ist dies eine weniger wichtige Information.\n\n5. Istergebnisse - die Istergebnisse können den Entwicklern gut helfen, festzustellen, was mit dem System schiefläuft, daher ist dies eine wichtige Information.\n\n6. Referenz auf die Testfallspezifikation - dies zeigt den Entwicklern die von Ihnen ausgeführten Tests, einschließlich der Testeingaben, die zum Ausfall des Systems führten (und der erwarteten Ergebnisse), so dass dies eine wichtige Information ist.\n\nOption d) ist korrekt',
+'https://i.imgur.com/0JBO1zB.png'],
+['Welche der Kombinationen passt am besten zu den aufgelisteten Aktivitäten und Tools?',
+'1 – B, 2 – C, 3 – D, 4 – A',
+'1 – B, 2 – A, 3 – C, 4 – D',
+'1 – B, 2 – A, 3 – D, 4 – C',
+'1 – A, 2 – B, 3 – D, 4 – C',
+3,
+'FL-6.1.1 (K2) Testwerkzeuge gemäß ihrem Zweck und den Testaktivitäten, die sie unterstützen, klassifizieren können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3)\n\nDie korrekte Zuordnung von Testaktivitäten und Testwerkzeugen ist laut Lehrplan 6.1.1:\na) 1. Performanzmessung und dynamische Analyse - (B) Dynamische Analysewerkzeuge\n\nb) 2. Testausführung und Protokollierung - (A) Tools zur Anforderungsüberdeckung\n\nSomit ist Option c) korrekt.\n\nd) 4. Testentwurf - (C) Werkzeuge zur Vorbereitung von Testdaten.',
+'https://i.imgur.com/7W7rUQS.png'],
+['Welcher der folgenden Punkte wird AM WAHRSCHEINLICHSTEN als Grund für die Verwendung eines Pilotprojekts zur Einführung eines Werkzeugs in einem Unternehmen verwendet?',
+'Die Notwendigkeit zu bewerten, wie das Werkzeug zu bestehenden Prozessen und Vorgehensweisen passt und zu bestimmen, was geändert werden muss.',
+'Die Notwendigkeit, die Fähigkeiten zur Testautomatisierung sowie die Trainings-, Mentoring- und Coaching-Bedürfnisse der Tester zu bewerten, die das Werkzeug nutzen werden.',
+'Die Notwendigkeit zu bewerten, ob das Werkzeug die erforderliche Funktionalität bietet und bestehende Testwerkzeuge nicht dupliziert.',
+'Die Notwendigkeit, den Werkzeughersteller zu bewerten in Bezug auf die Schulung und andere Unterstützung, die er anbietet.',
+1,
+'FL-6.2.2 (K1) Sich an Ziele für die Nutzung von Pilotprojekten zur Einführung von Werkzeugen erinnern können\n\nBegründung: (CTFL CORE Syllabus 2018, V.3.1; Glossar V.3.3\n\na) KORREKT – Gemäß Lehrplan (6.2.2).\n\nb) FALSCH – Die Bewertung der Fähigkeiten zur Testautomatisierung und der Trainings-, Mentoring- und Coaching-Bedürfnisse der Tester, die das Tool verwenden werden, hätte im Rahmen der Werkzeugauswahl gemäß Lehrplan (6.2.1) durchgeführt werden sollen.\n\nc) FALSCH – Die Entscheidung, ob das Werkzeug die erforderliche Funktionalität bietet und bestehende Werkzeuge nicht dupliziert, hätte im Rahmen der Werkzeugauswahl gemäß Lehrplan (6.2.1) getroffen werden sollen.\n\nd) FALSCH – Die Bewertung des Werkzeugherstellers im Hinblick auf die Schulung und andere Unterstützung, die er anbietet, hätte im Rahmen der Werkzeugauswahl gemäß Lehrplan (6.2.1) durchgeführt werden sollen.',
+'']
+        ];
+        function validate()
+        { //Validate answer, show explanation
+            var a1 = document.getElementById("check1").checked;
+            var a2 = document.getElementById("check2").checked;
+            var a3 = document.getElementById("check3").checked;
+            var a4 = document.getElementById("check4").checked;
+            if (a1 + a2 + a3 + a4 != 1)
+            { //Error, there is not only exactly one answer selected.
+                alert(msgAlertOnlyOne);
+                return;
+            }
+            var correctAnswer = qanda[q-1][5];
+            if (a1 && correctAnswer == 1 || a2 && correctAnswer == 2 || a2 && correctAnswer == 3 || correctAnswer == 4)
+            { //Correct
+                if (a1) document.getElementById("answer1").classList.add("correct");
+                if (a2) document.getElementById("answer2").classList.add("correct");
+                if (a3) document.getElementById("answer3").classList.add("correct");
+                if (a4) document.getElementById("answer4").classList.add("correct");
+                correctAnswers++;
+            }
+            else
+            { //Wrong
+                if (correctAnswer == 1) document.getElementById("answer1").classList.add("correct");
+                if (correctAnswer == 2) document.getElementById("answer2").classList.add("correct");
+                if (correctAnswer == 3) document.getElementById("answer3").classList.add("correct");
+                if (correctAnswer == 4) document.getElementById("answer4").classList.add("correct");
+            }
+            document.getElementById("submit").style.visibility = "hidden";
+            document.getElementById("next").style.visibility = "visible";
+            document.getElementById("explanation").style.visibility = "visible";
+            document.getElementById("explanation").value = qanda[q-1][6];
+        }
+        function moveon()
+        { //Move to the next question
+            q++;
+            if (q > qanda.length)
+            {
+                alert(msgCorrectAnswers + correctAnswers + msgCorrectAnswersOf + qanda.length)
+                q = 1;
+                correctAnswers  = 0;
+            }
+            document.getElementById("next").style.visibility = "hidden";
+            document.getElementById("submit").style.visibility = "visible";
+            document.getElementById("explanation").style.visibility = "hidden";
+            document.getElementById("check1").checked = false;
+            document.getElementById("check2").checked = false;
+            document.getElementById("check3").checked = false;
+            document.getElementById("check4").checked = false;
+            document.getElementById("answer1").innerHTML = qanda[q-1][1];
+            document.getElementById("answer2").innerHTML = qanda[q-1][2];
+            document.getElementById("answer3").innerHTML = qanda[q-1][3];
+            document.getElementById("answer4").innerHTML = qanda[q-1][4];
+            document.getElementById("explanation").value = "";
+            document.getElementById("question").innerHTML = qanda[q-1][0];
+            document.getElementById("answer1").classList.remove("correct");
+            document.getElementById("answer2").classList.remove("correct");
+            document.getElementById("answer3").classList.remove("correct");
+            document.getElementById("answer4").classList.remove("correct");
+            document.getElementById("check1").style="outline-style:none";
+            document.getElementById("check2").style="outline-style:none";
+            document.getElementById("check3").style="outline-style:none";
+            document.getElementById("check4").style="outline-style:none";
+            if (qanda[q-1][7] == "")
+            {
+                document.getElementById("image").style.display = "none";
+            }
+            else
+            {
+                document.getElementById("image").style.display = "inline";
+                document.getElementById("image").src = qanda[q-1][7];
+            }
+        }
+    </script>
+    </head>
+    <body style="font: normal 12px Verdana, Arial, sans-serif">
+    <form action="#">
+        <div id="question" ></div>
+        <br/>
+        <img id="image" src="" style="display:none;" width="500">
+        <fieldset>
+        <div >
+        <input type="checkbox" id="check1">&nbsp;<label for="check1" id="answer1" ></label>
+        </div>
+        <br/>
+        <div >
+        <input type="checkbox" id="check2">&nbsp;<label for="check2" id="answer2" ></label>
+        </div>
+        <br/>
+        <div >
+        <input type="checkbox" id="check3">&nbsp;<label for="check3" id="answer3"></label>
+        </div>
+        <br/>
+        <div >
+        <input type="checkbox" id="check4" >&nbsp;<label for="check4" id="answer4"></label>
+        </div>
+        </fieldset>
+        <br/>
+        <br/>
+        <input id="submit" type="button" value="Absenden" onclick="validate()">
+        <input id="next" type="button" value="Nächste Frage" onclick="moveon()" style="visibility:hidden;">
+        <br/>
+        <br/>
+        <textarea id="explanation" style="visibility:hidden;border:none;resize:none;"></textarea>
+        </form>
+        <script>
+        moveon(); //Start
+        </script>
+    </body>
+</html>
