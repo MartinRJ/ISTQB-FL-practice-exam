@@ -492,7 +492,7 @@ input[type='checkbox']+ .correct {
                 return;
             }
             var correctAnswer = qanda[q-1][5];
-            if (a1 && correctAnswer == 1 || a2 && correctAnswer == 2 || a2 && correctAnswer == 3 || correctAnswer == 4)
+            if (a1 && correctAnswer == 1 || a2 && correctAnswer == 2 || a3 && correctAnswer == 3 || a4 && correctAnswer == 4)
             { //Correct
                 if (a1) document.getElementById("answer1").classList.add("correct");
                 if (a2) document.getElementById("answer2").classList.add("correct");
@@ -556,19 +556,19 @@ input[type='checkbox']+ .correct {
     </head>
     <body style="font: normal 12px Verdana, Arial, sans-serif">
     <form action="#">
-        <div id="question" ></div>
+        <div id="question"></div>
         <br/>
         <img id="image" src="" style="display:none;" width="500">
         <fieldset>
-        <div >
+        <div>
         <input type="checkbox" id="check1">&nbsp;<label for="check1" id="answer1" ></label>
         </div>
         <br/>
-        <div >
+        <div>
         <input type="checkbox" id="check2">&nbsp;<label for="check2" id="answer2" ></label>
         </div>
         <br/>
-        <div >
+        <div>
         <input type="checkbox" id="check3">&nbsp;<label for="check3" id="answer3"></label>
         </div>
         <br/>
