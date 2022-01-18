@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISTQB FL Übungsfragen</title>
+
+    <style>
+        body {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    scroll-behavior: smooth;
+}
+
+form {
+    border:2px solid gainsboro;
+    margin-top:.5vh;
+    width:75vw;
+}
+
+textarea{
+    padding-left: 2rem;
+    width:67vw;
+    height:450px;
+}
+
+form img{
+    padding-left: 5rem;
+}
+
+label {
+    
+    position: relative;
+    width:100%;
+    font: 14px Verdana, Arial, sans-serif
+}
+
+form fieldset div {
+    transform-origin: center;
+    margin-left:7rem;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+#submit{
+    margin-left:5rem;
+}
+
+input[type='checkbox'],label {
+    margin-top:2rem;
+    border-width: 1rem;
+    position: relative;
+}
+
+input[type='checkbox'] {
+    display:none;
+}
+
+input[type='checkbox'] + label::before,
+input[type='checkbox'] + label::after {
+
+content: "";
+position: absolute;
+left:-2rem;
+top:0;
+aspect-ratio: 1/1;
+border-radius: 50%;
+}
+
+input[type='checkbox'] + label::after {
+    background-color: white;
+    border:2px solid white;
+    height:24px;
+    transform: translate(-6px,-6px);
+}
+
+input[type='checkbox'] + label::before {
+    background-color: midnightblue;
+    border-width:20px;
+    height:32px;
+    transform: translate(-8px,-8px);
+    
+}
+
+div:hover  label::before {
+    background-color: gold;
+}
+
+div:hover  label::after {
+    background-color: gold;
+}
+
+input[type='checkbox']:checked + label::after {
+    background-color: midnightblue;
+}
+
+fieldset {
+    border: none;
+    width:68vw;
+}
+
+#question {
+    align-items: center;
+    color: white;
+    background-color: midnightblue;
+    
+    padding: 1em;
+    font-size:1rem;
+}
+
+input[type='button'] {
+    border:none;
+    color: white;
+    background-color: midnightblue;
+    padding: 1rem 2rem;
+    border-radius: 25% / 50%;
+}
+
+input[type='button']:active {
+    transform: translatey(.2rem);
+}
+
+input[type='button']:hover
+
+{
+    transform: scale(1.02);
+}
+
+input[type='checkbox'] + .correct::after {
+    background-color: orange;
+}
+
+input[type='checkbox'] + .correct::before {
+    background-color: orange;
+    height:36px;
+    transform: translate(-10px,-10px);
+}
+
+input[type='checkbox']:checked + .correct::after {
+    background-color: green;
+}
+
+input[type='checkbox']:checked + .correct::before {
+    background-color: green;
+    height:36px;
+    transform: translate(-10px,-10px);
+}
+
+input[type='checkbox']+ .correct {
+    font-weight:700;
+
+}
+    </style>
+    <script>
+        var msgAlertOnlyOne = "Bitte wählen Sie genau eine Antwort aus.";
+        var msgCorrectAnswers = "Fertig. Richtige Antworten: ";
+        var msgCorrectAnswersOf = " von ";
+        var q = 0;
+        var correctAnswers = 0;
+        let qanda = [
+        ['Die statische Analyse kann höchstwahrscheinlich NICHT finden:',
+'Die Verwendung einer Variablen bevor diese definiert wurde.',
+'Unerreichbaren (“toten”) Code.',
+'Speicherlecks.',
+'Überschreiten der Array-Grenzen (array bound violations).',
+3,
+'Die Statische Analyse ist ein Prozess der ein Testobjekts (Komponente oder System) basierend auf seiner Form, seiner Struktur, seines Inhalts oder seiner Dokumentation bewertet, ohne es auszuführen.\nSpeicherlecks findet man eher bei der Ausführung des Programms, es sind jedenfalls keine typischen Fehler die man bei der statischen Analyse findet. Man kann jedoch Überschreitungen der Array-Grenzen finden, was potentiell bei der Ausführung der Software später zu Speicherlecks führen kann.',
+''],
+['TYPISCHERWEISE wer benutzt die statischen Analysewerkzeuge?',
+'Kunden und Benutzer.',
+'Entwickler und Testentwerfer.',
+'Geschäfts- und System Analysten.',
+'System und Abnahme Tester.',
+2,
+'Statische Analysewerkzeuge sind Werkzeuge für Software-Entwickler.',
+''],
+['Kann das Review oder die Inspektion als ein Teil des Testens betrachtet werden?',
+'Nein, da sie zur Entwicklungsdokumentation gehören.',
+'Nein, da sie meistens vor dem eigentlichen Test durchgeführt werden.',
+'Ja, da beide helfen können Fehlerzustände zu identifizieren und die Qualität zu erhöhen.',
+'Ja, Testen beinhaltet auch destruktive Tätigkeiten.',
+3,
+'Reviews können als ein Teil des Testens benutzt werden.',
+''],
+['Die Äquivalenzklassenbildung ist ________',
+'ein Black-Box-Verfahren, welches von den Entwicklern verwendet wird.',
+'ein Black-Box-Verfahren, welches nur im Systemtest verwendet werden kann.',
+'ein Black-Box-Verfahren, welches in jeder Teststufe verwendet werden kann.',
+'ein White-Box-Verfahren, welches im Komponententest verwendet werden kann.',
+3,
+'Äquivalenzklassenbildung\nEin Black-Box-Testentwurfsverfahren, bei dem die Testfälle im Hinblick auf Äquivalenzklassenüberdeckung entworfen werden. Grundsätzlich werden Testfälle so ausgewählt, dass jede Äquivalenzklasse mindestens einmal abgedeckt wird.',
+''],
+['In welcher Reihenfolge sollten Testfälle durchgeführt werden?',
+'Die wichtigsten Testfälle zuerst.',
+'Zunächst die schwierigsten Testfälle, damit genügend Zeit für die Behebung der Fehler bleibt.',
+'Zuerst die einfachsten Testfälle, damit zunächst ein Vertrauen aufgebaut wird.',
+'In der Reihenfolge wie die Testfälle ausgedacht worden sind.',
+1,
+'Die wichtigsten Testfälle mit der höchsten Priorität sollten zuerst ausgeführt werden. Besonders wenn andere, weitere Testfälle davon abhängen.',
+''],
+['6. Welcher der folgenden Punkte ist KEIN Bestandteil eines Testabschlussberichts nach IEEE Std. 829:1998?',
+'Zusammenfassung und eindeutige Bezeichner',
+'Zusammenfassung',
+'Abweichungen',
+'Anomalien',
+4,
+'Der Testabschlussbericht enthält:\n• Zusammenfassung der durchgeführten Tests\n• Abweichungen gegenüber den geplanten Tests\n• Auswertung der Testendekriterien\n• blockierende Faktoren\n• Testmetriken\n• verbleibende Risiken\n• Arbeitsergebnisse des Testens\n• Wiederverwendbares aus dem Test (Assets)\n• Lessons Learned',
+''],
+['Welcher der folgenden Punkte gilt üblicherweise NICHT als Testziel?',
+'Fehlerzustände in der Software finden.',
+'Wartungskosten reduzieren.',
+'Vertrauen in das System erzeugen.',
+'Geplante Meilensteine erreichen.',
+4,
+'Testziel\nEin Grund oder Zweck für den Entwurf und die Ausführung von Tests.\n\nEin Meilenstein (englisch milestone, umgangssprachlich Markstein) ist ein Ereignis von besonderer Bedeutung im Projektmanagement.',
+''],
+['Welche der folgenden Aussagen über unabhängiges Testen ist FALSCH?',
+'Unabhängige Tester können extern organisiert sein.',
+'Unabhängige Tester können ein Teil des Entwicklungsteams sein.',
+'Unabhängige Tester können aus der Benutzer-Gemeinde kommen.',
+'Entwickler, die den Code erstellen, können als unabhängige Tester eingesetzt werden.',
+4,
+'Entwickler die den Code erstellt haben sind nicht unabhängig.',
+''],
+['Welcher der folgenden Punkte hat KEINEN Bezug zu einem Betriebstest (operational testing)?',
+'Regelmäßige Überprüfungen von Sicherheitslücken.',
+'Testen der Datensicherung und Wiederherstellung.',
+'Wiederherstellung nach einem Desaster (disaster recovery).',
+'Zustandsbasierter Test (state transition testing).',
+4,
+'Betriebstest\nTest, der durchgeführt wird, um eine Komponente oder ein System in ihrer operativen Umgebung (Arbeits- bzw. Produktivumgebung) zu bewerten.\n\nDer Betriebstest soll nachweisen, dass die Software den Bedürfnissen des Unternehmens entspricht und korrekt arbeitet.',
+''],
+['Welcher Testwerkzeugstyp wird AM WAHRSCHEINLICHSTEN in der Entwicklung eingesetzt?',
+'Testmanagementwerkzeuge.',
+'Werkzeuge zur statischen Analyse.',
+'Sicherheitstest-Werkzeuge.',
+'Werkzeuge zur Messung der Performance.',
+2,
+'Testmanagementwerkzeug\nEin Werkzeug, das das Management und die Steuerung eines Testprozesses unterstützt und verschiedene Leistungsmerkmale umfasst: Management der Testmittel, zeitliche Planung der Reihenfolge der durchzuführenden Tests, Protokollierung der Ergebnisse, Fortschrittsüberwachung, Fehler- und Abweichungsmanagement und Testabschlussberichterstattung.\n\nPerformanztestwerkzeug\nEin Testwerkzeug, das Last für ein bestimmtes Testelement erzeugt, und dessen Performanz während der Testdurchführung misst und aufzeichnet.\n\nSicherheitstest-Werkzeuge\nWerden für spezielle nicht-funktionale Tests verwendet, meistens von externen Experten.',
+''],
+['Bei welchem der folgenden Punkte handelt es sich um einen funktionalen Test?',
+'Grenzwertanalyse.',
+'Benutzbarkeitstest.',
+'Performanztest.',
+'Wartbarkeitstest.',
+1,
+'Benutzerbarkeitstests, Performanztests und Wartbarkeitstests sind nicht-funktionale Tests.',
+''],
+['Ein Unternehmen kaufte kürzlich eine Standardanwendung (COTS -commercial off-the-shelf) um ihren Bezahldienst-Prozess zu automatisieren. Sie planen nun eine Abnahme vor der Produktivsetzung. Welcher der folgenden Punkte ist der WAHRSCHEINLICHSTE Grund für die Prüfung?',
+'Um Vertrauen in die neue Anwendung zu bekommen.',
+'Um Fehler in der Anwendung zu finden.',
+'Um Beweise für eine Klage zu sammeln.',
+'Zur Schulung der Anwender.',
+1,
+'Abnahmetest\nFormales Testen hinsichtlich der Benutzeranforderungen und -bedürfnisse bzw. der Geschäftsprozesse. Es wird durchgeführt, um einem Auftraggeber oder einer bevollmächtigten Instanz die Entscheidung auf der Basis der Abnahmekriterien zu ermöglichen, ob ein System anzunehmen ist oder nicht.',
+''],
+['Welche Testentwurfsverfahren sollte ein Tester anwenden um die abgebildeten Testziele zu erreichen? Wählen Sie aus den Antwortmöglichkeiten die RICHTIGE Kombination.',
+'1Y, 2Z, 3X, 4Z.',
+'1W, 2X, 3Y, 4Z.',
+'1W, 2Z, 3Y, 4X.',
+'1Y, 2X, 3Z, 4W.',
+2,
+'100% Anweisungsüberdeckung erreicht man durch "Strukturelle Testfallableitung".\n\nEine effiziente Prüfung der dokumentierten Funktionalitäten des Systems erreicht man durch "Spezifikationsbasierte Testfallableitung".\n\n"Datengetriebene Testtechniken" können die Effizienz von "Capture und Playback"-Testwerkzeugen verbessern.\n\nBei der "Strukturellen Testfallableitung" erstellt der Tester Testfälle, die auf Erfahrungen mit dem System basieren.',
+'https://i.imgur.com/Rnbr2uv.png'],
+['Wenn Sie in der Touristenklasse fliegen, besteht die Möglichkeit, auf die Businessklasse umzusteigen. Insbesondere dann, wenn Sie im Besitz einer Gold-Karte des Vielflieger-Programms der Fluggesellschaft sind. Wenn Sie keine Gold-Karte besitzen, dann besteht die Gefahr, dass Sie vom Flieger geworfen werden, falls dieser voll ist und Sie Ihren Check-In zu spät durchgeführt haben. Die Abbildung visualisiert diese Zusammenhänge. Folgenden drei Tests wurden bereits durchgeführt: TEST EINS: "Fluggast mit einer Gold-Karte steigt zur Businessklasse auf." TEST ZWEI: "Fluggast ohne Gold-Karte bleibt in der Touristenklasse." TEST DREI: "Fluggast der aus dem Flieger geworfen wird." Welche zusätzlichen Tests werden benötigt, um eine 100%-ige Entscheidungsüberdeckung zu erreichen?',
+'Ein Fluggast mit einer "Gold-Karte", der in der Touristenklasse verbleibt, und ein Fluggast ohne "Gold-Karte", der aber auf die Businessklasse umsteigt.',
+'Ein Fluggast mit einer "Gold-Karte" und ein Fluggast ohne "Gold-Karte". Beide steigen auf die Businessklasse um.',
+'Ein Fluggast mit "Gold-Karte" und ein Fluggast ohne "Gold-Karte". Beide verbleiben in der Touristenklasse.',
+'Ein Fluggast mit "Gold-Karte", der auf Businessklasse umsteigt, und ein Fluggast ohne "Gold-Karte", der in der Touristenklasse verbleibt.',
+1,
+'Der Fluggast mit Gold-Karte der in der Touristenklasse verbleibt (weil die Business Class voll ist, Entscheidung #2), sowie der Fluggast ohne Gold-Karte, der auf die Businessklasse umsteigt (Entscheidung 8) sind nicht überdeckt, und müssen als Testfälle hinzugefügt werden..',
+'https://i.imgur.com/dffqlMD.png'],
+['Welcher ist der WICHTIGSTE Unterschied zwischen metrikbasierter und expertenbasierter Testschätzung?',
+'Die metrikbasierte Schätzung ist genauer als die expertenbasierte Schätzung.',
+'Die metrikbasierte Schätzung verwendet historische Projektdaten, während eine expertenbasierte Schätzung auf den Erfahrungen des Projektteams beruht.',
+'Die metrikbasierte Schätzung kann verwendet werden, um eine expertenbasierte Schätzung zu überprüfen, aber nicht umgekehrt.',
+'Die expertenbasierte Schätzung dauert länger als die metrikbasierte.',
+2,
+'Metrikbasierter Ansatz: Schätzen des Testaufwands basierend auf Metriken früherer ähnlicher Projekte oder basierend auf typischen Werten.\n\nBeim expertenbasierten Ansatz werden Experten beauftragt den Testaufwand zu schätzen. Zum Beispiel die für die verschiedenen Testaktivitäten verantwortlichen Testmanager, die als Experten für ihr jeweiliges Gebiet betrachtet werden. Und daher in der Lage sind, den erwarteten Testaufwand zu schätzen.',
+''],
+['Welche der folgenden Aussagen ist NICHT RICHTIG? Ein Black-Box-Tester _______',
+'soll fähig sein, die funktionale Spezifikation, oder Anforderungsdokumentation verstehen zu können.',
+'soll fähig sein, den Code zu verstehen.',
+'ist höchst motiviert, die Fehler zu finden.',
+'ist kreativ, die Schwäche des Systems zu finden.',
+2,
+'Bei Black-Box-Tests hat man keinen Einblick in den Code.',
+''],
+['Welcher der folgenden Punkte trifft für ein Risiko gemäß dem ISTQB Glossar zu?',
+'Positive Rückmeldung an den Tester.',
+'Negative Folgen, die eintreten werden.',
+'Negative Folgen, die eintreten könnten.',
+'Negative Folgen für das Testobjekt.',
+3,
+'Risiko nach ISTQB-Glossar: "Ein Faktor, der zu negativen Konsequenzen in der Zukunft führen könnte, gewöhnlich ausgedrückt durch das Schadensausmaß und die Eintrittswahrscheinlichkeit."',
+''],
+['Wie viele Testfälle sind mindestens notwendig, um bei folgendem Codeausschnitt eine 100%ige Anweisungsüberdeckung zu erreichen (unter der Voraussetzung, dass die beiden Bedingungen voneinander unabhängig sind)?',
+'3 Testfälle',
+'1 Testfall',
+'2 Testfälle',
+'Nicht erreichbar',
+2,
+'1 Testfall, bei dem Bedingung 1 und Bedingung 2 beide WAHR sind.',
+'https://i.imgur.com/v3mVnqS.png'],
+['Welche der folgenden Aussagen beschreibt einen möglichen Grund für einen Wartungstest?',
+'Die Dokumentation der Software soll überarbeitet werden.',
+'Die Software befindet sich seit längerer Zeit im Einsatz.',
+'Die Software ist in eine andere Umgebung migriert worden.',
+'Die Projektleitung möchte den Anweisungsüberdeckungsgrad ermitteln.',
+3,
+'Wartungstests werden notwendig bei: Modifikation, \nMigrationen,\nEinzug\n...der Software/Systems.',
+''],
+['Welche der folgenden Aussagen ist zutreffend?',
+'Testtreiber werden ausschließlich beim Systemtest verwendet.',
+'Testtreiber bieten sehr eingeschränkte Funktionalität und sind folglich ohne Entwicklungs-Know-how herstellbar.',
+'Testtreiber können leicht durch Mitschnittwerkzeuge (capture/replay) aufgezeichnet werden.',
+'Zur Erstellung von Testtreibern ist Entwicklungs-Know-how erforderlich.',
+4,
+'Testtreiber nach ISTQB Glossar: "Ein Testwerkzeug, das eine zu testende Komponente/ein System aufruft und/oder steuert." Zur Erstellung sind Kenntnisse in der entsprechenden Programmier-/Skriptsprache erforderlich.',
+'']
+        ];
+        function validate()
+        { //Validate answer, show explanation
+            var a1 = document.getElementById("check1").checked;
+            var a2 = document.getElementById("check2").checked;
+            var a3 = document.getElementById("check3").checked;
+            var a4 = document.getElementById("check4").checked;
+            if (a1 + a2 + a3 + a4 != 1)
+            { //Error, there is not only exactly one answer selected.
+                alert(msgAlertOnlyOne);
+                return;
+            }
+            var correctAnswer = qanda[q-1][5];
+            if (a1 && correctAnswer == 1 || a2 && correctAnswer == 2 || a3 && correctAnswer == 3 || a4 && correctAnswer == 4)
+            { //Correct
+                if (a1) document.getElementById("answer1").classList.add("correct");
+                if (a2) document.getElementById("answer2").classList.add("correct");
+                if (a3) document.getElementById("answer3").classList.add("correct");
+                if (a4) document.getElementById("answer4").classList.add("correct");
+                correctAnswers++;
+            }
+            else
+            { //Wrong
+                if (correctAnswer == 1) document.getElementById("answer1").classList.add("correct");
+                if (correctAnswer == 2) document.getElementById("answer2").classList.add("correct");
+                if (correctAnswer == 3) document.getElementById("answer3").classList.add("correct");
+                if (correctAnswer == 4) document.getElementById("answer4").classList.add("correct");
+            }
+            document.getElementById("submit").style.visibility = "hidden";
+            document.getElementById("next").style.visibility = "visible";
+            document.getElementById("explanation").style.visibility = "visible";
+            document.getElementById("explanation").value = qanda[q-1][6];
+        }
+        function moveon()
+        { //Move to the next question
+            q++;
+            if (q > qanda.length)
+            {
+                alert(msgCorrectAnswers + correctAnswers + msgCorrectAnswersOf + qanda.length)
+                q = 1;
+                correctAnswers  = 0;
+            }
+            document.getElementById("next").style.visibility = "hidden";
+            document.getElementById("submit").style.visibility = "visible";
+            document.getElementById("explanation").style.visibility = "hidden";
+            document.getElementById("check1").checked = false;
+            document.getElementById("check2").checked = false;
+            document.getElementById("check3").checked = false;
+            document.getElementById("check4").checked = false;
+            document.getElementById("answer1").innerHTML = qanda[q-1][1];
+            document.getElementById("answer2").innerHTML = qanda[q-1][2];
+            document.getElementById("answer3").innerHTML = qanda[q-1][3];
+            document.getElementById("answer4").innerHTML = qanda[q-1][4];
+            document.getElementById("explanation").value = "";
+            document.getElementById("question").innerHTML = qanda[q-1][0];
+            document.getElementById("answer1").classList.remove("correct");
+            document.getElementById("answer2").classList.remove("correct");
+            document.getElementById("answer3").classList.remove("correct");
+            document.getElementById("answer4").classList.remove("correct");
+            document.getElementById("check1").style="outline-style:none";
+            document.getElementById("check2").style="outline-style:none";
+            document.getElementById("check3").style="outline-style:none";
+            document.getElementById("check4").style="outline-style:none";
+            if (qanda[q-1][7] == "")
+            {
+                document.getElementById("image").style.display = "none";
+            }
+            else
+            {
+                document.getElementById("image").style.display = "inline";
+                document.getElementById("image").src = qanda[q-1][7];
+            }
+        }
+    </script>
+    </head>
+    <body style="font: normal 12px Verdana, Arial, sans-serif">
+    <form action="#">
+        <div id="question"></div>
+        <br/>
+        <img id="image" src="" style="display:none;" width="500">
+        <fieldset>
+        <div>
+        <input type="checkbox" id="check1">&nbsp;<label for="check1" id="answer1" ></label>
+        </div>
+        <br/>
+        <div>
+        <input type="checkbox" id="check2">&nbsp;<label for="check2" id="answer2" ></label>
+        </div>
+        <br/>
+        <div>
+        <input type="checkbox" id="check3">&nbsp;<label for="check3" id="answer3"></label>
+        </div>
+        <br/>
+        <div >
+        <input type="checkbox" id="check4" >&nbsp;<label for="check4" id="answer4"></label>
+        </div>
+        </fieldset>
+        <br/>
+        <br/>
+        <input id="submit" type="button" value="Absenden" onclick="validate()">
+        <input id="next" type="button" value="Nächste Frage" onclick="moveon()" style="visibility:hidden;">
+        <br/>
+        <br/>
+        <textarea id="explanation" style="visibility:hidden;border:none;resize:none;"></textarea>
+        </form>
+        <script>
+        moveon(); //Start
+        </script>
+    </body>
+</html>
