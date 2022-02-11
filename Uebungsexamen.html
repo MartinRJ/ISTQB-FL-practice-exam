@@ -281,6 +281,43 @@
             localStorage.setItem('Modes',JSON.stringify(lsModeSettings));
         }
 
+        function calcChapterQ()
+        { //Calculate correct/wrong questions per chapter, and update the overview.
+            var sQstart = "("; var sQmiddle = "|"; var sQend = ")";
+            var correct = new Array(7).fill(0); //correct answers per chapter
+            var wrong = new Array(7).fill(0); //wrong answers per chapter
+
+            for (var i = 0; i < lsAnswersCorrect.length; i = i + 1)
+            {
+                for (var j = 0; j <= 6; j++)
+                {
+                    if (qanda_original[i][8] == j)
+                    {
+                        correct[j] += lsAnswersCorrect[i];
+                    }
+                }
+            }
+
+            for (var i = 0; i < lsAnswersWrong.length; i = i + 1)
+            {
+                for (var j = 0; j <= 6; j++)
+                {
+                    if (qanda_original[i][8] == j)
+                    {
+                        wrong[j] += lsAnswersWrong[i];
+                    }
+                }
+            }
+
+            document.getElementById("c1").innerText = sQstart + correct[1] + sQmiddle + wrong[1] + sQend;
+            document.getElementById("c2").innerText = sQstart + correct[2] + sQmiddle + wrong[2] + sQend;
+            document.getElementById("c3").innerText = sQstart + correct[3] + sQmiddle + wrong[3] + sQend;
+            document.getElementById("c4").innerText = sQstart + correct[4] + sQmiddle + wrong[4] + sQend;
+            document.getElementById("c5").innerText = sQstart + correct[5] + sQmiddle + wrong[5] + sQend;
+            document.getElementById("c6").innerText = sQstart + correct[6] + sQmiddle + wrong[6] + sQend;
+            document.getElementById("c0").innerText = sQstart + correct[0] + sQmiddle + wrong[0] + sQend;
+        }
+
         function applyModeSettingsFromLocalStorage()
         { //Read settings from local storage, and apply them in the form shown on the page.
             //Mode-array "lsModeSettings" stores [mode, modewrongcount, modehidecount, shuffle]
@@ -420,13 +457,13 @@
 
                 }
             }
-            if (iCnt < qandatemp.length)
-            {
-                qandatemp = qandatemp.slice(0,iCnt);
-            }
             if (shuffle)
             { //Very simple shuffling.
                 qandatemp.sort(() => Math.random() - 0.5);
+            }
+            if (iCnt < qandatemp.length)
+            {
+                qandatemp = qandatemp.slice(0,iCnt);
             }
             return qandatemp;
         }
@@ -484,6 +521,7 @@
         { //Move to the next question
             q++;
             updateCounter();
+            calcChapterQ();
             if (q > qanda.length)
             { //Last question reached.
                 End();
@@ -626,13 +664,13 @@
             <div style="position:relative; left:50px"><input type="checkbox" id="shuffleon">&nbsp;<label for="shuffleon">Shuffle</label></div>
             <br><br>
             <span style="font-weight: bold;">Kapitel:</span>&nbsp;<span>(Richtig | Falsch)</span><br><br>
-            <div style="position:relative; left:50px"><input type="checkbox" id="chap1" checked>&nbsp;<label for="chap1">Kapitel 1 - Grundlagen des Testens</label></div><br><br>
-            <div style="position:relative; left:50px"><input type="checkbox" id="chap2" checked>&nbsp;<label for="chap2">Kapitel 2 - Testen im Softwareentwicklungslebenszyklus</label></div><br><br>
-            <div style="position:relative; left:50px"><input type="checkbox" id="chap3" checked>&nbsp;<label for="chap3">Kapitel 3 - Statischer Test</label></div><br><br>
-            <div style="position:relative; left:50px"><input type="checkbox" id="chap4" checked>&nbsp;<label for="chap4">Kapitel 4 - Testverfahren</label></div><br><br>
-            <div style="position:relative; left:50px"><input type="checkbox" id="chap5" checked>&nbsp;<label for="chap5">Kapitel 5 - Testmanagement</label></div><br><br>
-            <div style="position:relative; left:50px"><input type="checkbox" id="chap6" checked>&nbsp;<label for="chap6">Kapitel 6 - Werkzeugunterstützung für das Testen</label></div><br><br>
-            <div style="position:relative; left:50px"><input type="checkbox" id="chap0" checked>&nbsp;<label for="chap0">Fragen aus dem Glossar</label></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap1" checked>&nbsp;<label for="chap1">Kapitel 1 - Grundlagen des Testens</label>&nbsp<span id="c1" style="font-size:smaller;">(0|0)</span></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap2" checked>&nbsp;<label for="chap2">Kapitel 2 - Testen im Softwareentwicklungslebenszyklus</label>&nbsp<span id="c2" style="font-size:smaller;">(0|0)</span></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap3" checked>&nbsp;<label for="chap3">Kapitel 3 - Statischer Test</label>&nbsp<span id="c3" style="font-size:smaller;">(0|0)</span></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap4" checked>&nbsp;<label for="chap4">Kapitel 4 - Testverfahren</label>&nbsp<span id="c4" style="font-size:smaller;">(0|0)</span></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap5" checked>&nbsp;<label for="chap5">Kapitel 5 - Testmanagement</label>&nbsp<span id="c5" style="font-size:smaller;">(0|0)</span></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap6" checked>&nbsp;<label for="chap6">Kapitel 6 - Werkzeugunterstützung für das Testen</label>&nbsp<span id="c6" style="font-size:smaller;">(0|0)</span></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap0" checked>&nbsp;<label for="chap0">Fragen aus dem Glossar</label>&nbsp<span id="c0" style="font-size:smaller;">(0|0)</span></div><br><br>
             
             <span style="font-weight: bold;">Examen:</span><br><br>
             <div style="position:relative; left:50px"><input type="checkbox" id="exam1" checked>&nbsp;<label for="exam1">ISTQB Sample Exam 1.3</label></div><br><br>
