@@ -332,7 +332,7 @@
             var exam4 = document.getElementById("exam4").checked;
 
             var additem;
-            for (var i = 0; i < qanda_original.length; i++)
+            for (var i = 0; i < qanda_original.length && i < iCnt; i++)
             {
                 additem = true;
                 if (onlywrong && lsAnswersWrong[i] < iCntOnlywrong) additem = false;
@@ -380,7 +380,7 @@
             var exam4 = document.getElementById("exam4").checked;
 
             var additem;
-            for (var i = 0; i < qanda_original.length; i++)
+            for (var i = 0; i < qanda_original.length && i < iCnt; i++)
             {
                 additem = true;
                 if (onlywrong && lsAnswersWrong[i] < iCntOnlywrong) additem = false;
@@ -576,7 +576,7 @@
         <br/>
         <textarea id="explanation" style="visibility:hidden;border:none;resize:none;"></textarea>
         </form>
-        <div id="overview" style="position: absolute; z-index: 2400; width: 74vw; top: 1vh; min-height: 800px; background-color: white; padding: 5px; border: 1px solid grey; visibility: visible;">
+        <div id="overview" style="position: absolute; z-index: 2400; width: 74vw; top: 1vh; min-height: 800px; background-color: white; padding: 5px; border: 1px solid grey; visibility: visible;"onchange="document.getElementById('labelnumq').innerHTML=countQuestions()">
             <span style="font-weight: bold">Fortschritt:</span>
             <br><br>Aktuell: <span id="current">0 / 2</span>
             <br><br>Durchläufe: <span id="runs">0</span>
@@ -586,7 +586,7 @@
             <span style="font-weight: bold;">Modus:</span><br><br>
             <div style="position:relative; left:50px"><input type="checkbox" id="onlywrong">&nbsp;<label for="onlywrong">Zeige nur Fragen die so oft falsch beantwortet wurden: </label><input type="text" value="0" style="width:90px;" id="cntonlywrong"> Mal</div><br><br>
             <div style="position:relative; left:50px"><input type="checkbox" id="hidecorrect">&nbsp;<label for="hidecorrect">Blende Fragen aus die so oft richtig beantwortet wurden: </label><input type="text" value="0" style="width:90px;" id="cnthidecorrect"> Mal</div><br><br>
-            <div style="position:relative; left:50px">Anzahl Fragen: <input type="text" id="numquestions" value="40" style="width:90px;"></div>
+            <div style="position:relative; left:50px">Anzahl Fragen: <input type="text" id="numquestions" value="40" style="width:90px;"> Aktuell:&nbsp;<label for="numquestions" id="labelnumq"></label></div>
             <br>
             <span style="font-weight: bold;">Kapitel:</span><br><br>
             <div style="position:relative; left:50px"><input type="checkbox" id="chap1" checked>&nbsp;<label for="chap1">Kapitel 1 - Grundlagen des Testens</label></div><br><br>
