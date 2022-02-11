@@ -332,7 +332,7 @@
             var exam4 = document.getElementById("exam4").checked;
 
             var additem;
-            for (var i = 0; i < qanda_original.length && i < iCnt; i++)
+            for (var i = 0; i < qanda_original.length; i++)
             {
                 additem = true;
                 if (onlywrong && lsAnswersWrong[i] < iCntOnlywrong) additem = false;
@@ -354,7 +354,11 @@
                 {
                     iCounter++;
                 }
-            }            
+            }
+            if (iCounter > iCnt)
+            {
+                iCounter = iCnt;
+            }
             return iCounter;
         }
 
@@ -380,7 +384,7 @@
             var exam4 = document.getElementById("exam4").checked;
 
             var additem;
-            for (var i = 0; i < qanda_original.length && i < iCnt; i++)
+            for (var i = 0; i < qanda_original.length; i++)
             {
                 additem = true;
                 if (onlywrong && lsAnswersWrong[i] < iCntOnlywrong) additem = false;
@@ -405,6 +409,10 @@
                     qandatemp.push(qa);
 
                 }
+            }
+            if (iCnt < qandatemp.length)
+            {
+                qandatemp = qandatemp.slice(0,iCnt);
             }
             return qandatemp;
         }
@@ -519,8 +527,14 @@
             document.getElementById("wrong").innerText = wrong;
         }
 
+        function updateCount()
+        {
+            document.getElementById('labelnumq').innerHTML=countQuestions();
+        }
+
         function showOverview()
         {
+            updateCount();
             if(running)
             {
                 document.getElementById('startbutton').style.visibility='hidden';
@@ -576,7 +590,7 @@
         <br/>
         <textarea id="explanation" style="visibility:hidden;border:none;resize:none;"></textarea>
         </form>
-        <div id="overview" style="position: absolute; z-index: 2400; width: 74vw; top: 1vh; min-height: 800px; background-color: white; padding: 5px; border: 1px solid grey; visibility: visible;" onkeyup="document.getElementById('labelnumq').innerHTML=countQuestions()" onchange="document.getElementById('labelnumq').innerHTML=countQuestions()">
+        <div id="overview" style="position: absolute; z-index: 2400; width: 74vw; top: 1vh; min-height: 800px; background-color: white; padding: 5px; border: 1px solid grey; visibility: visible;" onkeyup="updateCount()" onchange="updateCount()">
             <span style="font-weight: bold">Fortschritt:</span>
             <br><br>Aktuell: <span id="current">0 / 2</span>
             <br><br>Durchläufe: <span id="runs">0</span>
