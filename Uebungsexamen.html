@@ -160,8 +160,9 @@
         var msgCorrectAnswersOf = " von ";
         var q = 0;
         var correctAnswers = 0;
-        var templateAnswers;
-        var lsAnswers; //Results.
+        var lsAnswersWrong; //Results (wrong).
+        var lsAnswersCorrect; //Results (correct).
+        var lsRuns; //Number of runs [started, ended/finished]
         //Format:
         //[question, a1, a2, a3, a4, correct-answer, explanation, image, chapter, exam]
         //0 = question
@@ -224,16 +225,19 @@
         ];
         //Format Array:
         //[Frage 1 #Falsch beantwortet, Frage 1 #Richtig beantwortet, Frage 2 #Falsch... , Anzahl begonnene Durchgänge, Anzahl beendete Durchgänge]
-        templateAnswers = new Array((qanda_original.length*2)+2).fill(0);
         function prepareAnswers()
         {
-            if (localStorage.getItem('Answers') === null)
+            if (localStorage.getItem('AnswersCorrect') === null || localStorage.getItem('AnswersWrong') === null || localStorage.getItem('Runs') === null)
             {
-                lsAnswers = templateAnswers;
+                lsAnswersCorrect = new Array(qanda_original.length).fill(0);
+                lsAnswersWrong = new Array(qanda_original.length).fill(0);
+                lsRuns = new Array(2).fill(0);
             }
             else
             {
-                lsAnswers = JSON.parse(localStorage.getItem('Answers'));
+                lsAnswersCorrect = JSON.parse(localStorage.getItem('AnswersCorrect'));
+                lsAnswersWrong = JSON.parse(localStorage.getItem('AnswersWrong'));
+                lsRuns = JSON.parse(localStorage.getItem('Runs'));
             }
         }
         prepareAnswers();
@@ -286,8 +290,8 @@
                 if (a3) document.getElementById("answer3").classList.add("correct");
                 if (a4) document.getElementById("answer4").classList.add("correct");
                 correctAnswers++;
-                lsAnswers[(iAnswerId*2)-1] = parseInt(lsAnswers[(iAnswerId*2)-1]) + 1;
-                localStorage.setItem('Answers',JSON.stringify(lsAnswers));
+                lsAnswersCorrect[iAnswerId] = parseInt(lsAnswersCorrect[iAnswerId]) + 1;
+                localStorage.setItem('AnswersCorrect',JSON.stringify(lsAnswersCorrect));
             }
             else
             { //Wrong
@@ -295,8 +299,8 @@
                 if (correctAnswer == 2) document.getElementById("answer2").classList.add("correct");
                 if (correctAnswer == 3) document.getElementById("answer3").classList.add("correct");
                 if (correctAnswer == 4) document.getElementById("answer4").classList.add("correct");
-                lsAnswers[(iAnswerId*2)-2] = parseInt(lsAnswers[(iAnswerId*2)-2]) + 1;
-                localStorage.setItem('Answers',JSON.stringify(lsAnswers));
+                lsAnswersWrong[iAnswerId] = parseInt(lsAnswersWrong[iAnswerId]) + 1;
+                localStorage.setItem('AnswersWrong',JSON.stringify(lsAnswersWrong));
             }
             document.getElementById("submit").style.visibility = "hidden";
             document.getElementById("next").style.visibility = "visible";
@@ -331,8 +335,8 @@
             for (var i = 0; i < qanda_original.length; i++)
             {
                 additem = true;
-                if (onlywrong && lsAnswers[i*2] < iCntOnlywrong) additem = false;
-                if (hidecorrect && lsAnswers[(i*2)+1] < iCntHidecorrect) additem = false;
+                if (onlywrong && lsAnswersWrong[i] < iCntOnlywrong) additem = false;
+                if (hidecorrect && lsAnswersCorrect[i] < iCntHidecorrect) additem = false;
                 if (!chap1 && qanda_original[i][8] == 1) additem = false;
                 if (!chap2 && qanda_original[i][8] == 2) additem = false;
                 if (!chap3 && qanda_original[i][8] == 3) additem = false;
@@ -379,8 +383,8 @@
             for (var i = 0; i < qanda_original.length; i++)
             {
                 additem = true;
-                if (onlywrong && lsAnswers[i*2] < iCntOnlywrong) additem = false;
-                if (hidecorrect && lsAnswers[(i*2)+1] < iCntHidecorrect) additem = false;
+                if (onlywrong && lsAnswersWrong[i] < iCntOnlywrong) additem = false;
+                if (hidecorrect && lsAnswersCorrect[i] < iCntHidecorrect) additem = false;
                 if (!chap1 && qanda_original[i][8] == 1) additem = false;
                 if (!chap2 && qanda_original[i][8] == 2) additem = false;
                 if (!chap3 && qanda_original[i][8] == 3) additem = false;
@@ -411,8 +415,8 @@
             alert(msgCorrectAnswers + correctAnswers + msgCorrectAnswersOf + qanda.length);
             q = 0;
             correctAnswers  = 0;
-            lsAnswers[lsAnswers.length-1] = parseInt(lsAnswers[lsAnswers.length-1]) + 1;
-            localStorage.setItem('Answers',JSON.stringify(lsAnswers));
+            lsRuns[1] = parseInt(lsRuns[1]) + 1;
+            localStorage.setItem('Runs',JSON.stringify(lsRuns));
             //Show overview
             updateOverview();
             showOverview();
@@ -424,8 +428,10 @@
             running = true;
             qanda = selectQuestions();
             //Enter new attempt in the list.
-            lsAnswers[lsAnswers.length-2] = parseInt(lsAnswers[lsAnswers.length-2]) + 1;
-            localStorage.setItem('Answers',JSON.stringify(lsAnswers));
+            lsRuns[0] = parseInt(lsRuns[0]) + 1;
+            localStorage.setItem('Runs',JSON.stringify(lsRuns));
+            localStorage.setItem('AnswersCorrect',JSON.stringify(lsAnswersCorrect));
+            localStorage.setItem('AnswersWrong',JSON.stringify(lsAnswersWrong));
 
             //Start the practice
             moveon();
@@ -492,19 +498,19 @@
         function updateOverview()
         {
             document.getElementById("current").innerText = q + counterOutput + qanda.length;
-            document.getElementById("runs").innerText = lsAnswers[lsAnswers.length-1];
+            document.getElementById("runs").innerText = lsRuns[1];
             var correct = 0;
-            for (var i = 1; i < lsAnswers.length-2; i = i + 2)
+            for (var i = 1; i < lsAnswersCorrect.length; i = i + 1)
             {
-                if (lsAnswers[i] > 0)
+                if (lsAnswersCorrect[i] > 0)
                 {
                     correct++;
                 }
             }
             var wrong = 0
-            for (var i = 0; i < lsAnswers.length-2; i = i + 2)
+            for (var i = 0; i < lsAnswersWrong.length; i = i + 1)
             {
-                if (lsAnswers[i] > 0)
+                if (lsAnswersWrong[i] > 0)
                 {
                     wrong++;
                 }
@@ -598,7 +604,7 @@
             <div style="position:relative; left:50px"><input type="checkbox" id="exam4" checked>&nbsp;<label for="exam4">HTB Sample Exam</label></div><br><br>
             
             <span>Reset des Fortschritts:</span>
-            <input type="button" value="Zurücksetzen" onclick="if (confirm('Alle gespeicherten Werte zurücksetzen. Sind Sie sicher?')){localStorage.removeItem('Answers');location.reload();}">
+            <input type="button" value="Zurücksetzen" onclick="if (confirm('Alle gespeicherten Werte zurücksetzen. Sind Sie sicher?')){localStorage.removeItem('AnswersCorrect');localStorage.removeItem('AnswersWrong');localStorage.removeItem('Runs');location.reload();}">
             <br><br>
             <input type="button" value="Start" id="startbutton" onclick="if (countQuestions() <= 0){alert(msgIllegalSelection);}else{start();}">&nbsp;<input type="button" value="Zur&uuml;ck" id="backbutton" onclick="hideOverview();">&nbsp;<input type="button" value="Neustart" id="resetbutton" onclick="if (confirm('Neustart. Sind Sie sicher?')){restart();}">
         </div>
