@@ -146,12 +146,15 @@
     }
     </style>
     <script>
-        var running = false;
-        var mode = 1; //1 = Normal,
-        //2 = Only questions that were wrong #(modewrongcount) times,
-        //3 = Don't show questions that were correct #(modehidecount) times
+        var running = false; //Quiz is running
+        //Mode-array "lsModeSettings" stores [mode, modewrongcount, modehidecount, shuffle]
+        var mode = 1; //1 = Normal (mode is stored at index 0 in lsModeSettings),
+        //2 = Only questions that were wrong #(modewrongcount = index 1) times,
+        //3 = Don't show questions that were correct #(modehidecount = index 2) times
+        //4 = mode 2&3
         var modewrongcount = 0; //Default value = 0
         var modehidecount = 0; //Default value = 0
+        var shuffle = true;
         var lsModeSettings; //All mode settings.
         var counterOutput = " / ";
         var msgAlertOnlyOne = "Bitte wählen Sie genau eine Antwort aus.";
@@ -247,18 +250,47 @@
             document.getElementById("counter").innerText = q + counterOutput + qanda.length;
         }
 
-        function updateModeSettings()
-        {
-            lsModeSettings = new Array([mode, modewrongcount, modehidecount]);
+        function storeModeSettingsInLocalStorage()
+        { //Read mode values from the form and store them in localStorage.
+            var wr = document.getElementById("onlywrong").checked;
+            var mh = document.getElementById("hidecorrect").checked;
+            shuffle = document.getElementById("shuffleon").checked;
+            // mode: 1 = Normal (mode is stored at index 0 in lsModeSettings),
+            //2 = Only questions that were wrong #(modewrongcount = index 1) times,
+            //3 = Don't show questions that were correct #(modehidecount = index 2) times
+            //4 = mode 2&3
+            mode = 1;
+            if (!(wr && mh) && (wr || mh)) //XOR
+            {
+                if (wr)
+                {
+                    mode = 2;
+                }
+                else
+                {
+                    mode = 3;
+                }
+            }
+            else if (wr && mh)
+            {
+                mode = 4
+            }
+            modewrongcount = document.getElementById("cntonlywrong").value;
+            modehidecount = document.getElementById("cnthidecorrect").value;
+            lsModeSettings = new Array(mode, modewrongcount, modehidecount, shuffle);
             localStorage.setItem('Modes',JSON.stringify(lsModeSettings));
         }
 
-        templateModeSettings = new Array([mode, modewrongcount, modehidecount]);
-        function getModeSettings()
-        {
+        function applyModeSettingsFromLocalStorage()
+        { //Read settings from local storage, and apply them in the form shown on the page.
+            //Mode-array "lsModeSettings" stores [mode, modewrongcount, modehidecount, shuffle]
+            // mode: 1 = Normal (mode is stored at index 0 in lsModeSettings),
+            //2 = Only questions that were wrong #(modewrongcount = index 1) times,
+            //3 = Don't show questions that were correct #(modehidecount = index 2) times
+            //4 = mode 2&3
             if (localStorage.getItem('Modes') === null)
             {
-                lsModeSettings = templateModeSettings;
+                lsModeSettings = new Array(mode, modewrongcount, modehidecount, shuffle);
             }
             else
             {
@@ -267,9 +299,40 @@
             mode = lsModeSettings[0];
             modewrongcount = lsModeSettings[1];
             modehidecount = lsModeSettings[2];
+            shuffle = lsModeSettings[3];
+
+            if (mode == 1)
+            {
+                document.getElementById("onlywrong").checked = false;
+                document.getElementById("hidecorrect").checked = false;
+            }
+            else if (mode == 2)
+            {
+                document.getElementById("onlywrong").checked = true;
+                document.getElementById("hidecorrect").checked = false;
+            }
+            else if (mode == 3)
+            {
+                document.getElementById("hidecorrect").checked = true;
+                document.getElementById("onlywrong").checked = false;
+            }
+            else if (mode == 4)
+            {
+                document.getElementById("onlywrong").checked = true;
+                document.getElementById("hidecorrect").checked = true;
+            }
+            document.getElementById("cntonlywrong").value = modewrongcount;
+            document.getElementById("cnthidecorrect").value = modehidecount;
+            if (shuffle)
+            {
+                document.getElementById("shuffleon").checked = true;
+            }
+            else
+            {
+                document.getElementById("shuffleon").checked = false;
+            }
         }
 
-        updateModeSettings();
         function validate()
         { //Validate answer, show explanation
             var a1 = document.getElementById("check1").checked;
@@ -308,62 +371,9 @@
             document.getElementById("explanation").value = qanda[q-1][6];
         }
 
-        function countQuestions()
-        {
-            prepareAnswers();
-            var iCounter = 0;
-            var iCnt = document.getElementById("numquestions").value;
-            var iCntOnlywrong = document.getElementById("cntonlywrong").value;
-            var iCntHidecorrect = document.getElementById("cnthidecorrect").value;
-            var qandatemp = new Array();
-            var onlywrong = document.getElementById("onlywrong").checked;
-            var hidecorrect = document.getElementById("hidecorrect").checked;
-            var chap1 = document.getElementById("chap1").checked;
-            var chap2 = document.getElementById("chap2").checked;
-            var chap3 = document.getElementById("chap3").checked;
-            var chap4 = document.getElementById("chap4").checked;
-            var chap5 = document.getElementById("chap5").checked;
-            var chap6 = document.getElementById("chap6").checked;
-            var chap0 = document.getElementById("chap0").checked;
-
-            var exam1 = document.getElementById("exam1").checked;
-            var exam2 = document.getElementById("exam2").checked;
-            var exam3 = document.getElementById("exam3").checked;
-            var exam4 = document.getElementById("exam4").checked;
-
-            var additem;
-            for (var i = 0; i < qanda_original.length; i++)
-            {
-                additem = true;
-                if (onlywrong && lsAnswersWrong[i] < iCntOnlywrong) additem = false;
-                if (hidecorrect && lsAnswersCorrect[i] >= iCntHidecorrect) additem = false;
-                if (!chap1 && qanda_original[i][8] == 1) additem = false;
-                if (!chap2 && qanda_original[i][8] == 2) additem = false;
-                if (!chap3 && qanda_original[i][8] == 3) additem = false;
-                if (!chap4 && qanda_original[i][8] == 4) additem = false;
-                if (!chap5 && qanda_original[i][8] == 5) additem = false;
-                if (!chap6 && qanda_original[i][8] == 6) additem = false;
-                if (!chap0 && qanda_original[i][8] == 0) additem = false;
-
-                if (!exam1 && qanda_original[i][9] == 0) additem = false;
-                if (!exam2 && qanda_original[i][9] == 1) additem = false;
-                if (!exam3 && qanda_original[i][9] == 2) additem = false;
-                if (!exam4 && qanda_original[i][9] == 3) additem = false;
-
-                if (additem)
-                {
-                    iCounter++;
-                }
-            }
-            if (iCounter > iCnt)
-            {
-                iCounter = iCnt;
-            }
-            return iCounter;
-        }
-
         function selectQuestions()
         { //Select questions based on selection.
+            prepareAnswers();
             var iCnt = document.getElementById("numquestions").value;
             var iCntOnlywrong = document.getElementById("cntonlywrong").value;
             var iCntHidecorrect = document.getElementById("cnthidecorrect").value;
@@ -414,7 +424,17 @@
             {
                 qandatemp = qandatemp.slice(0,iCnt);
             }
+            if (shuffle)
+            { //Very simple shuffling.
+                qandatemp.sort(() => Math.random() - 0.5);
+            }
             return qandatemp;
+        }
+
+        function countQuestions()
+        {
+            var q = selectQuestions();
+            return q.length;
         }
 
         function End()
@@ -530,6 +550,7 @@
         function updateCount()
         {
             document.getElementById('labelnumq').innerHTML=countQuestions();
+            storeModeSettingsInLocalStorage();
         }
 
         function showOverview()
@@ -585,7 +606,7 @@
         <br/>
         <input id="submit" type="button" value="Absenden" onclick="validate()">
         <input id="next" type="button" value="Nächste Frage" onclick="moveon()" style="visibility:hidden;">
-        <div style="float:right; margin-right:75px;"><span id="counter"></span><input type="button" value="Übersicht" onclick="updateOverview();showOverview();"></div>
+        <div style="float:right; margin-right:75px;"><span id="counter" style="font-size:smaller;"></span>&nbsp;<input type="button" value="Übersicht" onclick="updateOverview();showOverview();"></div>
         <br/>
         <br/>
         <textarea id="explanation" style="visibility:hidden;border:none;resize:none;"></textarea>
@@ -602,7 +623,9 @@
             <div style="position:relative; left:50px"><input type="checkbox" id="hidecorrect">&nbsp;<label for="hidecorrect">Blende Fragen aus die so oft richtig beantwortet wurden: </label><input type="text" value="0" style="width:90px;" id="cnthidecorrect"> Mal</div><br><br>
             <div style="position:relative; left:50px">Anzahl Fragen: <input type="text" id="numquestions" value="40" style="width:90px;"> Aktuell:&nbsp;<label for="numquestions" id="labelnumq"></label></div>
             <br>
-            <span style="font-weight: bold;">Kapitel:</span><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="shuffleon">&nbsp;<label for="shuffleon">Shuffle</label></div>
+            <br><br>
+            <span style="font-weight: bold;">Kapitel:</span>&nbsp;<span>(Richtig | Falsch)</span><br><br>
             <div style="position:relative; left:50px"><input type="checkbox" id="chap1" checked>&nbsp;<label for="chap1">Kapitel 1 - Grundlagen des Testens</label></div><br><br>
             <div style="position:relative; left:50px"><input type="checkbox" id="chap2" checked>&nbsp;<label for="chap2">Kapitel 2 - Testen im Softwareentwicklungslebenszyklus</label></div><br><br>
             <div style="position:relative; left:50px"><input type="checkbox" id="chap3" checked>&nbsp;<label for="chap3">Kapitel 3 - Statischer Test</label></div><br><br>
@@ -618,13 +641,15 @@
             <div style="position:relative; left:50px"><input type="checkbox" id="exam4" checked>&nbsp;<label for="exam4">HTB Sample Exam</label></div><br><br>
             
             <span>Reset des Fortschritts:</span>
-            <input type="button" value="Zurücksetzen" onclick="if (confirm('Alle gespeicherten Werte zurücksetzen. Sind Sie sicher?')){localStorage.removeItem('AnswersCorrect');localStorage.removeItem('AnswersWrong');localStorage.removeItem('Runs');location.reload();}">
+            <input type="button" value="Zurücksetzen" onclick="if (confirm('Alle gespeicherten Werte zurücksetzen. Sind Sie sicher?')){localStorage.removeItem('AnswersCorrect');localStorage.removeItem('AnswersWrong');localStorage.removeItem('Runs');localStorage.removeItem('Modes');location.reload();}">
             <br><br>
             <input type="button" value="Start" id="startbutton" onclick="if (countQuestions() <= 0){alert(msgIllegalSelection);}else{start();}">&nbsp;<input type="button" value="Zur&uuml;ck" id="backbutton" onclick="hideOverview();">&nbsp;<input type="button" value="Neustart" id="resetbutton" onclick="if (confirm('Neustart. Sind Sie sicher?')){restart();}">
         </div>
         <script>
+            applyModeSettingsFromLocalStorage();
             updateOverview();
             showOverview();
+            updateCount();
         </script>
     </body>
 </html>
