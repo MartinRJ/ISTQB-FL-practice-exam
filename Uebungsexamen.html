@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISTQB FL Übungsfragen</title>
+
+    <style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        scroll-behavior: smooth;
+    }
+
+    form {
+        border: 2px solid gainsboro;
+        margin-top: .5vh;
+        width: 75vw;
+    }
+
+    textarea {
+        padding-left: 2rem;
+        width: 67vw;
+        height: 450px;
+    }
+
+    form img {
+        padding-left: 5rem;
+    }
+
+    label {
+        position: relative;
+        width: 100%;
+        font: 14px Verdana, Arial, sans-serif
+    }
+
+    form fieldset div {
+        transform-origin: center;
+        margin-left: 7rem;
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+    }
+
+    #submit {
+        margin-left: 5rem;
+    }
+
+    input[type='checkbox'],label {
+        margin-top: 2rem;
+        border-width: 1rem;
+        position: relative;
+    }
+
+    input[type='checkbox'] {
+        display: none;
+    }
+
+    input[type='checkbox'] + label::before,
+    input[type='checkbox'] + label::after {
+        content: "";
+        position: absolute;
+        left: -2rem;
+        top: 0;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+    }
+
+    input[type='checkbox'] + label::after {
+        background-color: white;
+        border: 2px solid white;
+        height: 24px;
+        transform: translate(-6px,-6px);
+    }
+
+    input[type='checkbox'] + label::before {
+        background-color: midnightblue;
+        border-width: 20px;
+        height: 32px;
+        transform: translate(-8px,-8px);
+    }
+/*
+    div:hover label::before {
+        background-color: gold;
+    }
+
+    div:hover label::after {
+        background-color: gold;
+    }
+*/
+    input[type='checkbox']:checked + label::after {
+        background-color: midnightblue;
+    }
+
+    fieldset {
+        border: none;
+        width: 68vw;
+    }
+
+    #question {
+        align-items: center;
+        color: white;
+        background-color: midnightblue;
+        padding: 1em;
+        font-size: 1rem;
+    }
+
+    input[type='button'] {
+        border: none;
+        color: white;
+        background-color: midnightblue;
+        padding: 1rem 2rem;
+        border-radius: 25% / 50%;
+    }
+
+    input[type='button']:active {
+        transform: translatey(.2rem);
+    }
+
+    input[type='button']:hover {
+        transform: scale(1.02);
+    }
+
+    input[type='checkbox'] + .correct::after {
+        background-color: orange;
+    }
+
+    input[type='checkbox'] + .correct::before {
+        background-color: orange;
+        height: 36px;
+        transform: translate(-10px,-10px);
+    }
+
+    input[type='checkbox']:checked + .correct::after {
+        background-color: green;
+    }
+
+    input[type='checkbox']:checked + .correct::before {
+        background-color: green;
+        height: 36px;
+        transform: translate(-10px,-10px);
+    }
+
+    input[type='checkbox'] + .correct {
+        font-weight: 700;
+    }
+    </style>
+    <script>
+        var running = false;
+        var mode = 1; //1 = Normal,
+        //2 = Only questions that were wrong #(modewrongcount) times,
+        //3 = Don't show questions that were correct #(modehidecount) times
+        var modewrongcount = 0; //Default value = 0
+        var modehidecount = 0; //Default value = 0
+        var lsModeSettings; //All mode settings.
+        var counterOutput = " / ";
+        var msgAlertOnlyOne = "Bitte wählen Sie genau eine Antwort aus.";
+        var msgCorrectAnswers = "Fertig. Richtige Antworten: ";
+        var msgIllegalSelection = "Bei Ihrer aktuellen Auswahl werden 0 Fragen ausgewählt, bitte passen Sie die Auswahl an."
+        var msgCorrectAnswersOf = " von ";
+        var q = 0;
+        var correctAnswers = 0;
+        var templateAnswers;
+        var lsAnswers; //Results.
+        //Format:
+        //[question, a1, a2, a3, a4, correct-answer, explanation, image, chapter, exam]
+        //0 = question
+        //1..4 = answer 1 - answer 4
+        //5 = correct answer (index)
+        //6 = explanation, escaped line breaks
+        //7 = image (optional, can be empty string '')
+        //8 = chapter 1-6 or 0=glossary
+        //9 = exam [0 = 1.3, 1 = 1.6, 2 = 2016B, 3 = HTB]
+        var qanda = [];
+        var qanda_original = [
+        ['Welche der folgenden Aussagen beschreibt AM BESTEN einen der sieben Grundsätze des Software-Testens?',
+        'Mit automatisiertem Testen ist es möglich alles zu testen.',
+        'Vollständiges Testen ist - mit genügend Anstrengung und Werkzeugunterstützung - für alle Arten von Software praktikabel.',
+        'Es ist normalerweise unmöglich, alle Ein-Ausgabe-Kombinationen für ein Software-System zu testen.',
+        'Der Zweck des Testens ist es, die Abwesenheit von Fehlern nachzuweisen.',
+        3,
+        'Begründung:\n\na) FALSCH – Erschöpfendes Testen ist unmöglich. Egal, ob manuell oder automatisiert. (Abschn. 1.3, Grundsatz 2). \n\nb) FALSCH – Erschöpfendes Testen ist unmöglich, egal wieviel Aufwand wir in den Test investieren. (Abschn. 1.3, Grundsatz 2). \n\nc) KORREKT – Grundsatz 2 (Abschn. 1.3) besagt: “Ein vollständiger Test, bei dem alle möglichen Eingabewerte und deren Kombinationen ... ausgeführt werden, ist nicht möglich, mit Ausnahme von sehr trivialen Testobjekten.” \n\nd) FALSCH – Diese Aussage widerspricht dem Grundsatz 1 (Abschn. 1.3): “Mit Testen wird das Vorhandensein von Fehlerzuständen nachgewiesen. Mit Testen lässt sich nicht beweisen, dass keine Fehlerzustände im Testobjekt vorhanden sind."',
+        '',1,2],
+        ['Welche der folgenden Aussagen beschreibt ZUTREFFEND ein gültiges Ziel für ein Testteam?',
+        'Es soll ermittelt werden, ob genügend Komponententests im Systemtest ausgeführt wurden.',
+        'Es sollen so viele Fehlerwirkungen wie möglich aufgedeckt werden, so dass die Fehlerursachen lokalisiert und korrigiert werden können.',
+        'Es soll aufgezeigt werden, dass alle möglichen Fehlerzustände identifiziert wurden.',
+        'Es soll aufgezeigt werden, dass alle verbleibenden Fehlerzustände keine Fehlerwirkungen verursachen werden.',
+        2,
+        'Begründung:\n\na) FALSCH – Komponententest ist nicht Teil des Systemtest. (Abschn. 2.2.1 und 2.2.3).\n\nb) KORREKT – Diese ist die Hauptaufgabe eines Testteams. (Abschn. 1.2, Ziele, 1. dot).\n\nc) FALSCH – Grundsatz 1 besagt, dass vollständiges Testen unmöglich ist, und es kann nicht bewiesen werden, dass alle Fehlerzustände identifiziert wurden. \n\nd) FALSCH – Um eine Einschätzung treffen zu können, ob ein Defekt einen Fehler verursacht oder nicht, muss man den Fehlerzustand zunächsterkennen. Zu sagen, dass verbleibende Fehlerzustände keine Fehlerwirkungen verursachen, bedeutet implizit, dass alle Fehlerzustände gefunden wurden. Dies widerspricht erneut Grundsatz 1.',
+        '',2,2],
+        ['Wählen Sie die richtige Kombination für die aufgeführten Beschreibungen von Testarbeitsergebnissen',
+        '1A, 2C, 3B, 4D',
+        '1D, 2B, 3A, 4C',
+        '1A, 2C, 3D, 4B',
+        '1D, 2C, 3B, 4A',
+        1,
+        'Begründung (nach CTFL CORE Lehrplan 2018, V.3.1, Glossar V.3.3)\nTestsuite: Eine Menge von Testskripten oder Testabläufen, die in einem bestimmten Testlauf ausgeführt werden sollen. gemäß Glossar V.3.3, wobei „Testabläufe“ durch „Testskripten“ ersetzt werden kann laut Glossar („See Also“ bei Testablauf bzw. Synonyms bei 3.3) (1A).\nTestfall: gemäß Glossar: Eine Menge von Vorbedingungen, Eingaben, Aktionen (falls anwendbar), erwarteten Ergebnissen und Nachbedingungen, welche auf Basis von Testbedingungen entwickelt wurden. (2C).\nTestskript: gemäß Glossar: Eine Abfolge von Anweisungen für die Durchführung eines Tests. (3B).\nTest-Charta: „Die Dokumentation eines Ziels und der Agenda einer Testsitzung.“ gemäß Glossar V.3.1 und Syllabus 4.4.2: Die Dokumentation von Testaktivitäten im Rahmen des sitzungsbasierten explorativen Testens. (4D).\na) KORREKT – s.o.\nb) FALSCH – s.o.\nc) FALSCH – s.o.\nd) FALSCH – s.o.',
+        'https://i.imgur.com/kkPcCzV.png',4,1],
+        ['Wie kann der White-Box-Test während des Abnahmetests angewendet werden?',
+        'Um zu prüfen, ob große Datenmengen zwischen integrierten Systemen übertragen werden können.',
+        'Um zu prüfen, ob alle Code-Anweisungen und Code-Entscheidungspfade ausgeführt wurden.',
+        'Um zu prüfen, ob alle Abläufe der Arbeitsprozesse abgedeckt sind.',
+        'Um alle Webseiten-Navigationen abzudecken.',
+        3,
+        'a) FALSCH – Relevant für Integrationstests. (vgl. CTFL CORE Lehrplan 2018, Abschnitt 2.2.2)\nb) FALSCH – Relevant für Komponententests (vgl. CTFL CORE Lehrplan 2018, Abschnitt 2.2.1 und 2.3.5, Beispiele für White-Box-Tests)\nc) KORREKT – CTFL CORE Lehrplan 2018, Abschnitt 2.3.5: Für Abnahmetests sind die Tests so konzipiert, dass sie z. B. alle Dateistrukturen und Wertebereiche der Finanzdaten für Bank-zu-Bank-Überweisungen unterstützen.\nd) FALSCH – Relevant für Systemtests (vgl. CTFL CORE Lehrplan 2018; Abschnitt 2.2.3, Beispiele für White-Box-Tests)',
+        '',2,1],
+        ['In welcher Reihenfolge sollten Testfälle durchgeführt werden?',
+        'Die wichtigsten Testfälle zuerst.',
+        'Zunächst die schwierigsten Testfälle, damit genügend Zeit für die Behebung der Fehler bleibt.',
+        'Zuerst die einfachsten Testfälle, damit zunächst ein Vertrauen aufgebaut wird.',
+        'In der Reihenfolge wie die Testfälle ausgedacht worden sind.',
+        1,
+        'Die wichtigsten Testfälle mit der höchsten Priorität sollten zuerst ausgeführt werden. Besonders wenn andere, weitere Testfälle davon abhängen.',
+        '',5,3],
+        ['6. Welcher der folgenden Punkte ist KEIN Bestandteil eines Testabschlussberichts nach IEEE Std. 829:1998?',
+        'Zusammenfassung und eindeutige Bezeichner',
+        'Zusammenfassung',
+        'Abweichungen',
+        'Anomalien',
+        4,
+        'Der Testabschlussbericht enthält:\n• Zusammenfassung der durchgeführten Tests\n• Abweichungen gegenüber den geplanten Tests\n• Auswertung der Testendekriterien\n• blockierende Faktoren\n• Testmetriken\n• verbleibende Risiken\n• Arbeitsergebnisse des Testens\n• Wiederverwendbares aus dem Test (Assets)\n• Lessons Learned',
+        '',5,3]
+        ];
+        //Format Array:
+        //[Frage 1 #Falsch beantwortet, Frage 1 #Richtig beantwortet, Frage 2 #Falsch... , Anzahl begonnene Durchgänge, Anzahl beendete Durchgänge]
+        templateAnswers = new Array((qanda_original.length*2)+2).fill(0);
+        function prepareAnswers()
+        {
+            if (localStorage.getItem('Answers') === null)
+            {
+                lsAnswers = templateAnswers;
+            }
+            else
+            {
+                lsAnswers = JSON.parse(localStorage.getItem('Answers'));
+            }
+        }
+        prepareAnswers();
+
+        function updateCounter()
+        {
+            document.getElementById("counter").innerText = q + counterOutput + qanda.length;
+        }
+
+        function updateModeSettings()
+        {
+            lsModeSettings = new Array([mode, modewrongcount, modehidecount]);
+            localStorage.setItem('Modes',JSON.stringify(lsModeSettings));
+        }
+
+        templateModeSettings = new Array([mode, modewrongcount, modehidecount]);
+        function getModeSettings()
+        {
+            if (localStorage.getItem('Modes') === null)
+            {
+                lsModeSettings = templateModeSettings;
+            }
+            else
+            {
+                lsModeSettings = JSON.parse(localStorage.getItem('Modes'));
+            }
+            mode = lsModeSettings[0];
+            modewrongcount = lsModeSettings[1];
+            modehidecount = lsModeSettings[2];
+        }
+
+        updateModeSettings();
+        function validate()
+        { //Validate answer, show explanation
+            var a1 = document.getElementById("check1").checked;
+            var a2 = document.getElementById("check2").checked;
+            var a3 = document.getElementById("check3").checked;
+            var a4 = document.getElementById("check4").checked;
+            if (a1 + a2 + a3 + a4 != 1)
+            { //Error, there is not only exactly one answer selected.
+                alert(msgAlertOnlyOne);
+                return;
+            }
+            var correctAnswer = qanda[q-1][5];
+            var iAnswerId = qanda[q-1][10];
+            if (a1 && correctAnswer == 1 || a2 && correctAnswer == 2 || a3 && correctAnswer == 3 || a4 && correctAnswer == 4)
+            { //Correct
+                if (a1) document.getElementById("answer1").classList.add("correct");
+                if (a2) document.getElementById("answer2").classList.add("correct");
+                if (a3) document.getElementById("answer3").classList.add("correct");
+                if (a4) document.getElementById("answer4").classList.add("correct");
+                correctAnswers++;
+                lsAnswers[(iAnswerId*2)-1] = parseInt(lsAnswers[(iAnswerId*2)-1]) + 1;
+                localStorage.setItem('Answers',JSON.stringify(lsAnswers));
+            }
+            else
+            { //Wrong
+                if (correctAnswer == 1) document.getElementById("answer1").classList.add("correct");
+                if (correctAnswer == 2) document.getElementById("answer2").classList.add("correct");
+                if (correctAnswer == 3) document.getElementById("answer3").classList.add("correct");
+                if (correctAnswer == 4) document.getElementById("answer4").classList.add("correct");
+                lsAnswers[(iAnswerId*2)-2] = parseInt(lsAnswers[(iAnswerId*2)-2]) + 1;
+                localStorage.setItem('Answers',JSON.stringify(lsAnswers));
+            }
+            document.getElementById("submit").style.visibility = "hidden";
+            document.getElementById("next").style.visibility = "visible";
+            document.getElementById("explanation").style.visibility = "visible";
+            document.getElementById("explanation").value = qanda[q-1][6];
+        }
+
+        function countQuestions()
+        {
+            prepareAnswers();
+            var iCounter = 0;
+            var iCnt = document.getElementById("numquestions").value;
+            var iCntOnlywrong = document.getElementById("cntonlywrong").value;
+            var iCntHidecorrect = document.getElementById("cnthidecorrect").value;
+            var qandatemp = new Array();
+            var onlywrong = document.getElementById("onlywrong").checked;
+            var hidecorrect = document.getElementById("hidecorrect").checked;
+            var chap1 = document.getElementById("chap1").checked;
+            var chap2 = document.getElementById("chap2").checked;
+            var chap3 = document.getElementById("chap3").checked;
+            var chap4 = document.getElementById("chap4").checked;
+            var chap5 = document.getElementById("chap5").checked;
+            var chap6 = document.getElementById("chap6").checked;
+            var chap0 = document.getElementById("chap0").checked;
+
+            var exam1 = document.getElementById("exam1").checked;
+            var exam2 = document.getElementById("exam2").checked;
+            var exam3 = document.getElementById("exam3").checked;
+            var exam4 = document.getElementById("exam4").checked;
+
+            var additem;
+            for (var i = 0; i < qanda_original.length; i++)
+            {
+                additem = true;
+                if (onlywrong && lsAnswers[i*2] < iCntOnlywrong) additem = false;
+                if (hidecorrect && lsAnswers[(i*2)+1] < iCntHidecorrect) additem = false;
+                if (!chap1 && qanda_original[i][8] == 1) additem = false;
+                if (!chap2 && qanda_original[i][8] == 2) additem = false;
+                if (!chap3 && qanda_original[i][8] == 3) additem = false;
+                if (!chap4 && qanda_original[i][8] == 4) additem = false;
+                if (!chap5 && qanda_original[i][8] == 5) additem = false;
+                if (!chap6 && qanda_original[i][8] == 6) additem = false;
+                if (!chap0 && qanda_original[i][8] == 0) additem = false;
+
+                if (!exam1 && qanda_original[i][9] == 0) additem = false;
+                if (!exam2 && qanda_original[i][9] == 1) additem = false;
+                if (!exam3 && qanda_original[i][9] == 2) additem = false;
+                if (!exam4 && qanda_original[i][9] == 3) additem = false;
+
+                if (additem)
+                {
+                    iCounter++;
+                }
+            }            
+            return iCounter;
+        }
+
+        function selectQuestions()
+        { //Select questions based on selection.
+            var iCnt = document.getElementById("numquestions").value;
+            var iCntOnlywrong = document.getElementById("cntonlywrong").value;
+            var iCntHidecorrect = document.getElementById("cnthidecorrect").value;
+            var qandatemp = new Array();
+            var onlywrong = document.getElementById("onlywrong").checked;
+            var hidecorrect = document.getElementById("hidecorrect").checked;
+            var chap1 = document.getElementById("chap1").checked;
+            var chap2 = document.getElementById("chap2").checked;
+            var chap3 = document.getElementById("chap3").checked;
+            var chap4 = document.getElementById("chap4").checked;
+            var chap5 = document.getElementById("chap5").checked;
+            var chap6 = document.getElementById("chap6").checked;
+            var chap0 = document.getElementById("chap0").checked;
+
+            var exam1 = document.getElementById("exam1").checked;
+            var exam2 = document.getElementById("exam2").checked;
+            var exam3 = document.getElementById("exam3").checked;
+            var exam4 = document.getElementById("exam4").checked;
+
+            var additem;
+            for (var i = 0; i < qanda_original.length; i++)
+            {
+                additem = true;
+                if (onlywrong && lsAnswers[i*2] < iCntOnlywrong) additem = false;
+                if (hidecorrect && lsAnswers[(i*2)+1] < iCntHidecorrect) additem = false;
+                if (!chap1 && qanda_original[i][8] == 1) additem = false;
+                if (!chap2 && qanda_original[i][8] == 2) additem = false;
+                if (!chap3 && qanda_original[i][8] == 3) additem = false;
+                if (!chap4 && qanda_original[i][8] == 4) additem = false;
+                if (!chap5 && qanda_original[i][8] == 5) additem = false;
+                if (!chap6 && qanda_original[i][8] == 6) additem = false;
+                if (!chap0 && qanda_original[i][8] == 0) additem = false;
+
+                if (!exam1 && qanda_original[i][9] == 0) additem = false;
+                if (!exam2 && qanda_original[i][9] == 1) additem = false;
+                if (!exam3 && qanda_original[i][9] == 2) additem = false;
+                if (!exam4 && qanda_original[i][9] == 3) additem = false;
+
+                if (additem)
+                {
+                    var qa = qanda_original[i];
+                    qa.push(i);
+                    qandatemp.push(qa);
+
+                }
+            }
+            return qandatemp;
+        }
+
+        function End()
+        {
+            running = false;
+            alert(msgCorrectAnswers + correctAnswers + msgCorrectAnswersOf + qanda.length);
+            q = 0;
+            correctAnswers  = 0;
+            lsAnswers[lsAnswers.length-1] = parseInt(lsAnswers[lsAnswers.length-1]) + 1;
+            localStorage.setItem('Answers',JSON.stringify(lsAnswers));
+            //Show overview
+            updateOverview();
+            showOverview();
+        }
+
+        function start()
+        {
+            hideOverview();
+            running = true;
+            qanda = selectQuestions();
+            //Enter new attempt in the list.
+            lsAnswers[lsAnswers.length-2] = parseInt(lsAnswers[lsAnswers.length-2]) + 1;
+            localStorage.setItem('Answers',JSON.stringify(lsAnswers));
+
+            //Start the practice
+            moveon();
+        }
+
+        function restart()
+        {
+            q = 0;
+            correctAnswers  = 0;
+            //Start the next round of practice
+            if (countQuestions() <= 0)
+            {
+                alert(msgIllegalSelection);
+            }
+            else
+            {
+                start();
+            }
+        }
+
+        function moveon()
+        { //Move to the next question
+            q++;
+            updateCounter();
+            if (q > qanda.length)
+            { //Last question reached.
+                End();
+            }
+            else
+            {
+                document.getElementById("next").style.visibility = "hidden";
+                document.getElementById("submit").style.visibility = "visible";
+                document.getElementById("explanation").style.visibility = "hidden";
+                document.getElementById("check1").checked = false;
+                document.getElementById("check2").checked = false;
+                document.getElementById("check3").checked = false;
+                document.getElementById("check4").checked = false;
+                document.getElementById("answer1").innerHTML = qanda[q-1][1];
+                document.getElementById("answer2").innerHTML = qanda[q-1][2];
+                document.getElementById("answer3").innerHTML = qanda[q-1][3];
+                document.getElementById("answer4").innerHTML = qanda[q-1][4];
+                document.getElementById("explanation").value = "";
+                document.getElementById("question").innerHTML = qanda[q-1][0];
+                document.getElementById("answer1").classList.remove("correct");
+                document.getElementById("answer2").classList.remove("correct");
+                document.getElementById("answer3").classList.remove("correct");
+                document.getElementById("answer4").classList.remove("correct");
+                document.getElementById("check1").style="outline-style:none";
+                document.getElementById("check2").style="outline-style:none";
+                document.getElementById("check3").style="outline-style:none";
+                document.getElementById("check4").style="outline-style:none";
+                if (qanda[q-1][7] == "")
+                {
+                    document.getElementById("image").style.display = "none";
+                }
+                else
+                {
+                    document.getElementById("image").style.display = "inline";
+                    document.getElementById("image").src = qanda[q-1][7];
+                }
+            }
+        }
+
+        function updateOverview()
+        {
+            document.getElementById("current").innerText = q + counterOutput + qanda.length;
+            document.getElementById("runs").innerText = lsAnswers[lsAnswers.length-1];
+            var correct = 0;
+            for (var i = 1; i < lsAnswers.length-2; i = i + 2)
+            {
+                if (lsAnswers[i] > 0)
+                {
+                    correct++;
+                }
+            }
+            var wrong = 0
+            for (var i = 0; i < lsAnswers.length-2; i = i + 2)
+            {
+                if (lsAnswers[i] > 0)
+                {
+                    wrong++;
+                }
+            }
+            document.getElementById("correct").innerText = correct;
+            document.getElementById("wrong").innerText = wrong;
+        }
+
+        function showOverview()
+        {
+            if(running)
+            {
+                document.getElementById('startbutton').style.visibility='hidden';
+                document.getElementById('resetbutton').style.visibility='visible';
+                document.getElementById('backbutton').style.visibility='visible';
+            }
+            else
+            {
+                document.getElementById('backbutton').style.visibility='hidden';
+                document.getElementById('startbutton').style.visibility='visible';
+                document.getElementById('resetbutton').style.visibility='hidden';
+            }
+            document.getElementById('overview').style.visibility='visible';
+        }
+
+        function hideOverview()
+        {
+            document.getElementById('startbutton').style.visibility='hidden';
+            document.getElementById('backbutton').style.visibility='hidden';
+            document.getElementById('overview').style.visibility='hidden';
+            document.getElementById('resetbutton').style.visibility='hidden';
+        }
+    </script>
+    </head>
+    <body style="font: normal 12px Verdana, Arial, sans-serif">
+    <form action="#">
+        <div id="question"></div>
+        <br/>
+        <img id="image" src="empty.gif" style="display:none;" width="500" alt="Aufgabe">
+        <fieldset>
+        <div>
+        <input type="checkbox" id="check1">&nbsp;<label for="check1" id="answer1" ></label>
+        </div>
+        <br/>
+        <div>
+        <input type="checkbox" id="check2">&nbsp;<label for="check2" id="answer2" ></label>
+        </div>
+        <br/>
+        <div>
+        <input type="checkbox" id="check3">&nbsp;<label for="check3" id="answer3"></label>
+        </div>
+        <br/>
+        <div>
+        <input type="checkbox" id="check4" >&nbsp;<label for="check4" id="answer4"></label>
+        </div>
+        </fieldset>
+        <br/>
+        <br/>
+        <input id="submit" type="button" value="Absenden" onclick="validate()">
+        <input id="next" type="button" value="Nächste Frage" onclick="moveon()" style="visibility:hidden;">
+        <div style="float:right; margin-right:75px;"><span id="counter"></span><input type="button" value="Übersicht" onclick="updateOverview();showOverview();"></div>
+        <br/>
+        <br/>
+        <textarea id="explanation" style="visibility:hidden;border:none;resize:none;"></textarea>
+        </form>
+        <div id="overview" style="position: absolute; z-index: 2400; width: 74vw; top: 1vh; min-height: 800px; background-color: white; padding: 5px; border: 1px solid grey; visibility: visible;">
+            <span style="font-weight: bold">Fortschritt:</span>
+            <br><br>Aktuell: <span id="current">0 / 2</span>
+            <br><br>Durchläufe: <span id="runs">0</span>
+            <br><br>Fragen richtig beantwortet (in allen Durchläufen): <span id="correct">0</span>
+            <br><br>Fragen falsch beantwortet  (in allen Durchläufen): <span id="wrong">0</span>
+            <br><br>
+            <span style="font-weight: bold;">Modus:</span><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="onlywrong">&nbsp;<label for="onlywrong">Zeige nur Fragen die so oft falsch beantwortet wurden: </label><input type="text" value="0" style="width:90px;" id="cntonlywrong"> Mal</div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="hidecorrect">&nbsp;<label for="hidecorrect">Blende Fragen aus die so oft richtig beantwortet wurden: </label><input type="text" value="0" style="width:90px;" id="cnthidecorrect"> Mal</div><br><br>
+            <div style="position:relative; left:50px">Anzahl Fragen: <input type="text" id="numquestions" value="40" style="width:90px;"></div>
+            <br>
+            <span style="font-weight: bold;">Kapitel:</span><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap1" checked>&nbsp;<label for="chap1">Kapitel 1 - Grundlagen des Testens</label></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap2" checked>&nbsp;<label for="chap2">Kapitel 2 - Testen im Softwareentwicklungslebenszyklus</label></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap3" checked>&nbsp;<label for="chap3">Kapitel 3 - Statischer Test</label></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap4" checked>&nbsp;<label for="chap4">Kapitel 4 - Testverfahren</label></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap5" checked>&nbsp;<label for="chap5">Kapitel 5 - Testmanagement</label></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap6" checked>&nbsp;<label for="chap6">Kapitel 6 - Werkzeugunterstützung für das Testen</label></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="chap0" checked>&nbsp;<label for="chap0">Fragen aus dem Glossar</label></div><br><br>
+            
+            <span style="font-weight: bold;">Examen:</span><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="exam1" checked>&nbsp;<label for="exam1">ISTQB Sample Exam 1.3</label></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="exam2" checked>&nbsp;<label for="exam2">ISTQB Sample Exam 1.6</label></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="exam3" checked>&nbsp;<label for="exam3">ISTQB Sample Exam 2016B</label></div><br><br>
+            <div style="position:relative; left:50px"><input type="checkbox" id="exam4" checked>&nbsp;<label for="exam4">HTB Sample Exam</label></div><br><br>
+            
+            <span>Reset des Fortschritts:</span>
+            <input type="button" value="Zurücksetzen" onclick="if (confirm('Alle gespeicherten Werte zurücksetzen. Sind Sie sicher?')){localStorage.removeItem('Answers');location.reload();}">
+            <br><br>
+            <input type="button" value="Start" id="startbutton" onclick="if (countQuestions() <= 0){alert(msgIllegalSelection);}else{start();}">&nbsp;<input type="button" value="Zur&uuml;ck" id="backbutton" onclick="hideOverview();">&nbsp;<input type="button" value="Neustart" id="resetbutton" onclick="if (confirm('Neustart. Sind Sie sicher?')){restart();}">
+        </div>
+        <script>
+            updateOverview();
+            showOverview();
+        </script>
+    </body>
+</html>
