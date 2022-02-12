@@ -1485,6 +1485,7 @@
             document.getElementById("next").style.visibility = "visible";
             document.getElementById("explanation").style.visibility = "visible";
             document.getElementById("explanation").value = qanda[q-1][6];
+            calcChapterQ();
         }
 
         function selectQuestions()
@@ -1600,7 +1601,6 @@
         { //Move to the next question
             q++;
             updateCounter();
-            calcChapterQ();
             if (q > qanda.length)
             { //Last question reached.
                 End();
@@ -1767,6 +1767,7 @@
             updateOverview();
             showOverview();
             updateCount();
+            calcChapterQ();
         </script>
     </body>
 </html>
